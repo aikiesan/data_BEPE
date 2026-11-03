@@ -12,3 +12,17 @@ depois_corte,129
 depois_corte_ant,356
 max_seq,22947
 corte,16000
+ini_ate_ref,1798
+ini_ate_ref_ant,1241
+ini_meses_maior,10
+ini_meses,10
+ic_dez,8
+ic_dez_ant,59
+ic_verao,9
+ic_verao_ant,145
+ini_ate_ref_pedido_ano,916
+ini_ate_ref_pedido_ant,875
+pd_depois_n,28
+pd_depois_acima6,23
+dopd_fut_n,204
+dopd_fut_acima6,158

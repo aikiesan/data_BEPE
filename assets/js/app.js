@@ -940,6 +940,15 @@
     return (v >= 0 ? '+' : '−') + fP0(Math.abs(v));
   };
 
+  function textoAreas() {
+    const q = H.areas_corte.filter((d) => d.depois_ant >= 20).map((d) => ({ ...d, v: d.depois / d.depois_ant - 1 })).sort((a, b) => a.v - b.v);
+    if (!q.length) return '';
+    const nome = (d) => d.modalidade;
+    const todas = H.areas_corte.every((d) => d.depois < d.depois_ant);
+    const f = (d) => `${nome(d)} (${varP(d.depois, d.depois_ant)})`;
+    return `Entre os pedidos do processo ${fN(H.kpis.corte)} em diante, ${todas ? 'todas as grandes áreas caem' : 'a maioria das grandes áreas cai'}. As maiores quedas, entre as áreas com ao menos 20 bolsas no mesmo trecho de ${H.kpis.ano_anterior}, são em ${q.slice(0, 3).map(f).join(', ').replace(/, ([^,]*)$/, ' e $1')}; as menores, em ${q.slice(-2).map(f).join(' e ')}.`;
+  }
+
   function fillHoje() {
     const k = H.kpis;
     const ic = H.modalidades.find((m) => m.modalidade === 'Iniciação científica');
@@ -952,6 +961,9 @@
       atuais: k.no_exterior + k.a_iniciar,
       acima6_pct: fP0(d3.sum(dp, (d) => d.acima6) / d3.sum(dp, (d) => d.n)),
       top_pais: H.agora.paises[0][0], top_pais_n: H.agora.paises[0][1],
+      var_ini: varP(k.ini_ate_ref, k.ini_ate_ref_ant),
+      pd_depois_pct: k.pd_depois_n ? fP0(k.pd_depois_acima6 / k.pd_depois_n) : '—',
+      areas_texto: textoAreas(),
     };
     for (const n of document.querySelectorAll('[data-h]')) {
       const v = V[n.dataset.h];
@@ -1035,15 +1047,15 @@
     }
   }
 
-  function drawModsHoje() {
-    const box = document.getElementById('mods-hoje');
+  function drawModsHoje(id = 'mods-hoje', dados = H.modalidades) {
+    const box = document.getElementById(id);
     box.replaceChildren();
     const k = H.kpis;
     const head = el('div', 'mods-row mods-head');
     head.append(el('span', '', ''), el('span', '', 'Até o processo ' + fN(k.corte)), el('span', '', 'Do ' + fN(k.corte) + ' em diante'));
     box.append(head);
-    const maxA = d3.max(H.modalidades, (d) => Math.max(d.antes, d.antes_ant));
-    const maxD = d3.max(H.modalidades, (d) => Math.max(d.depois, d.depois_ant));
+    const maxA = d3.max(dados, (d) => Math.max(d.antes, d.antes_ant));
+    const maxD = d3.max(dados, (d) => Math.max(d.depois, d.depois_ant));
     const celula = (atual, ant, max) => {
       const c = el('div', 'mods-cell');
       for (const [ano, v, cls] of [[k.ano_anterior, ant, 'b-ant'], [k.ano, atual, 'b-atual']]) {
@@ -1058,7 +1070,7 @@
       c.append(chip);
       return c;
     };
-    for (const d of H.modalidades) {
+    for (const d of dados) {
       const row = el('div', 'mods-row');
       const c1 = celula(d.antes, d.antes_ant, maxA); c1.dataset.label = 'Até o processo ' + fN(k.corte);
       const c2 = celula(d.depois, d.depois_ant, maxD); c2.dataset.label = 'Do ' + fN(k.corte) + ' em diante';
@@ -1151,12 +1163,119 @@
     }
   }
 
+  /* ---------- BEPE hoje: mês a mês ---------- */
+  const MODS_MES = [['todas', 'Todas'], ['ic', 'Iniciação científica'], ['me', 'Mestrado'], ['do', 'Doutorado'], ['pd', 'Pós-doutorado']];
+  const estMes = { mod: 'todas', dur: 'pd' };
+  const somaMod = (o, mod) => (mod === 'todas' ? o.ic + o.me + o.do + o.pd : o[mod]);
+  const legenda = (id, itens) => {
+    const lg = document.getElementById(id);
+    lg.replaceChildren();
+    for (const [txt, fill, stroke] of itens) {
+      const sp = el('span'); const i = el('i');
+      i.style.background = fill; if (stroke) i.style.boxShadow = `inset 0 0 0 1.6px ${stroke}`;
+      sp.append(i, txt); lg.append(sp);
+    }
+  };
+
+  function drawMensal() {
+    const box = document.getElementById('chart-mensal');
+    box.replaceChildren();
+    const k = H.kpis;
+    const rows = H.mensal.map((d) => ({ mes: d.mes, a: somaMod(d.atual, estMes.mod), b: somaMod(d.ant, estMes.mod), futuro: d.futuro }));
+    legenda('legend-mensal', [[String(k.ano_anterior), cssv('--muted')], [String(k.ano), cssv('--red')], [k.ano + ', ainda por começar', 'transparent', cssv('--red')]]);
+    const W = box.clientWidth || 800;
+    const Hh = W < 560 ? 240 : 300;
+    const m = { t: 18, r: 6, b: 30, l: 38 };
+    const x = d3.scaleBand(rows.map((r) => r.mes), [m.l, W - m.r]).padding(0.24);
+    const xi = d3.scaleBand(['b', 'a'], [0, x.bandwidth()]).padding(0.08);
+    const y = d3.scaleLinear([0, d3.max(rows, (r) => Math.max(r.a, r.b)) || 1], [Hh - m.b, m.t]).nice();
+    const svg = d3.select(box).append('svg').attr('viewBox', `0 0 ${W} ${Hh}`).attr('width', W).attr('height', Hh);
+    svg.append('g').selectAll('line').data(y.ticks(4)).join('line')
+      .attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y).attr('stroke', cssv('--rule')).attr('stroke-dasharray', (d) => (d ? '2 3' : null));
+    svg.append('g').selectAll('text').data(y.ticks(4)).join('text')
+      .attr('x', m.l - 6).attr('y', (d) => y(d) + 4).attr('text-anchor', 'end').attr('class', 'lbl').text(fN);
+    svg.append('g').selectAll('text').data(rows).join('text')
+      .attr('x', (r) => x(r.mes) + x.bandwidth() / 2).attr('y', Hh - m.b + 16).attr('text-anchor', 'middle').attr('class', 'lbl')
+      .text((r) => MESES[r.mes - 1]);
+    const g = svg.append('g').selectAll('g').data(rows).join('g').attr('transform', (r) => `translate(${x(r.mes)},0)`);
+    g.append('rect').attr('x', xi('b')).attr('width', xi.bandwidth()).attr('y', (r) => y(r.b)).attr('height', (r) => y(0) - y(r.b))
+      .attr('rx', 2).attr('fill', cssv('--muted'));
+    g.append('rect').attr('x', xi('a')).attr('width', xi.bandwidth()).attr('y', (r) => y(r.a)).attr('height', (r) => y(0) - y(r.a))
+      .attr('rx', 2).attr('fill', (r) => (r.futuro ? 'transparent' : cssv('--red')))
+      .attr('stroke', cssv('--red')).attr('stroke-width', (r) => (r.futuro ? 1.6 : 0));
+    g.append('rect').attr('width', x.bandwidth()).attr('y', m.t).attr('height', Hh - m.b - m.t).attr('fill', 'transparent')
+      .on('pointermove', (event, r) => tip(event, MESES_L[r.mes - 1], [
+        { label: k.ano + (r.futuro ? ' (marcadas até ' + fData(H.dados_de) + ')' : ''), value: fN(r.a) },
+        { label: String(k.ano_anterior), value: fN(r.b) },
+        { label: 'Diferença', value: varP(r.a, r.b) }]))
+      .on('pointerleave', hideTip);
+    const f = rows.findIndex((r) => r.futuro);
+    if (f > 0) {
+      const xf = x(rows[f].mes) - (x.step() * x.paddingInner()) / 2;
+      svg.append('line').attr('x1', xf).attr('x2', xf).attr('y1', m.t - 8).attr('y2', Hh - m.b).attr('stroke', cssv('--ink')).attr('stroke-dasharray', '3 3');
+      svg.append('text').attr('x', xf - 6).attr('y', m.t).attr('text-anchor', 'end').attr('class', 'lbl-strong').text('dados de ' + fData(H.dados_de));
+    }
+  }
+
+  function drawDurMes() {
+    const box = document.getElementById('chart-durmes');
+    box.replaceChildren();
+    const curto = '#c9c3b8';
+    legenda('legend-durmes', [['Até 6 meses', curto], ['Mais de 6 meses', cssv('--blue')], ['Ainda por começar', 'transparent', cssv('--ink-2')]]);
+    const rows = H.duracao_mensal.map((d) => ({ mes: d.mes, n: d[estMes.dur][0], acima: d[estMes.dur][1], futuro: d.futuro }));
+    const W = box.clientWidth || 800;
+    const Hh = W < 560 ? 240 : 280;
+    const m = { t: 22, r: 6, b: 30, l: 34 };
+    const x = d3.scaleBand(rows.map((r) => r.mes), [m.l, W - m.r]).padding(0.2);
+    const y = d3.scaleLinear([0, d3.max(rows, (r) => r.n) || 1], [Hh - m.b, m.t]).nice();
+    const svg = d3.select(box).append('svg').attr('viewBox', `0 0 ${W} ${Hh}`).attr('width', W).attr('height', Hh);
+    svg.append('g').selectAll('line').data(y.ticks(4)).join('line')
+      .attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y).attr('stroke', cssv('--rule')).attr('stroke-dasharray', (d) => (d ? '2 3' : null));
+    svg.append('g').selectAll('text').data(y.ticks(4)).join('text')
+      .attr('x', m.l - 6).attr('y', (d) => y(d) + 4).attr('text-anchor', 'end').attr('class', 'lbl').text(fN);
+    const passo = W < 560 ? 3 : 1;
+    const lbl = (s) => { const [a, mm] = s.split('-'); return mm === '01' ? a : (passo > 1 ? '' : MESES[+mm - 1]); };
+    svg.append('g').selectAll('text').data(rows).join('text')
+      .attr('x', (r) => x(r.mes) + x.bandwidth() / 2).attr('y', Hh - m.b + 16).attr('text-anchor', 'middle')
+      .attr('class', (r) => (r.mes.endsWith('-01') ? 'lbl-strong' : 'lbl')).text((r) => lbl(r.mes));
+    const g = svg.append('g').selectAll('g').data(rows).join('g').attr('transform', (r) => `translate(${x(r.mes)},0)`).attr('opacity', (r) => (r.futuro ? 0.55 : 1));
+    g.append('rect').attr('width', x.bandwidth()).attr('y', (r) => y(r.acima)).attr('height', (r) => y(0) - y(r.acima)).attr('fill', cssv('--blue'));
+    g.append('rect').attr('width', x.bandwidth()).attr('y', (r) => y(r.n)).attr('height', (r) => y(r.acima) - y(r.n)).attr('fill', curto);
+    g.filter((r) => r.futuro).append('rect').attr('width', x.bandwidth()).attr('y', (r) => y(r.n)).attr('height', (r) => y(0) - y(r.n))
+      .attr('fill', 'none').attr('stroke', cssv('--ink-2')).attr('stroke-width', 1.2);
+    g.append('rect').attr('width', x.bandwidth()).attr('y', m.t).attr('height', Hh - m.b - m.t).attr('fill', 'transparent')
+      .on('pointermove', (event, r) => {
+        const [a, mm] = r.mes.split('-');
+        tip(event, MESES_L[+mm - 1] + ' de ' + a + (r.futuro ? ' (marcadas)' : ''), [
+          { label: 'Estágios', value: fN(r.n) },
+          { label: 'Mais de 6 meses', value: fN(r.acima) + (r.n ? ' (' + fP0(r.acima / r.n) + ')' : '') }]);
+      })
+      .on('pointerleave', hideTip);
+    const corte = String(H.kpis.ano) + '-09';
+    if (x(corte) !== undefined) {
+      const xc = x(corte) - (x.step() * x.paddingInner()) / 2;
+      svg.append('line').attr('x1', xc).attr('x2', xc).attr('y1', m.t - 14).attr('y2', Hh - m.b).attr('stroke', cssv('--red')).attr('stroke-dasharray', '4 3');
+      svg.append('text').attr('x', xc - 6).attr('y', m.t - 6).attr('text-anchor', 'end').attr('class', 'lbl-strong').attr('fill', cssv('--red')).text('norma nova, 01/09');
+    }
+  }
+
+  function startMes() {
+    segmented(document.getElementById('seg-mensal'), MODS_MES.map(([value, label]) => ({ value, label })), estMes.mod,
+      (v) => { estMes.mod = v; drawMensal(); });
+    segmented(document.getElementById('seg-durmes'), [{ value: 'pd', label: 'Pós-doutorado' }, { value: 'do', label: 'Doutorado' }], estMes.dur,
+      (v) => { estMes.dur = v; drawDurMes(); });
+    reg(drawMensal);
+    reg(drawDurMes);
+    drawModsHoje('areas-hoje', H.areas_corte);
+  }
+
   function startHoje() {
     d3.json('data/painel_bepe_hoje.json').then((d) => {
       H = d;
       fillHoje();
       reg(drawAcum);
       drawModsHoje();
+      startMes();
       reg(drawInicios);
       reg(drawDur);
       drawTimeline();

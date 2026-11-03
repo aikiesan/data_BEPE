@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=Instrument+Serif:ital@0;1&display=swap">
-  <link rel="stylesheet" href="assets/css/style.css?v=20261103d">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261103e">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23171513'/%3E%3Cpath d='M7 24 C12 11 21 8 26 8' fill='none' stroke='%23ebe8e2' stroke-width='2.6'/%3E%3Ccircle cx='7' cy='24' r='3' fill='%23e2412f'/%3E%3C/svg%3E">
 </head>
 <body data-page="hoje">
@@ -24,6 +24,7 @@
         <a class="tab" href="historico.html">Histórico</a>
         <a href="#hoje">Agora</a>
         <a href="#ritmo-2026">2026</a>
+        <a href="#mes-a-mes">Mês a mês</a>
         <a href="#em-jogo">Em jogo</a>
         <a href="#regras">Regras</a>
         <a href="#agora">No exterior</a>
@@ -130,10 +131,58 @@
       </div>
     </section>
 
+    <section class="ch wrap" id="mes-a-mes">
+      <div class="ch-head">
+        <p class="ch-num"><b>03</b> Mês a mês</p>
+        <h2>As partidas cresceram até outubro. <span class="serif">O choque está no que vem depois.</span></h2>
+      </div>
+      <div class="ch-body">
+        <div class="prose">
+          <p>A Biblioteca Virtual não informa a data da concessão. O único calendário disponível é o dia em que cada estágio começa. Por ele, <span data-h="ano">2026</span> teve mais partidas que <span data-h="ano_anterior">2025</span> em <b data-h="ini_meses_maior">—</b> de <span data-h="ini_meses">—</span> meses, de janeiro a outubro: <b data-h="ini_ate_ref">—</b> estágios, contra <span data-h="ini_ate_ref_ant">—</span>. Boa parte delas, <span data-h="ini_ate_ref_pedido_ant">—</span>, veio do recorde de pedidos de <span data-h="ano_anterior">2025</span>.</p>
+          <p>O choque aparece nas partidas marcadas. Dezembro, janeiro e fevereiro são os meses da iniciação científica: no último verão partiram <b data-h="ic_verao_ant">—</b> bolsistas de IC; para o próximo, há <b data-h="ic_verao">—</b> marcados até agora. Desde 1º de setembro a IC não pede BEPE a qualquer momento, e a chamada específica só divulga o resultado em março de 2027 <a href="#ref-10">[10]</a>.</p>
+          <p>Quem ainda recebe a bolsa recebe, quase sempre, pelo padrão antigo. Dos pós-doutorados pedidos do processo 16.000 em diante, <b data-h="pd_depois_acima6">—</b> de <span data-h="pd_depois_n">—</span> têm mais de seis meses, a maioria doze. A norma nova só admite pedidos de 6 meses <a href="#ref-9">[9]</a>, mas a BV não traz a data de cada pedido, então os dados não mostram quantas dessas bolsas foram pedidas antes de 1º de setembro.</p>
+          <p data-h="areas_texto">Entre os pedidos do processo 16.000 em diante, a queda atinge todas as grandes áreas.</p>
+        </div>
+        <dl class="facts">
+          <div><dt>Partidas de janeiro a outubro</dt><dd><span data-h="var_ini">—</span><small>em relação a <span data-h="ano_anterior">2025</span></small></dd></div>
+          <div><dt>Iniciação científica, dezembro a fevereiro</dt><dd><span data-h="ic_verao">—</span><small>marcadas, contra <span data-h="ic_verao_ant">—</span> no verão anterior</small></dd></div>
+          <div><dt>Pós-doutorado, pedidos do 16.000 em diante</dt><dd><span data-h="pd_depois_pct">—</span><small>com mais de 6 meses</small></dd></div>
+        </dl>
+      </div>
+      <div class="figs">
+        <figure class="fig rise">
+          <div class="fig-bar">
+            <figcaption><span class="fig-n">Painel 3</span>Estágios por mês de início, <span data-h="ano">2026</span> contra <span data-h="ano_anterior">2025</span></figcaption>
+            <div class="seg seg-wrap" role="group" aria-label="Modalidade" id="seg-mensal"></div>
+          </div>
+          <div class="legend" id="legend-mensal"></div>
+          <div class="chart" id="chart-mensal"></div>
+          <p class="fig-note">Colunas vazadas: estágios ainda por começar, concedidos até a data dos dados. Esses meses ainda podem crescer nas próximas exportações, porque parte das bolsas é concedida poucas semanas antes da partida. Os de <span data-h="ano_anterior">2025</span> já estão completos.</p>
+          <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/hoje07_inicios_por_mes_ano.csv" download>Dados do painel (CSV)</a></p>
+        </figure>
+        <figure class="fig rise">
+          <div class="fig-bar">
+            <figcaption><span class="fig-n">Painel 4</span>Duração dos estágios por mês de início</figcaption>
+            <div class="seg seg-wrap" role="group" aria-label="Modalidade" id="seg-durmes"></div>
+          </div>
+          <div class="legend" id="legend-durmes"></div>
+          <div class="chart" id="chart-durmes"></div>
+          <p class="fig-note">Mais de 6 meses: duração acima de 6,1 meses entre as datas de início e término registradas na BV. A linha marca 1º de setembro de <span data-h="ano">2026</span>, quando a norma passou a admitir só pedidos de 6 meses.</p>
+          <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>; norma da BEPE <a href="#ref-9">[9]</a>. Elaboração própria. <a class="csv" href="data/figuras/hoje08_duracao_doutorado_posdoc_por_mes.csv" download>Dados do painel (CSV)</a></p>
+        </figure>
+        <figure class="fig rise">
+          <div class="fig-bar"><figcaption><span class="fig-n">Painel 5</span>Por grande área: antes e depois do processo 16.000, <span data-h="ano">2026</span> contra <span data-h="ano_anterior">2025</span></figcaption></div>
+          <div class="mods" id="areas-hoje"></div>
+          <p class="fig-note">Mesmos trechos da numeração do Painel 2. A grande área é a registrada na BV para cada bolsa. Números pequenos: em algumas áreas, poucas bolsas mudam muito a porcentagem.</p>
+          <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/hoje09_grandes_areas_antes_depois.csv" download>Dados do painel (CSV)</a></p>
+        </figure>
+      </div>
+    </section>
+
     <section class="stake night" id="em-jogo" aria-labelledby="em-jogo-t">
       <div class="wrap">
         <div class="ch-head">
-          <p class="ch-num"><b>03</b> Em jogo</p>
+          <p class="ch-num"><b>04</b> Em jogo</p>
           <h2 id="em-jogo-t">A BEPE <span class="serif">encolheu</span></h2>
         </div>
         <p class="stake-lead">Desde 1º de setembro de 2026, valem novas regras para o Estágio de Pesquisa no Exterior <a href="#ref-8">[8]</a><a href="#ref-9">[9]</a>. A FAPESP diz que não houve corte no número de bolsas BEPE. Os dados de quem partiu até aqui mostram quem fica de fora.</p>
@@ -171,7 +220,7 @@
 
     <section class="ch wrap" id="regras">
       <div class="ch-head">
-        <p class="ch-num"><b>04</b> Regras</p>
+        <p class="ch-num"><b>05</b> Regras</p>
         <h2>Linha do tempo <span class="serif">das regras</span></h2>
       </div>
       <ol class="timeline" id="timeline"></ol>
@@ -179,7 +228,7 @@
 
     <section class="ch wrap" id="agora">
       <div class="ch-head">
-        <p class="ch-num"><b>05</b> No exterior</p>
+        <p class="ch-num"><b>06</b> No exterior</p>
         <h2>Quem está fora <span class="serif">e quem vai partir</span></h2>
       </div>
       <div class="ch-body">
@@ -193,13 +242,13 @@
       </div>
       <div class="figs">
         <figure class="fig rise">
-          <div class="fig-bar"><figcaption><span class="fig-n">Painel 3</span>Inícios de estágio por mês, bolsas atuais</figcaption></div>
+          <div class="fig-bar"><figcaption><span class="fig-n">Painel 6</span>Inícios de estágio por mês, bolsas atuais</figcaption></div>
           <div class="chart" id="chart-inicios"></div>
           <p class="fig-note">Colunas cheias: estágios já iniciados. Colunas vazadas: partidas marcadas depois da data dos dados.</p>
           <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/hoje05_inicios_por_mes.csv" download>Dados do painel (CSV)</a></p>
         </figure>
         <figure class="fig rise">
-          <div class="fig-bar"><figcaption><span class="fig-n">Painel 4</span>Duração dos estágios atuais, por modalidade</figcaption></div>
+          <div class="fig-bar"><figcaption><span class="fig-n">Painel 7</span>Duração dos estágios atuais, por modalidade</figcaption></div>
           <div class="legend" id="legend-dur"></div>
           <div class="dur" id="dur-hoje"></div>
           <p class="fig-note">A linha marca 6 meses, a nova duração inicial. Duração calculada entre as datas de início e término registradas na BV.</p>
@@ -207,12 +256,12 @@
         </figure>
         <div class="fig-row">
           <figure class="fig rise">
-            <div class="fig-bar"><figcaption><span class="fig-n">Painel 5</span>Destinos das bolsas atuais</figcaption></div>
+            <div class="fig-bar"><figcaption><span class="fig-n">Painel 8</span>Destinos das bolsas atuais</figcaption></div>
             <div class="bars" id="bars-paises-hoje"></div>
             <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-2">[2]</a>. <a class="csv" href="data/figuras/hoje04_bolsistas_atuais.csv" download>Dados (CSV)</a></p>
           </figure>
           <figure class="fig rise">
-            <div class="fig-bar"><figcaption><span class="fig-n">Painel 6</span>Grandes áreas e instituições sede</figcaption></div>
+            <div class="fig-bar"><figcaption><span class="fig-n">Painel 9</span>Grandes áreas e instituições sede</figcaption></div>
             <div class="bars" id="bars-areas-hoje"></div>
             <div class="bars" id="bars-inst-hoje" style="margin-top: 22px"></div>
             <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-2">[2]</a>. <a class="csv" href="data/figuras/hoje04_bolsistas_atuais.csv" download>Dados (CSV)</a></p>
@@ -223,7 +272,7 @@
 
     <section class="ch wrap" id="fontes">
       <div class="ch-head">
-        <p class="ch-num"><b>06</b> Fontes</p>
+        <p class="ch-num"><b>07</b> Fontes</p>
         <h2>Como este painel <span class="serif">se atualiza</span></h2>
       </div>
       <div class="data-grid method">
@@ -235,12 +284,15 @@
         <div class="panel">
           <h3>Dados do painel</h3>
           <ul class="fig-files">
-            <li><a href="data/figuras/hoje01_indicadores.csv" download>hoje01_indicadores.csv</a> <span>13 linhas</span></li>
+            <li><a href="data/figuras/hoje01_indicadores.csv" download>hoje01_indicadores.csv</a> <span>27 linhas</span></li>
             <li><a href="data/figuras/hoje02_acumulado_por_numero_processo.csv" download>hoje02_acumulado_por_numero_processo.csv</a> <span>194 linhas</span></li>
             <li><a href="data/figuras/hoje03_modalidades_antes_depois.csv" download>hoje03_modalidades_antes_depois.csv</a> <span>4 linhas</span></li>
             <li><a href="data/figuras/hoje04_bolsistas_atuais.csv" download>hoje04_bolsistas_atuais.csv</a> <span>31 linhas</span></li>
             <li><a href="data/figuras/hoje05_inicios_por_mes.csv" download>hoje05_inicios_por_mes.csv</a> <span>23 linhas</span></li>
             <li><a href="data/figuras/hoje06_duracao_bolsas_atuais.csv" download>hoje06_duracao_bolsas_atuais.csv</a> <span>4 linhas</span></li>
+            <li><a href="data/figuras/hoje07_inicios_por_mes_ano.csv" download>hoje07_inicios_por_mes_ano.csv</a> <span>48 linhas</span></li>
+            <li><a href="data/figuras/hoje08_duracao_doutorado_posdoc_por_mes.csv" download>hoje08_duracao_doutorado_posdoc_por_mes.csv</a> <span>27 linhas</span></li>
+            <li><a href="data/figuras/hoje09_grandes_areas_antes_depois.csv" download>hoje09_grandes_areas_antes_depois.csv</a> <span>9 linhas</span></li>
           </ul>
           <p class="downloads" style="margin-top: 16px"><a href="historico.html#metodo">Todos os dados e o dicionário</a></p>
         </div>
@@ -277,6 +329,6 @@
   <div class="tip" id="tip" role="tooltip" hidden></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
-  <script src="assets/js/app.js?v=20261103d"></script>
+  <script src="assets/js/app.js?v=20261103e"></script>
 </body>
 </html>

@@ -38,6 +38,7 @@ EVENTOS = [
 ATUALIZACOES = [
     {'data': '2026-11-03', 'texto': 'Primeira versão do painel, com a exportação da BV de 25/10/2026.'},
     {'data': '2026-11-03', 'texto': 'Revisão de todos os números contra as exportações da BV e as páginas da FAPESP. Corrigidos: duração da chamada de iniciação científica (4 meses), bolsistas no exterior agora (sem os estágios já terminados) e a leitura da numeração dos processos, que não indica o mês do pedido.'},
+    {'data': '2026-11-03', 'texto': 'Nova seção Mês a mês: partidas por mês de início em 2026 e 2025, duração dos estágios de doutorado e pós-doutorado e grandes áreas antes e depois do processo 16.000.'},
 ]
 
 
@@ -132,9 +133,70 @@ def main():
     grava('hoje06_duracao_bolsas_atuais.csv', ['modalidade', 'bolsas', 'ate_3_meses', '3_a_6', '6_a_9', '9_a_12', 'acima_de_6_meses'],
           [[d['modalidade'], d['n'], *d['faixas'], d['acima6']] for d in dur])
 
+    # mês a mês: estágios por mês de início, ano atual x anterior, por modalidade
+    sig = {'BEPE Iniciação Científica': 'ic', 'BEPE Mestrado': 'me', 'BEPE Doutorado': 'do', 'BEPE Pós-doutorado': 'pd'}
+    ini_m = Counter((r['inicio'][:7], sig[r['grupo']]) for r in bepe)
+    mensal = []
+    for mm in range(1, 13):
+        lin = {'mes': mm}
+        for a, k in ((ano, 'atual'), (ant, 'ant')):
+            ch = f'{a}-{mm:02d}'
+            lin[k] = {g: ini_m[(ch, g)] for g in sig.values()}
+        lin['futuro'] = f'{ano}-{mm:02d}' > ref[:7]
+        mensal.append(lin)
+    grava('hoje07_inicios_por_mes_ano.csv',
+          ['mes', 'modalidade', f'inicios_{ano}', f'inicios_{ant}', f'{ano}_ainda_por_comecar'],
+          [[d['mes'], g, d['atual'][g], d['ant'][g], d['futuro']] for d in mensal for g in sig.values()])
+
+    # duração dos estágios de doutorado e pós-doutorado por mês de início
+    dur_m = []
+    for a in (ant, ano, ano + 1):
+        for mm in range(1, 13):
+            ch = f'{a}-{mm:02d}'
+            if ch > f'{ano + 1}-03':
+                break
+            lin = {'mes': ch}
+            for g, k in (('BEPE Doutorado', 'do'), ('BEPE Pós-doutorado', 'pd')):
+                v = [r['m'] for r in bepe if r['grupo'] == g and r['inicio'][:7] == ch and r['m'] is not None]
+                lin[k] = [len(v), sum(x > 6.1 for x in v)]
+            lin['futuro'] = ch > ref[:7]
+            dur_m.append(lin)
+    grava('hoje08_duracao_doutorado_posdoc_por_mes.csv',
+          ['mes_inicio', 'doutorado', 'doutorado_acima_de_6_meses', 'pos_doutorado', 'pos_doutorado_acima_de_6_meses', 'ainda_por_comecar'],
+          [[d['mes'], *d['do'], *d['pd'], d['futuro']] for d in dur_m])
+
+    # grandes áreas antes e depois do corte
+    gas = [g for g, _ in Counter(r['grande_area'] for r in bepe if r['grande_area']).most_common()]
+    areas_corte = []
+    for g in gas:
+        f = lambda a, lo, hi: sum(1 for r in bepe if r['ano'] == a and r['grande_area'] == g and lo <= r['seq'] < hi)
+        areas_corte.append({'modalidade': g, 'antes': f(ano, 0, CORTE), 'antes_ant': f(ant, 0, CORTE),
+                            'depois': f(ano, CORTE, mx + 1), 'depois_ant': f(ant, CORTE, mx + 1)})
+    areas_corte.sort(key=lambda d: -d['depois_ant'])
+    grava('hoje09_grandes_areas_antes_depois.csv',
+          ['grande_area', f'{ano}_ate_{CORTE - 1}', f'{ant}_ate_{CORTE - 1}', f'{ano}_de_{CORTE}_a_{mx}', f'{ant}_de_{CORTE}_a_{mx}'],
+          [[d['modalidade'], d['antes'], d['antes_ant'], d['depois'], d['depois_ant']] for d in areas_corte])
+
+    # resumo para o texto
+    jaini = [d for d in mensal if not d['futuro']]
+    pdpos = [r for r in bepe if r['grupo'] == 'BEPE Pós-doutorado' and r['ano'] == ano and r['seq'] >= CORTE and r['m'] is not None]
+    dopd_fut = [r for r in bepe if r['grupo'] in ('BEPE Doutorado', 'BEPE Pós-doutorado') and r['inicio'] > ref and r['m'] is not None]
+    kpis.update({
+        'ini_ate_ref': sum(sum(d['atual'].values()) for d in jaini), 'ini_ate_ref_ant': sum(sum(d['ant'].values()) for d in jaini),
+        'ini_meses_maior': sum(sum(d['atual'].values()) > sum(d['ant'].values()) for d in jaini), 'ini_meses': len(jaini),
+        'ic_dez': mensal[11]['atual']['ic'], 'ic_dez_ant': mensal[11]['ant']['ic'],
+        'ic_verao': sum(1 for r in bepe if r['grupo'] == 'BEPE Iniciação Científica' and f'{ano}-12' <= r['inicio'][:7] <= f'{ano + 1}-02'),
+        'ic_verao_ant': sum(1 for r in bepe if r['grupo'] == 'BEPE Iniciação Científica' and f'{ant}-12' <= r['inicio'][:7] <= f'{ano}-02'),
+        'ini_ate_ref_pedido_ano': sum(1 for r in bepe if r['ano'] == ano and f'{ano}-01' <= r['inicio'][:7] <= ref[:7]),
+        'ini_ate_ref_pedido_ant': sum(1 for r in bepe if r['ano'] == ant and f'{ano}-01' <= r['inicio'][:7] <= ref[:7]),
+        'pd_depois_n': len(pdpos), 'pd_depois_acima6': sum(x['m'] > 6.1 for x in pdpos),
+        'dopd_fut_n': len(dopd_fut), 'dopd_fut_acima6': sum(x['m'] > 6.1 for x in dopd_fut),
+    })
+
     grava('hoje01_indicadores.csv', ['indicador', 'valor'], [[k, v] for k, v in kpis.items()])
     painel = {'dados_de': ref, 'gerado_em': date.today().isoformat(), 'kpis': kpis, 'acumulado': acum,
               'modalidades': mods, 'agora': agora, 'inicios': inicios, 'duracao': dur,
+              'mensal': mensal, 'duracao_mensal': dur_m, 'areas_corte': areas_corte,
               'eventos': EVENTOS, 'atualizacoes': ATUALIZACOES}
     (DADOS / 'painel_bepe_hoje.json').write_text(json.dumps(painel, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
     print(json.dumps(kpis, ensure_ascii=False))
