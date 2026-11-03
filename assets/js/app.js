@@ -955,7 +955,7 @@
     const sobe = q.filter((d) => d.v > 0).length;
     let t = `De janeiro a ${mesRef()}, ${sobe === q.length ? 'as partidas crescem em todas as grandes áreas' : 'as partidas variam por grande área'} em relação a ${k.ano_anterior}, de ${f(q[0])} a ${f(q[q.length - 1])}, entre as áreas com ao menos 20 partidas no ano anterior.`;
     if (H.areas_mes.every((d) => d.depois < d.depois_ant)) {
-      t += ` Nas partidas marcadas de ${periodo(k.prox_de, k.prox_ate)}, todas as áreas aparecem abaixo do mesmo período um ano antes, comparação que ainda está em aberto.`;
+      t += ` Nas partidas marcadas de ${periodo(k.prox_de, k.prox_ate)}, todas as áreas aparecem abaixo do mesmo período um ano antes, mas essa contagem ainda é parcial.`;
     }
     return t;
   }
@@ -1008,14 +1008,14 @@
       .attr('x', x).attr('y', Hh - m.b + 18).attr('text-anchor', 'middle').attr('class', 'lbl').text(fN);
     svg.append('text').attr('x', (m.l + W - m.r) / 2).attr('y', Hh - 4).attr('text-anchor', 'middle').attr('class', 'lbl')
       .text('número do processo (ordem do pedido no ano)');
-    // trecho em aberto da numeração: pedidos de 2026 ainda sendo decididos
+    // trecho de contagem parcial: a BV só publica bolsas concedidas, e pedidos ainda sem decisão não aparecem
     const xc = x(H.kpis.aberto);
     svg.append('rect').attr('x', xc).attr('y', m.t).attr('width', Math.max(0, x(H.kpis.max_seq) - xc)).attr('height', Hh - m.b - m.t)
       .attr('fill', cssv('--ink')).attr('fill-opacity', 0.045);
     svg.append('line').attr('x1', xc).attr('x2', xc).attr('y1', m.t).attr('y2', Hh - m.b)
       .attr('stroke', cssv('--ink-2')).attr('stroke-dasharray', '4 3');
     svg.append('text').attr('x', xc + 6).attr('y', m.t + 12).attr('class', 'lbl-strong')
-      .attr('fill', cssv('--ink-2')).text('em aberto');
+      .attr('fill', cssv('--ink-2')).text('contagem parcial');
     const line = d3.line().x((p) => x(p[0])).y((p) => y(p[1])).curve(d3.curveStepAfter);
     const labels = [];
     for (const a of anos) {
@@ -1058,7 +1058,7 @@
     }
   }
 
-  // duas colunas de comparação; a segunda pode estar em aberto (sem cálculo de variação)
+  // duas colunas de comparação; a segunda pode ser contagem parcial (sem cálculo de variação)
   function drawModsHoje(id, dados, cab) {
     const box = document.getElementById(id);
     box.replaceChildren();
@@ -1076,7 +1076,7 @@
         r.append(el('span', 'y', String(ano)), t, el('b', '', fN(v)));
         c.append(r);
       }
-      c.append(aberto ? el('span', 'mods-var aberto', 'em aberto') : el('span', 'mods-var' + (atual < ant * 0.8 ? ' neg' : ''), varP(atual, ant)));
+      c.append(aberto ? el('span', 'mods-var aberto', 'parcial') : el('span', 'mods-var' + (atual < ant * 0.8 ? ' neg' : ''), varP(atual, ant)));
       return c;
     };
     for (const d of dados) {
@@ -1219,7 +1219,7 @@
         tip(event, MESES_L[+mm - 1] + ' de ' + a, [
           { label: r.futuro ? 'Marcadas até ' + fData(H.dados_de) : 'Estágios iniciados', value: fN(r.a) },
           { label: MESES_L[+mm - 1] + ' de ' + (+a - 1), value: fN(r.b) },
-          { label: 'Diferença', value: r.futuro ? 'em aberto' : varP(r.a, r.b) }]);
+          { label: 'Diferença', value: r.futuro ? 'contagem parcial' : varP(r.a, r.b) }]);
       })
       .on('pointerleave', hideTip);
     const f = rows.findIndex((r) => r.futuro);
@@ -1229,7 +1229,7 @@
         .attr('fill', cssv('--ink')).attr('fill-opacity', 0.045);
       svg.append('line').attr('x1', xf).attr('x2', xf).attr('y1', m.t - 8).attr('y2', Hh - m.b).attr('stroke', cssv('--ink')).attr('stroke-dasharray', '3 3');
       svg.append('text').attr('x', xf - 6).attr('y', m.t).attr('text-anchor', 'end').attr('class', 'lbl-strong').text('dados de ' + fData(H.dados_de));
-      svg.append('text').attr('x', xf + 6).attr('y', m.t).attr('class', 'lbl-strong').attr('fill', cssv('--ink-2')).text('em aberto');
+      svg.append('text').attr('x', xf + 6).attr('y', m.t).attr('class', 'lbl-strong').attr('fill', cssv('--ink-2')).text('contagem parcial');
     }
   }
 
@@ -1281,7 +1281,7 @@
     box.replaceChildren();
     const k = H.kpis;
     const rows = H.faixas.map((f) => ({ ...f, a: somaMod(f.atual, estFaixa.mod), b: somaMod(f.ant, estFaixa.mod) }));
-    legenda('legend-faixas', [[String(k.ano_anterior), cssv('--muted')], [String(k.ano) + ', faixa fechada', cssv('--red')], [String(k.ano) + ', em aberto', 'transparent', cssv('--red')]]);
+    legenda('legend-faixas', [[String(k.ano_anterior), cssv('--muted')], [String(k.ano) + ', faixa fechada', cssv('--red')], [String(k.ano) + ', contagem parcial', 'transparent', cssv('--red')]]);
     const W = box.clientWidth || 800;
     const estreito = W < 560;
     const Hh = estreito ? 260 : 320;
@@ -1296,7 +1296,7 @@
       svg.append('rect').attr('x', xc).attr('y', m.t - 26).attr('width', W - m.r - xc).attr('height', Hh - m.b - m.t + 26)
         .attr('fill', cssv('--ink')).attr('fill-opacity', 0.045);
       svg.append('text').attr('x', xc + 6).attr('y', m.t - 12).attr('class', 'lbl-strong').attr('fill', cssv('--ink-2'))
-        .text(estreito ? 'em aberto' : 'em aberto: pedidos de ' + k.ano + ' ainda sendo decididos');
+        .text(estreito ? 'contagem parcial' : 'contagem parcial: concessões de ' + k.ano + ' ainda podem entrar');
     }
     svg.append('g').selectAll('line').data(y.ticks(4)).join('line')
       .attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y).attr('stroke', cssv('--rule')).attr('stroke-dasharray', (d) => (d ? '2 3' : null));
@@ -1317,9 +1317,9 @@
         .attr('class', 'lbl').text((r) => (r.b ? varP(r.a, r.b) : ''));
     }
     g.append('rect').attr('width', x.bandwidth()).attr('y', m.t).attr('height', Hh - m.b - m.t).attr('fill', 'transparent')
-      .on('pointermove', (event, r) => tip(event, 'Processos ' + fN(r.de) + ' a ' + fN(r.ate) + (r.fechada ? '' : ' (em aberto)'), [
+      .on('pointermove', (event, r) => tip(event, 'Processos ' + fN(r.de) + ' a ' + fN(r.ate) + (r.fechada ? '' : ' (contagem parcial)'), [
         { label: String(k.ano), value: fN(r.a) }, { label: String(k.ano_anterior), value: fN(r.b) },
-        { label: 'Diferença', value: r.fechada ? varP(r.a, r.b) : 'em aberto' }]))
+        { label: 'Diferença', value: r.fechada ? varP(r.a, r.b) : 'contagem parcial' }]))
       .on('pointerleave', hideTip);
   }
 
@@ -1401,6 +1401,84 @@
     document.getElementById('host-search').addEventListener('input', drawHosts);
   }
 
+  /* ---------- baixar cada figura em PNG ---------- */
+  const H2I = 'https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js';
+  let h2iCarga = null;
+  const carregaH2I = () => h2iCarga || (h2iCarga = new Promise((ok, erro) => {
+    const sc = document.createElement('script');
+    sc.src = H2I;
+    sc.onload = () => ok(window.htmlToImage);
+    sc.onerror = () => { h2iCarga = null; erro(new Error('html-to-image não carregou')); };
+    document.head.append(sc);
+  }));
+  // fontes do Google embutidas na imagem (só o subconjunto latino), lidas uma vez
+  let fontesCarga = null;
+  const blobURL = (b) => new Promise((ok) => { const r = new FileReader(); r.onload = () => ok(r.result); r.readAsDataURL(b); });
+  const fontesCSS = () => fontesCarga || (fontesCarga = (async () => {
+    const link = document.querySelector('link[href*="fonts.googleapis.com/css"]');
+    if (!link) return '';
+    const css = await (await fetch(link.href)).text();
+    const blocos = css.split(/(?=\/\*)/).filter((b) => /^\/\* latin \*\//.test(b));
+    const saida = [];
+    for (const b of blocos) {
+      const m = b.match(/url\((https:[^)]+)\)/);
+      if (!m) continue;
+      saida.push(b.replace(m[1], await blobURL(await (await fetch(m[1])).blob())));
+    }
+    return saida.join(String.fromCharCode(10));
+  })().catch(() => { fontesCarga = null; return ''; }));
+  const slug = (t) => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 72).replace(/-+$/, '');
+
+  async function baixaPNG(fig, btn) {
+    const rotulo = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Gerando…';
+    const ref = H ? H.dados_de : DATA ? DATA.meta.atualizado : '';
+    const assinatura = el('p', 'fig-assinatura', 'Data BEPE · aikiesan.github.io/data_BEPE' + (ref ? ' · dados da BV FAPESP de ' + ref.split('-').reverse().join('/') : ''));
+    fig.append(assinatura);
+    try {
+      const [h2i, fontEmbedCSS] = await Promise.all([carregaH2I(), fontesCSS()]);
+      await document.fonts.ready;
+      const url = await h2i.toPng(fig, {
+        pixelRatio: 2,
+        fontEmbedCSS,
+        backgroundColor: getComputedStyle(fig).backgroundColor,
+        // a figura tem animação de entrada (.rise); sem isto a cópia sai transparente
+        style: { transition: 'none', animation: 'none', opacity: '1', transform: 'none' },
+        filter: (n) => !(n.classList && (n.classList.contains('png') || n.classList.contains('csv')))
+          && !(n.tagName === 'BUTTON' && n.getAttribute('aria-pressed') === 'false'),
+      });
+      const cap = fig.querySelector('figcaption');
+      const a = el('a');
+      a.href = url;
+      const titulo = cap ? [...cap.childNodes].map((n) => n.textContent.trim()).filter(Boolean).join(' ') : 'figura';
+      a.download = 'data-bepe-' + slug(titulo) + '.png';
+      document.body.append(a);
+      a.click();
+      a.remove();
+      btn.textContent = rotulo;
+    } catch (e) {
+      console.error(e);
+      btn.textContent = 'Não foi possível gerar';
+      setTimeout(() => { btn.textContent = rotulo; }, 3000);
+    } finally {
+      assinatura.remove();
+      btn.disabled = false;
+    }
+  }
+
+  function botoesPNG() {
+    for (const fig of document.querySelectorAll('figure.fig')) {
+      const b = el('button', 'png', 'Figura (PNG)');
+      b.type = 'button';
+      b.setAttribute('aria-label', 'Baixar esta figura em PNG');
+      b.addEventListener('click', () => baixaPNG(fig, b));
+      (fig.querySelector('.fig-src') || fig).append(b);
+    }
+  }
+
+  botoesPNG();
   if (document.body.dataset.page === 'hoje') { startHoje(); return; }
   startPessoas();
   Promise.allSettled([

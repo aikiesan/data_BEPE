@@ -42,7 +42,7 @@ ATUALIZACOES = [
     {'data': '2026-11-03', 'texto': 'Revisão de todos os números contra as exportações da BV e as páginas da FAPESP. Corrigidos: duração da chamada de iniciação científica (4 meses), bolsistas no exterior agora (sem os estágios já terminados) e a leitura da numeração dos processos, que não indica o mês do pedido.'},
     {'data': '2026-11-03', 'texto': 'Nova seção Mês a mês: partidas por mês de início em 2026 e 2025, duração dos estágios de doutorado e pós-doutorado e grandes áreas antes e depois da queda na numeração.'},
     {'data': '2026-11-03', 'texto': 'O corte fixo no processo 16.000 foi trocado por faixas de 2.000 processos. A área destacada passa a começar na primeira faixa a partir da qual todas ficam abaixo da metade do ano anterior (hoje, o processo 18.000), regra recalculada a cada exportação.'},
-    {'data': '2026-11-03', 'texto': 'Comparações com o ano anterior passam a valer só para os trechos fechados da numeração: faixas em que, um ano antes, ao menos 80% dos estágios já tinham começado na mesma data (hoje, até o processo 7.999). Nos trechos em aberto, o painel mostra o que já foi concedido, sem calcular queda. Sai o destaque do processo 18.000, que comparava pedidos de 2026 ainda em análise com pedidos de 2025 já decididos. O mês a mês passa a ir até junho do ano seguinte.'},
+    {'data': '2026-11-03', 'texto': 'Comparações com o ano anterior passam a valer só para os trechos fechados da numeração: faixas em que, um ano antes, ao menos 80% dos estágios já tinham começado na mesma data (hoje, até o processo 7.999). Nos trechos mais recentes a contagem de 2026 ainda é parcial, porque a BV só publica bolsas concedidas e um pedido ainda sem decisão não aparece; ali o painel mostra o que já foi concedido, sem calcular queda. Sai o destaque do processo 18.000, que comparava essa contagem parcial com o trecho de 2025, que já teve um ano inteiro para entrar. O mês a mês passa a ir até junho do ano seguinte.'},
 ]
 
 
@@ -86,7 +86,7 @@ def main():
         faixas.append(d)
     # faixa fechada: um ano antes, na mesma data, ao menos FECHADA dos estágios da faixa já tinham começado,
     # isto é, quase todos os pedidos daquela faixa já estavam decididos. As faixas fechadas vão do início
-    # da numeração até a primeira que não cumpre a regra; dali em diante, tudo é trecho em aberto.
+    # da numeração até a primeira que não cumpre a regra; dali em diante, a contagem do ano atual é parcial.
     ref_ant = f'{ant}{ref[4:]}'
     ABERTO = None
     for f in faixas:

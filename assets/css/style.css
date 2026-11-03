@@ -216,6 +216,12 @@ figcaption { font-weight: 600; font-size: 1.05rem; letter-spacing: -.01em; color
 .fig-src a.csv { float: right; margin-left: 14px; color: var(--ink); font-weight: 600; background: var(--paper-2); padding: 2px 10px; border-radius: 999px; }
 .fig-src a.csv::before { content: "↓ "; }
 .fig-src a:hover { color: var(--red); }
+.fig .png { float: right; margin-left: 8px; font: inherit; font-weight: 600; color: var(--ink); background: var(--paper-2); border: 0; padding: 2px 10px; border-radius: 999px; cursor: pointer; }
+.fig > .png { justify-self: end; float: none; }
+.fig .png::before { content: "↓ "; }
+.fig .png:hover { color: var(--red); }
+.fig .png:disabled { opacity: .6; cursor: progress; }
+.fig-assinatura { margin: 0; font-size: .75rem; color: var(--muted); }
 
 /* ---------- controles ---------- */
 .seg { display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 4px; background: var(--paper-2); border-radius: 999px; }
