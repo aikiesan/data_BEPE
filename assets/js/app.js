@@ -22,7 +22,7 @@
   };
 
   const docEl = document.documentElement;
-  const cssv = (name) => getComputedStyle(docEl).getPropertyValue(name).trim();
+  const cssv = (name, node) => getComputedStyle(node instanceof Element ? node : docEl).getPropertyValue(name).trim();
   const state = {
     ritmo: 'abs', grupoCal: 'Todas', periodo: TODO,
     temas: ['Aprendizado computacional', 'Inteligência artificial', 'Mudança climática', 'COVID-19'],
@@ -100,19 +100,118 @@
     }
   }
 
-  /* ---------- tema claro/escuro ---------- */
-  const toggle = document.getElementById('theme-toggle');
-  try {
-    const saved = localStorage.getItem('partidas-tema');
-    if (saved === 'light' || saved === 'dark') docEl.dataset.theme = saved;
-  } catch (e) { /* sem armazenamento */ }
-  toggle.addEventListener('click', () => {
-    const escuro = docEl.dataset.theme ? docEl.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-    docEl.dataset.theme = escuro ? 'light' : 'dark';
-    try { localStorage.setItem('partidas-tema', docEl.dataset.theme); } catch (e) { /* sem armazenamento */ }
-    redraw();
+  /* ---------- interface: cabeçalho, menu, mosaico, revelações ---------- */
+  const reduz = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const head = document.getElementById('head');
+  const heroEl = document.getElementById('topo');
+  const menuBtn = document.getElementById('menu-btn');
+  const solidez = () => head.classList.toggle('solid', heroEl.getBoundingClientRect().bottom < 72);
+  addEventListener('scroll', solidez, { passive: true });
+  solidez();
+  const fechaMenu = () => {
+    head.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    menuBtn.setAttribute('aria-label', 'Abrir menu');
+    document.body.style.overflow = '';
+  };
+  menuBtn.addEventListener('click', () => {
+    const aberto = head.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', String(aberto));
+    menuBtn.setAttribute('aria-label', aberto ? 'Fechar menu' : 'Abrir menu');
+    document.body.style.overflow = aberto ? 'hidden' : '';
   });
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => redraw());
+  for (const a of document.querySelectorAll('#menu a')) a.addEventListener('click', fechaMenu);
+  addEventListener('keydown', (e) => { if (e.key === 'Escape') fechaMenu(); });
+
+  // mosaico de fotos no fundo da abertura
+  const FOTOS = d3.range(1, 13).map((i) => `assets/img/bepe-${String(i).padStart(2, '0')}.jpg`);
+  const mosaic = document.getElementById('mosaic');
+  const tiles = [];
+  for (let c = 0; c < 4; c++) {
+    const col = el('div', 'mosaic-col');
+    for (let r = 0; r < 4; r++) {
+      const t = el('div', 'tile');
+      const a = el('img'), b = el('img');
+      a.alt = ''; b.alt = '';
+      a.decoding = 'async'; b.decoding = 'async';
+      const k = (c * 3 + r * 5) % FOTOS.length;
+      a.src = FOTOS[k];
+      a.className = 'on';
+      t.append(a, b);
+      col.append(t);
+      tiles.push({ a, b, k });
+    }
+    mosaic.append(col);
+  }
+  if (!reduz) {
+    let passo = 0;
+    setInterval(() => {
+      if (document.hidden || heroEl.getBoundingClientRect().bottom < 0) return;
+      const s = tiles[(passo * 7) % tiles.length];
+      passo++;
+      const vis = s.a.classList.contains('on') ? s.a : s.b;
+      const oculto = vis === s.a ? s.b : s.a;
+      s.k = (s.k + 5) % FOTOS.length;
+      oculto.onload = () => { oculto.classList.add('on'); vis.classList.remove('on'); };
+      oculto.src = FOTOS[s.k];
+    }, 2200);
+  }
+
+  // frase-resumo: palavras acendem conforme a rolagem
+  const big = document.getElementById('big');
+  function quebraPalavras(node) {
+    for (const ch of [...node.childNodes]) {
+      if (ch.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        for (const parte of ch.textContent.split(/(\s+)/)) {
+          if (!parte) continue;
+          frag.append(/^\s+$/.test(parte) ? parte : el('span', 'w', parte));
+        }
+        ch.replaceWith(frag);
+      } else if (ch.nodeType === 1 && ch.tagName.toLowerCase() !== 'svg') {
+        if (ch.dataset.k) ch.classList.add('w');
+        else quebraPalavras(ch);
+      }
+    }
+  }
+  function acende() {
+    const ws = big.querySelectorAll('.w');
+    const r = big.getBoundingClientRect();
+    const p = Math.min(1, Math.max(0, (innerHeight * 0.85 - r.top) / (r.height + innerHeight * 0.3)));
+    const n = reduz ? ws.length : Math.round(p * ws.length);
+    ws.forEach((w, i) => w.classList.toggle('lit', i < n));
+    document.getElementById('circled').classList.toggle('drawn', n >= ws.length * 0.7);
+  }
+  let fraseOk = false;
+  function preparaFrase() {
+    if (fraseOk) return;
+    fraseOk = true;
+    quebraPalavras(big);
+    addEventListener('scroll', acende, { passive: true });
+    acende();
+  }
+
+  // blocos que sobem ao entrar na tela
+  const ioRise = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (!e.isIntersecting) continue;
+      e.target.classList.add('in', 'seen');
+      ioRise.unobserve(e.target);
+    }
+  }, { rootMargin: '0px 0px -8% 0px' });
+  for (const n of document.querySelectorAll('.rise')) ioRise.observe(n);
+
+  // paralaxe nas faixas de foto
+  const bandas = [...document.querySelectorAll('[data-parallax]')];
+  function paralaxe() {
+    for (const img of bandas) {
+      const r = img.parentElement.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight) continue;
+      const p = (r.top + r.height / 2 - innerHeight / 2) / innerHeight;
+      img.style.transform = `translate3d(0, ${(p * -7).toFixed(2)}%, 0)`;
+    }
+  }
+  if (!reduz) { addEventListener('scroll', paralaxe, { passive: true }); paralaxe(); }
 
   /* ---------- registro de desenhos ---------- */
   const renders = [];
@@ -125,7 +224,7 @@
   });
 
   /* ---------- navegação ---------- */
-  const navLinks = [...document.querySelectorAll('.route a')];
+  const navLinks = [...document.querySelectorAll('#menu a')];
   const io = new IntersectionObserver((entries) => {
     for (const e of entries) {
       if (!e.isIntersecting) continue;
@@ -159,6 +258,18 @@
     const val = (s) => (kids.find((k) => k.name.includes(s)) || { value: 0 }).value;
     const k3 = { estaduais: (val('(USP)') + val('(UNESP)') + val('(UNICAMP)')) / m.total, usp: val('(USP)') / m.total };
     for (const n of document.querySelectorAll('[data-k3]')) n.textContent = fP0(k3[n.dataset.k3]);
+    const meses = DATA.meses.Todas;
+    const topTema = d3.greatest(DATA.temas.lista, (d) => d.n);
+    const cresc = DATA.ascensao.filter((d) => d.antes >= 5)[0];
+    const F = {
+      set_share: fP0(d3.max(meses) / d3.sum(meses)),
+      top_tema: topTema.tema, top_tema_n: fN(topTema.n),
+      top_cresc: cresc.tema, top_cresc_x: L.format('.1f')(cresc.razao) + ' vezes',
+      top_area: DATA.areas[0].area, top_area_n: fN(DATA.areas[0].n),
+      top_host: DATA.anfitrias[0].nome, top_host_n: fN(DATA.anfitrias[0].n),
+      pt_top10: String(DATA.anfitrias.slice(0, 10).filter((h) => h.pais === 'Portugal').length),
+    };
+    for (const n of document.querySelectorAll('[data-f]')) if (F[n.dataset.f] !== undefined) n.textContent = F[n.dataset.f];
   }
 
   /* ---------- herói: rotas a partir de São Paulo ---------- */
@@ -181,6 +292,7 @@
     const box = document.getElementById('hero-map');
     box.replaceChildren();
     if (!WORLD) return;
+    const v = (n) => cssv(n, box);
     const feats = worldFeatures();
     const W = box.clientWidth || 800;
     const H = Math.round(W * 0.5);
@@ -188,8 +300,8 @@
     const path = d3.geoPath(proj);
     const svg = d3.select(box).append('svg').attr('viewBox', `0 0 ${W} ${H}`).attr('width', W).attr('height', H);
     svg.append('g').selectAll('path').data(feats).join('path')
-      .attr('d', path).attr('fill', (f) => (f.id === '076' ? cssv('--paper-2') : cssv('--land')))
-      .attr('stroke', cssv('--land-line')).attr('stroke-width', 0.5);
+      .attr('d', path).attr('fill', (f) => (f.id === '076' ? v('--paper-2') : v('--land')))
+      .attr('stroke', v('--land-line')).attr('stroke-width', 0.5);
     const paises = [...DATA.paises].sort((a, b) => a.n - b.n);
     const w = d3.scaleSqrt([1, d3.max(paises, (p) => p.n)], [0.5, Math.max(4, W / 160)]);
     const arcs = svg.append('g').attr('fill', 'none').attr('stroke-linecap', 'round');
@@ -197,7 +309,7 @@
       const d = path({ type: 'LineString', coordinates: [SP, [p.lon, p.lat]] });
       if (!d) return;
       const a = arcs.append('path').attr('d', d).attr('class', 'route-arc')
-        .attr('stroke', p.n > 900 ? cssv('--blue') : cssv('--blue'))
+        .attr('stroke', v('--blue'))
         .attr('stroke-opacity', p.n > 900 ? 0.85 : 0.45)
         .attr('stroke-width', w(p.n));
       const len = a.node().getTotalLength();
@@ -206,12 +318,12 @@
     const dots = svg.append('g');
     for (const p of DATA.paises.slice(0, 8)) {
       const [x, y] = proj([p.lon, p.lat]);
-      dots.append('circle').attr('cx', x).attr('cy', y).attr('r', Math.max(2.5, w(p.n) * 0.7)).attr('fill', cssv('--red'));
+      dots.append('circle').attr('cx', x).attr('cy', y).attr('r', Math.max(2.5, w(p.n) * 0.7)).attr('fill', v('--red'));
     }
     const [sx, sy] = proj(SP);
-    dots.append('circle').attr('cx', sx).attr('cy', sy).attr('r', 9).attr('fill', 'none').attr('stroke', cssv('--red')).attr('stroke-width', 1.5);
-    dots.append('circle').attr('cx', sx).attr('cy', sy).attr('r', 4).attr('fill', cssv('--red'));
-    svg.append('text').attr('x', sx + 14).attr('y', sy + 4).attr('fill', cssv('--ink')).attr('font-family', cssv('--label'))
+    dots.append('circle').attr('cx', sx).attr('cy', sy).attr('r', 9).attr('fill', 'none').attr('stroke', v('--red')).attr('stroke-width', 1.5);
+    dots.append('circle').attr('cx', sx).attr('cy', sy).attr('r', 4).attr('fill', v('--red'));
+    svg.append('text').attr('x', sx + 14).attr('y', sy + 4).attr('fill', v('--ink')).attr('font-family', v('--label'))
       .attr('font-size', 13).attr('font-weight', 600).text('São Paulo');
   }
 
@@ -822,6 +934,7 @@
   /* ---------- montagem ---------- */
   function start() {
     fillNumbers();
+    preparaFrase();
     drawBoard();
     reg(drawHero);
     reg(drawLegendGrupos);
@@ -865,6 +978,7 @@
   ]).then(([dados, mundo]) => {
     if (dados.status !== 'fulfilled') {
       document.querySelector('main').prepend(el('p', 'wrap fig-note', 'Não foi possível carregar os dados. Recarregue a página.'));
+      preparaFrase();
       return;
     }
     DATA = dados.value;

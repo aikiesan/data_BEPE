@@ -3,114 +3,199 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Partidas · Bolsas FAPESP no Exterior</title>
-  <meta name="description" content="35 anos de bolsas da FAPESP no exterior: quantas, quando, para onde, de onde e sobre o quê. 21.032 bolsas, 1992–2026.">
-  <meta property="og:title" content="Partidas · Bolsas FAPESP no Exterior">
-  <meta property="og:description" content="35 anos de bolsas da FAPESP no exterior, em mapas e gráficos interativos.">
+  <title>Data BEPE · Bolsas FAPESP no exterior</title>
+  <meta name="description" content="Data BEPE: 35 anos de bolsas da FAPESP no exterior em dados, e o que muda com as novas regras da BEPE de setembro de 2026.">
+  <meta property="og:title" content="Data BEPE · Bolsas FAPESP no exterior">
+  <meta property="og:description" content="A BEPE encolheu em setembro de 2026. 35 anos de dados mostram o que está em jogo.">
+  <meta property="og:image" content="assets/img/bepe-12.jpg">
+  <meta name="theme-color" content="#171513">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,300..900&family=IBM+Plex+Sans+Condensed:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400&display=swap">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f2f4f7'/%3E%3Cpath d='M4 26 C10 10 22 6 28 6' fill='none' stroke='%232140a8' stroke-width='3'/%3E%3Ccircle cx='4' cy='26' r='3' fill='%23d7372f'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=Instrument+Serif:ital@0;1&display=swap">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261103">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23171513'/%3E%3Cpath d='M7 24 C12 11 21 8 26 8' fill='none' stroke='%23ebe8e2' stroke-width='2.6'/%3E%3Ccircle cx='7' cy='24' r='3' fill='%23e2412f'/%3E%3C/svg%3E">
 </head>
 <body>
-  <div class="airmail" aria-hidden="true"></div>
-
-  <header class="mast wrap">
-    <div class="mast-top">
-      <p class="kicker">FAPESP · Bolsas no Exterior · <span data-k="primeiro_ano">1992</span>–<span data-k="ultimo_ano">2026</span></p>
-      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Alternar tema claro e escuro">
-        <span class="theme-dot" aria-hidden="true"></span><span class="theme-label">Tema</span>
-      </button>
+  <header class="head" id="head">
+    <div class="wrap head-inner">
+      <a class="logo" href="#topo">data bepe<i>.</i></a>
+      <nav class="menu" id="menu" aria-label="Capítulos">
+        <a href="#em-jogo">Em jogo</a>
+        <a href="#ritmo">Ritmo</a>
+        <a href="#calendario">Calendário</a>
+        <a href="#destinos">Destinos</a>
+        <a href="#origem">Origem</a>
+        <a href="#temas">Temas</a>
+        <a href="#anfitrias">Anfitriãs</a>
+        <a href="#gestao">Gestão</a>
+        <a href="#metodo">Dados</a>
+      </nav>
+      <button class="menu-btn" id="menu-btn" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu"><span></span></button>
     </div>
-    <h1>Partidas</h1>
-    <p class="dek">Trinta e cinco anos de bolsas que levaram a pesquisa paulista para fora do país. Quantas foram, em que época do ano, para onde, de onde saíram e o que foram estudar.</p>
   </header>
 
-  <section class="hero" aria-label="Mapa de destinos">
-    <div class="wrap hero-grid">
-      <figure class="hero-map" id="hero-map" role="img" aria-label="Mapa com rotas de São Paulo para os países de destino, com espessura proporcional ao número de bolsas"></figure>
-      <aside class="board" aria-label="Principais destinos">
-        <p class="board-title">Destinos mais frequentes <span>bolsas, 1992–2026</span></p>
-        <ol class="board-list" id="board-list"></ol>
-      </aside>
+  <section class="hero" id="topo" aria-label="Abertura">
+    <div class="mosaic" id="mosaic" aria-hidden="true"></div>
+    <div class="wrap hero-body">
+      <p class="eyebrow">Bolsas FAPESP no exterior · 1992–2026 · leitura crítica</p>
+      <h1 class="brand-h1">Data <span class="serif">BEPE</span></h1>
+      <p class="hero-kicker">Em setembro de 2026 a BEPE encolheu. Trinta e cinco anos de dados mostram o que está em jogo.</p>
+      <p class="hero-dek">A FAPESP tirou a iniciação científica e o mestrado do fluxo contínuo do Estágio de Pesquisa no Exterior e cortou pela metade a duração inicial do estágio. Em 2025, esses dois grupos somaram <strong>44% das bolsas BEPE</strong>.</p>
+      <div class="hero-foot">
+        <div class="hero-ctas">
+          <a class="cta" href="#em-jogo">
+            <span class="cta-pill">Ver o que está em jogo</span>
+            <span class="cta-dot" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span>
+          </a>
+          <a class="hero-link" href="#sumario">Explorar os dados</a>
+        </div>
+        <p class="hero-credit">Fotografias ilustrativas de pesquisa e intercâmbio no exterior.</p>
+      </div>
     </div>
-    <dl class="ledger wrap">
-      <div><dt>Bolsas</dt><dd data-k="total">—</dd></div>
-      <div><dt>Em andamento</dt><dd data-k="andamento">—</dd></div>
-      <div><dt>Média anual 2022–25</dt><dd data-k="media_2022_2025">—</dd></div>
-      <div><dt>Países de destino</dt><dd data-k="paises">—</dd></div>
-      <div><dt>Instituições anfitriãs</dt><dd data-k="anfitrias">—</dd></div>
-      <div><dt>Temas distintos</dt><dd data-k="temas">—</dd></div>
-    </dl>
-    <p class="fig-src wrap hero-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Dados de 25/10/2026. <a class="csv" href="data/figuras/fig00_resumo.csv" download>Números (CSV)</a> <a class="csv" href="data/figuras/fig05_destinos_por_periodo.csv" download>Destinos (CSV)</a></p>
   </section>
 
-  <nav class="route" id="route" aria-label="Seções">
-    <div class="wrap route-inner">
-      <a href="#ritmo">Ritmo</a>
-      <a href="#calendario">Calendário</a>
-      <a href="#destinos">Destinos</a>
-      <a href="#origem">Origem</a>
-      <a href="#temas">Temas</a>
-      <a href="#anfitrias">Anfitriãs</a>
-      <a href="#gestao">Gestão</a>
-      <a href="#metodo">Dados</a>
-    </div>
-  </nav>
-
   <main>
-    <section class="leg wrap" id="ritmo">
-      <header class="leg-head">
-        <p class="leg-tag">Trecho 1</p>
-        <h2>O ritmo das partidas</h2>
-      </header>
-      <div class="prose">
-        <p>Até 2011, ir para o exterior com a FAPESP era coisa de pesquisador formado: a Bolsa de Pesquisa no Exterior somava entre 110 e 160 pedidos por ano na década de 2000. A criação do <strong>BEPE</strong>, o Estágio de Pesquisa no Exterior para quem já é bolsista da Fundação, mudou a escala. Em dois anos o total passou de mil, e alunos de doutorado se tornaram o maior grupo.</p>
-        <p>A pandemia derrubou 2020 para <b data-y="2020">—</b> pedidos. A recuperação foi longa, e <b data-k="ano_recorde">—</b> fechou com <b data-k="recorde">—</b> bolsas, o maior número da série, puxado por iniciação científica e mestrado.</p>
-      </div>
-      <figure class="fig">
-        <div class="fig-bar">
-          <figcaption><span class="fig-n">Fig. 1</span> Bolsas por ano do pedido, por modalidade</figcaption>
-          <div class="seg" role="group" aria-label="Escala">
-            <button type="button" data-ritmo="abs" aria-pressed="true">Número</button>
-            <button type="button" data-ritmo="pct" aria-pressed="false">Proporção</button>
+    <section class="stake night" id="em-jogo" aria-labelledby="em-jogo-t">
+      <div class="wrap">
+        <div class="ch-head">
+          <p class="ch-num"><b>!</b> Em jogo</p>
+          <h2 id="em-jogo-t">A BEPE <span class="serif">encolheu</span></h2>
+        </div>
+        <p class="stake-lead">Desde 1º de setembro de 2026, valem novas regras para o Estágio de Pesquisa no Exterior <a href="#ref-8">[8]</a><a href="#ref-9">[9]</a>. A FAPESP diz que o número de bolsas não caiu. Os dados de quem partiu até aqui mostram quem fica de fora.</p>
+        <div class="stake-grid">
+          <article class="stake-card rise">
+            <p class="stake-n">44%</p>
+            <h3>das bolsas BEPE de 2025 eram de iniciação científica e mestrado</h3>
+            <p>804 de 1.806. Esses bolsistas já não podem pedir a BEPE a qualquer momento: dependem de chamadas específicas, e quem recebeu a bolsa depois de 1º de setembro só terá chamada no primeiro semestre de 2027 <a href="#ref-8">[8]</a>.</p>
+          </article>
+          <article class="stake-card rise">
+            <p class="stake-n">3×</p>
+            <h3>foi quanto essas bolsas cresceram entre 2022 e 2025</h3>
+            <p>De 260 para 804 pedidos por ano. O grupo que mais crescia na BEPE é justamente o que perdeu o acesso contínuo.</p>
+          </article>
+          <article class="stake-card rise">
+            <p class="stake-n">6 <span>meses</span></p>
+            <h3>é a nova duração inicial do estágio, antes de até 12</h3>
+            <p>Prorrogável por mais seis, mediante análise <a href="#ref-9">[9]</a>. Em 2025, três de cada quatro estágios de doutorado e pós-doutorado foram planejados para mais de seis meses: 746 de 1.002.</p>
+          </article>
+        </div>
+        <div class="stake-argument rise">
+          <div>
+            <p class="label">O argumento da FAPESP</p>
+            <blockquote>"Não houve corte no número de bolsas BEPE."</blockquote>
+            <p>A Fundação justifica a mudança pelo peso das bolsas no orçamento: 58% em junho de 2026, contra uma média histórica de 35%. Entre 2023 e 2025, as bolsas contratadas cresceram 73%, e os auxílios à pesquisa, 3,7% <a href="#ref-8">[8]</a>.</p>
+          </div>
+          <div>
+            <p class="label">O que os dados acrescentam</p>
+            <p class="stake-reply">Manter o número total não diz quem fica de fora. A BEPE deixa de ser porta de entrada na graduação e no mestrado, e quem segue nela começa com metade do tempo. O equilíbrio do orçamento foi buscado num dos programas que mais cresciam.</p>
           </div>
         </div>
-        <div class="legend" id="legend-grupos"></div>
-        <div class="chart" id="chart-ritmo"></div>
-        <p class="fig-note">Ano tirado do número do processo, que indica quando o pedido foi feito. 2026 vai até 25 de outubro.</p>
-        <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig01_bolsas_por_ano_modalidade.csv" download>Dados da figura (CSV)</a></p>
-      </figure>
-      <figure class="fig">
-        <div class="fig-bar"><figcaption><span class="fig-n">Fig. 2</span> Ficha de cada modalidade</figcaption></div>
-        <div class="table-scroll">
-          <table class="ficha" id="ficha"></table>
-        </div>
-        <p class="fig-note">Duração: mediana entre as datas de início e término. Doutorado inclui Doutorado Direto. "Outras" reúne Novas Fronteiras, Capacitação e Doutorado pleno.</p>
-        <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig02_ficha_modalidades.csv" download>Dados da figura (CSV)</a></p>
-      </figure>
+        <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>; Agência FAPESP <a href="#ref-8">[8]</a>; norma da BEPE <a href="#ref-9">[9]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig00b_bepe_por_ano_modalidade.csv" download>BEPE por ano e modalidade (CSV)</a></p>
+      </div>
     </section>
 
-    <section class="leg wrap" id="calendario">
-      <header class="leg-head">
-        <p class="leg-tag">Trecho 2</p>
-        <h2>Em que época se parte</h2>
-      </header>
-      <div class="prose">
-        <p>A exportação não traz a data de concessão, mas traz o dia em que cada estágio começa. O calendário que aparece é o do hemisfério norte: <b data-pico="Todas">—</b> é o mês mais procurado, quando abre o ano letivo europeu e norte-americano. Cada modalidade, porém, tem o seu ritmo. Pesquisadores saem nas férias das universidades paulistas, em julho, agosto e janeiro; estudantes de iniciação científica, em dezembro e janeiro.</p>
+    <section class="statement wrap" aria-label="Resumo">
+      <div class="statement-grid">
+        <p class="label">Antes do corte</p>
+        <p class="big" id="big">Desde 1992, a FAPESP financiou <span data-k="total">21.032</span> bolsas de estudo e pesquisa fora do Brasil, em <span class="circled" id="circled"><span data-k="paises">82</span> países<svg viewBox="0 0 200 80" preserveAspectRatio="none" aria-hidden="true"><path d="M168 14 C130 -2 40 2 14 26 C-6 46 26 74 96 76 C160 78 198 60 192 34 C188 18 160 8 120 8"/></svg></span>. É isso que está em discussão.</p>
+      </div>
+      <dl class="ledger" style="margin-top: clamp(60px, 9vh, 100px)">
+        <div><dt>Bolsas</dt><dd data-k="total">—</dd></div>
+        <div><dt>Em andamento</dt><dd data-k="andamento">—</dd></div>
+        <div><dt>Média anual 2022–25</dt><dd data-k="media_2022_2025">—</dd></div>
+        <div><dt>Países de destino</dt><dd data-k="paises">—</dd></div>
+        <div><dt>Instituições anfitriãs</dt><dd data-k="anfitrias">—</dd></div>
+        <div><dt>Temas distintos</dt><dd data-k="temas">—</dd></div>
+      </dl>
+      <p class="fig-src src-line">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Dados de 25/10/2026. <a class="csv" href="data/figuras/fig00_resumo.csv" download>Números (CSV)</a></p>
+    </section>
+
+    <section class="index wrap" id="sumario" aria-label="Sumário">
+      <div class="index-head">
+        <h2>Oito capítulos, <span class="serif">35 anos de partidas</span></h2>
+        <a class="cta cta-dark" href="#metodo">
+          <span class="cta-pill">Baixar os dados</span>
+          <span class="cta-dot" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 4v12M5 11l5 5 5-5"/></svg></span>
+        </a>
+      </div>
+      <div class="cards">
+        <a class="card" href="#ritmo"><span class="card-n">01</span><span class="card-img"><img src="assets/img/bepe-10.jpg" alt="" loading="lazy"></span><span class="card-tag">Quantas</span><span class="card-t">O ritmo das partidas<span class="arrow"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span></span><p class="card-d">Bolsas por ano e por modalidade, do primeiro pedido ao recorde.</p></a>
+        <a class="card" href="#calendario"><span class="card-n">02</span><span class="card-img"><img src="assets/img/bepe-11.jpg" alt="" loading="lazy"></span><span class="card-tag">Quando</span><span class="card-t">Em que época se parte<span class="arrow"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span></span><p class="card-d">O mês de início de cada estágio, modalidade por modalidade.</p></a>
+        <a class="card" href="#destinos"><span class="card-n">03</span><span class="card-img"><img src="assets/img/bepe-06.jpg" alt="" loading="lazy"></span><span class="card-tag">Para onde</span><span class="card-t">Para onde se vai<span class="arrow"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span></span><p class="card-d">Países de destino, como mudaram em 35 anos e por área.</p></a>
+        <a class="card" href="#origem"><span class="card-n">04</span><span class="card-img"><img src="assets/img/bepe-08.jpg" alt="" loading="lazy"></span><span class="card-tag">De onde</span><span class="card-t">De onde se sai<span class="arrow"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span></span><p class="card-d">Instituições, unidades e cidades sede no Estado de São Paulo.</p></a>
+        <a class="card" href="#temas"><span class="card-n">05</span><span class="card-img"><img src="assets/img/bepe-03.jpg" alt="" loading="lazy"></span><span class="card-tag">O quê</span><span class="card-t">O que se vai pesquisar<span class="arrow"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span></span><p class="card-d">Grandes áreas, áreas e os temas que mais cresceram.</p></a>
+        <a class="card" href="#anfitrias"><span class="card-n">06</span><span class="card-img"><img src="assets/img/bepe-05.jpg" alt="" loading="lazy"></span><span class="card-tag">Quem recebe</span><span class="card-t">As instituições anfitriãs<span class="arrow"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span></span><p class="card-d">As cem universidades e centros que mais receberam bolsistas.</p></a>
+        <a class="card" href="#gestao"><span class="card-n">07</span><span class="card-img"><img src="assets/img/bepe-04.jpg" alt="" loading="lazy"></span><span class="card-tag">Quem decide</span><span class="card-t">Quem conduz a FAPESP<span class="arrow"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span></span><p class="card-d">Conselhos, diretoria e Assessoria Científica, com busca.</p></a>
+        <a class="card" href="#metodo"><span class="card-n">08</span><span class="card-img"><img src="assets/img/bepe-09.jpg" alt="" loading="lazy"></span><span class="card-tag">Bagagem</span><span class="card-t">Fontes e dados<span class="arrow"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12M11 5l5 5-5 5"/></svg></span></span><p class="card-d">Referências, método e todos os CSVs para baixar.</p></a>
+      </div>
+    </section>
+
+    <!-- 01 ritmo -->
+    <section class="ch wrap" id="ritmo">
+      <div class="ch-head">
+        <p class="ch-num"><b>01</b> Ritmo</p>
+        <h2>O ritmo das <span class="serif">partidas</span></h2>
+      </div>
+      <div class="ch-body">
+        <div class="prose">
+          <p>Até 2011, ir para o exterior com a FAPESP era coisa de pesquisador formado: a Bolsa de Pesquisa no Exterior somava entre 110 e 160 pedidos por ano na década de 2000. A criação do <strong>BEPE</strong>, o Estágio de Pesquisa no Exterior para quem já é bolsista da Fundação, mudou a escala. Em dois anos o total passou de mil, e alunos de doutorado se tornaram o maior grupo.</p>
+          <p>A pandemia derrubou 2020 para <b data-y="2020">—</b> pedidos. A recuperação foi longa, e <b data-k="ano_recorde">—</b> fechou com <b data-k="recorde">—</b> bolsas, o maior número da série, puxado por iniciação científica e mestrado.</p>
+        </div>
+        <dl class="facts">
+          <div><dt>Recorde</dt><dd><span data-k="recorde">—</span><small>bolsas em <span data-k="ano_recorde">—</span></small></dd></div>
+          <div><dt>Média anual 2022–25</dt><dd><span data-k="media_2022_2025">—</span><small>bolsas por ano</small></dd></div>
+          <div><dt>Ano da pandemia</dt><dd><span data-y="2020">—</span><small>pedidos em 2020</small></dd></div>
+        </dl>
+      </div>
+      <div class="figs">
+        <figure class="fig rise">
+          <div class="fig-bar">
+            <figcaption><span class="fig-n">Fig. 1</span>Bolsas por ano do pedido, por modalidade</figcaption>
+            <div class="seg" role="group" aria-label="Escala">
+              <button type="button" data-ritmo="abs" aria-pressed="true">Número</button>
+              <button type="button" data-ritmo="pct" aria-pressed="false">Proporção</button>
+            </div>
+          </div>
+          <div class="legend" id="legend-grupos"></div>
+          <div class="chart" id="chart-ritmo"></div>
+          <p class="fig-note">Ano tirado do número do processo, que indica quando o pedido foi feito. 2026 vai até 25 de outubro.</p>
+          <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig01_bolsas_por_ano_modalidade.csv" download>Dados da figura (CSV)</a></p>
+        </figure>
+        <figure class="fig rise">
+          <div class="fig-bar"><figcaption><span class="fig-n">Fig. 2</span>Ficha de cada modalidade</figcaption></div>
+          <div class="table-scroll"><table class="ficha" id="ficha"></table></div>
+          <p class="fig-note">Duração: mediana entre as datas de início e término. Doutorado inclui Doutorado Direto. "Outras" reúne Novas Fronteiras, Capacitação e Doutorado pleno.</p>
+          <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig02_ficha_modalidades.csv" download>Dados da figura (CSV)</a></p>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 02 calendário -->
+    <section class="ch wrap" id="calendario">
+      <div class="ch-head">
+        <p class="ch-num"><b>02</b> Calendário</p>
+        <h2>Em que época <span class="serif">se parte</span></h2>
+      </div>
+      <div class="ch-body">
+        <div class="prose">
+          <p>A exportação não traz a data de concessão, mas traz o dia em que cada estágio começa. O calendário que aparece é o do hemisfério norte: <b data-pico="Todas">—</b> é o mês mais procurado, quando abre o ano letivo europeu e norte-americano.</p>
+          <p>Cada modalidade, porém, tem o seu ritmo. Pesquisadores saem nas férias das universidades paulistas, em julho, agosto e janeiro; estudantes de iniciação científica, em dezembro e janeiro.</p>
+        </div>
+        <dl class="facts">
+          <div><dt>Mês de pico</dt><dd><span data-pico="Todas">—</span><small><span data-f="set_share">—</span> dos inícios, 2012–2025</small></dd></div>
+          <div><dt>Pesquisa</dt><dd><span data-pico="Pesquisa">—</span><small>mês de pico dos pesquisadores</small></dd></div>
+          <div><dt>Iniciação científica</dt><dd><span data-pico="BEPE Iniciação Científica">—</span><small>mês de pico da graduação</small></dd></div>
+        </dl>
       </div>
       <div class="fig-row">
-        <figure class="fig">
-          <div class="fig-bar">
-            <figcaption><span class="fig-n">Fig. 3</span> Inícios por mês, 2012–2025</figcaption>
-          </div>
+        <figure class="fig rise">
+          <div class="fig-bar"><figcaption><span class="fig-n">Fig. 3</span>Inícios por mês, 2012–2025</figcaption></div>
           <div class="seg seg-wrap" role="group" aria-label="Modalidade" id="seg-calendario"></div>
           <div class="chart chart-radial" id="chart-radial"></div>
           <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig03_inicios_por_mes_modalidade.csv" download>Dados da figura (CSV)</a></p>
         </figure>
-        <figure class="fig">
-          <div class="fig-bar"><figcaption><span class="fig-n">Fig. 4</span> Fatia de cada mês no ano</figcaption></div>
+        <figure class="fig rise">
+          <div class="fig-bar"><figcaption><span class="fig-n">Fig. 4</span>Fatia de cada mês no ano</figcaption></div>
           <div class="chart" id="chart-heat"></div>
           <p class="fig-note">Cada linha soma 100%. Quanto mais escura a célula, mais o ano se concentrou naquele mês. Em 2020 e 2021 a pandemia desfez o padrão.</p>
           <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig04_inicios_mes_ano.csv" download>Dados da figura (CSV)</a></p>
@@ -118,244 +203,344 @@
       </div>
     </section>
 
-    <section class="leg wrap" id="destinos">
-      <header class="leg-head">
-        <p class="leg-tag">Trecho 3</p>
-        <h2>Para onde se vai</h2>
-      </header>
-      <div class="prose">
-        <p>Os Estados Unidos são o destino número um em todos os períodos, mas a sua fatia caiu de <b data-share="Estados Unidos|1992–2001">—</b> nos anos 1990 para <b data-share="Estados Unidos|2022–2026">—</b> nos pedidos desde 2022. Quem ganhou espaço foi a Europa ocidental. A Espanha foi de 4% para 10% das bolsas; Portugal e Alemanha também mais que dobraram a sua fatia desde os anos 1990.</p>
-        <p>O destino depende da área. Em Humanas e em Letras, a França é o primeiro destino, à frente dos Estados Unidos, e Portugal recebe uma fatia grande. Em Saúde, Biológicas e Agrárias, cerca de 40% das bolsas vão para os Estados Unidos.</p>
+    <!-- 03 destinos -->
+    <section class="ch wrap" id="destinos">
+      <div class="ch-head">
+        <p class="ch-num"><b>03</b> Destinos</p>
+        <h2>Para onde <span class="serif">se vai</span></h2>
       </div>
-      <figure class="fig fig-wide">
-        <div class="fig-bar">
-          <figcaption><span class="fig-n">Fig. 5</span> Fatia das bolsas de cada período por país de destino</figcaption>
-          <div class="seg seg-wrap" role="group" aria-label="Período" id="seg-periodo"></div>
+      <div class="ch-body">
+        <div class="prose">
+          <p>Os Estados Unidos são o destino número um em todos os períodos, mas a sua fatia caiu de <b data-share="Estados Unidos|1992–2001">—</b> nos anos 1990 para <b data-share="Estados Unidos|2022–2026">—</b> nos pedidos desde 2022. Quem ganhou espaço foi a Europa ocidental. A Espanha foi de 4% para 10% das bolsas; Portugal e Alemanha também mais que dobraram a sua fatia desde os anos 1990.</p>
+          <p>O destino depende da área. Em Humanas e em Letras, a França é o primeiro destino, à frente dos Estados Unidos, e Portugal recebe uma fatia grande. Em Saúde, Biológicas e Agrárias, cerca de 40% das bolsas vão para os Estados Unidos.</p>
         </div>
-        <div class="chart chart-map" id="chart-map"></div>
-        <div class="map-key" id="map-key"></div>
-        <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>, mapa-base <a href="#ref-7">[7]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig05_destinos_por_periodo.csv" download>Dados da figura (CSV)</a></p>
-      </figure>
-      <div class="fig-row">
-        <figure class="fig">
-          <div class="fig-bar"><figcaption><span class="fig-n">Fig. 6</span> Posição dos dez maiores destinos, por período</figcaption></div>
-          <div class="chart" id="chart-bump"></div>
-          <p class="fig-note">Passe o mouse sobre uma linha para destacá-la. Reino Unido soma Inglaterra, Escócia, País de Gales e Irlanda do Norte.</p>
-          <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig06_posicao_destinos_por_periodo.csv" download>Dados da figura (CSV)</a></p>
-        </figure>
-        <figure class="fig">
-          <div class="fig-bar"><figcaption><span class="fig-n">Fig. 7</span> Para onde vai cada grande área</figcaption></div>
-          <div class="table-scroll"><table class="matrix" id="matrix"></table></div>
-          <p class="fig-note">Percentual das bolsas de cada grande área (linha) que foi para cada país.</p>
-          <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig07_grande_area_por_destino.csv" download>Dados da figura (CSV)</a></p>
-        </figure>
+        <dl class="facts">
+          <div><dt>Países de destino</dt><dd><span data-k="paises">—</span><small>em 35 anos</small></dd></div>
+          <div><dt>Estados Unidos, 1992–2001</dt><dd><span data-share="Estados Unidos|1992–2001">—</span><small>das bolsas do período</small></dd></div>
+          <div><dt>Estados Unidos, 2022–2026</dt><dd><span data-share="Estados Unidos|2022–2026">—</span><small>das bolsas do período</small></dd></div>
+        </dl>
       </div>
-    </section>
-
-    <section class="leg wrap" id="origem">
-      <header class="leg-head">
-        <p class="leg-tag">Trecho 4</p>
-        <h2>De onde se sai</h2>
-      </header>
-      <div class="prose">
-        <p>A sede da bolsa é quase sempre uma universidade pública paulista. USP, UNESP e UNICAMP somam <b data-k3="estaduais">—</b> de todas as partidas, e a USP, sozinha, <b data-k3="usp">—</b>. Entre as unidades, lideram a Faculdade de Filosofia, Letras e Ciências Humanas da USP, o Instituto de Ciências Biomédicas da USP e o Centro de Ciências Exatas e de Tecnologia da UFSCar. "Pessoa Física" é um registro antigo: até 2011, pesquisadores podiam pedir a bolsa sem vínculo institucional registrado.</p>
+      <div class="routes night rise" id="routes">
+        <div class="routes-title">
+          <h3>Rotas a partir de São Paulo</h3>
+          <p>Espessura proporcional ao número de bolsas, 1992–2026</p>
+        </div>
+        <figure class="hero-map" id="hero-map" role="img" aria-label="Mapa com rotas de São Paulo para os países de destino, com espessura proporcional ao número de bolsas"></figure>
+        <aside class="board" aria-label="Principais destinos">
+          <p class="board-title">Destinos mais frequentes <span>bolsas, 1992–2026</span></p>
+          <ol class="board-list" id="board-list"></ol>
+        </aside>
+        <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>, mapa-base <a href="#ref-7">[7]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig05_destinos_por_periodo.csv" download>Dados do mapa (CSV)</a></p>
       </div>
-      <figure class="fig fig-wide">
-        <div class="fig-bar"><figcaption><span class="fig-n">Fig. 8</span> Instituições e unidades sede, por número de bolsas</figcaption></div>
-        <div class="chart chart-tree" id="chart-tree"></div>
-        <p class="fig-note">As 12 instituições com mais bolsas e, dentro de cada uma, as 10 maiores unidades. Toque ou passe o mouse para ver o número.</p>
-        <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig08_instituicoes_unidades_sede.csv" download>Dados da figura (CSV)</a></p>
-      </figure>
-      <figure class="fig">
-        <div class="fig-bar"><figcaption><span class="fig-n">Fig. 9</span> Cidades sede</figcaption></div>
-        <div class="bars" id="bars-cidades"></div>
-        <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig09_cidades_sede.csv" download>Dados da figura (CSV)</a></p>
-      </figure>
-    </section>
-
-    <section class="leg wrap" id="temas">
-      <header class="leg-head">
-        <p class="leg-tag">Trecho 5</p>
-        <h2>O que se vai pesquisar</h2>
-      </header>
-      <div class="prose">
-        <p>Ciências Exatas e da Terra dominavam os anos 1990, com quase um terço das bolsas. Desde a criação do BEPE, Ciências Biológicas dividem a liderança, e as Ciências Agrárias passaram de 6% para cerca de 10%. Química, Física e Medicina são as áreas individuais com mais partidas.</p>
-        <p>As palavras-chave contam a história mais recente: aprendizado de máquina, inteligência artificial, impressão 3D e microbiota cresceram muito mais rápido que o total. Use o explorador para seguir qualquer um dos 400 temas mais frequentes.</p>
-      </div>
-      <figure class="fig fig-wide">
-        <div class="fig-bar"><figcaption><span class="fig-n">Fig. 10</span> Composição das bolsas por grande área, ano a ano</figcaption></div>
-        <div class="legend" id="legend-areas"></div>
-        <div class="chart" id="chart-stream"></div>
-        <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig10_grande_area_por_ano.csv" download>Dados da figura (CSV)</a></p>
-      </figure>
-      <div class="fig-row">
-        <figure class="fig">
-          <div class="fig-bar"><figcaption><span class="fig-n">Fig. 11</span> As 30 áreas com mais bolsas</figcaption></div>
-          <div class="bars" id="bars-areas"></div>
-          <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig11_areas_mais_frequentes.csv" download>Dados da figura (CSV)</a></p>
-        </figure>
-        <figure class="fig">
-          <div class="fig-bar"><figcaption><span class="fig-n">Fig. 12</span> Explorador de temas</figcaption></div>
-          <div class="explorer">
-            <label class="explorer-label" for="tema-input">Adicione um tema (até 6)</label>
-            <div class="explorer-input">
-              <input id="tema-input" list="tema-list" type="text" autocomplete="off" placeholder="ex.: Mudança climática">
-              <button type="button" id="tema-add">Adicionar</button>
-            </div>
-            <datalist id="tema-list"></datalist>
-            <div class="chips" id="tema-chips"></div>
+      <div class="figs" style="margin-top: 20px">
+        <figure class="fig rise">
+          <div class="fig-bar">
+            <figcaption><span class="fig-n">Fig. 5</span>Fatia das bolsas de cada período por país de destino</figcaption>
+            <div class="seg seg-wrap" role="group" aria-label="Período" id="seg-periodo"></div>
           </div>
-          <div class="chart" id="chart-temas"></div>
-          <p class="fig-note">Percentual das bolsas de cada ano que citam o tema, de 2002 em diante.</p>
-          <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig12_temas_por_ano.csv" download>Dados da figura (CSV)</a></p>
+          <div class="chart chart-map" id="chart-map"></div>
+          <div class="map-key" id="map-key"></div>
+          <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>, mapa-base <a href="#ref-7">[7]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig05_destinos_por_periodo.csv" download>Dados da figura (CSV)</a></p>
         </figure>
+        <div class="fig-row">
+          <figure class="fig rise">
+            <div class="fig-bar"><figcaption><span class="fig-n">Fig. 6</span>Posição dos dez maiores destinos, por período</figcaption></div>
+            <div class="chart" id="chart-bump"></div>
+            <p class="fig-note">Passe o mouse sobre uma linha para destacá-la. Reino Unido soma Inglaterra, Escócia, País de Gales e Irlanda do Norte.</p>
+            <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig06_posicao_destinos_por_periodo.csv" download>Dados da figura (CSV)</a></p>
+          </figure>
+          <figure class="fig rise">
+            <div class="fig-bar"><figcaption><span class="fig-n">Fig. 7</span>Para onde vai cada grande área</figcaption></div>
+            <div class="table-scroll"><table class="matrix" id="matrix"></table></div>
+            <p class="fig-note">Percentual das bolsas de cada grande área (linha) que foi para cada país.</p>
+            <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig07_grande_area_por_destino.csv" download>Dados da figura (CSV)</a></p>
+          </figure>
+        </div>
       </div>
-      <div class="fig-row">
-        <figure class="fig">
-          <div class="fig-bar"><figcaption><span class="fig-n">Fig. 13</span> Temas em ascensão: 2012–2017 contra 2021–2026</figcaption></div>
-          <div class="chart" id="chart-slope"></div>
-          <p class="fig-note">Fatia das bolsas que citam o tema em cada período. Só temas com ao menos 5 bolsas no primeiro período e 25 no segundo, ordenados pelo crescimento relativo.</p>
-          <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig13_temas_em_ascensao.csv" download>Dados da figura (CSV)</a></p>
-        </figure>
-        <figure class="fig">
-          <div class="fig-bar"><figcaption><span class="fig-n">Fig. 14</span> Novos no vocabulário</figcaption></div>
-          <p class="fig-lead">Temas citados em 25 ou mais bolsas desde 2021 que não apareciam em nenhuma entre 2012 e 2017. Parte deles reflete a pandemia; parte, mudanças no vocabulário de assuntos da FAPESP.</p>
-          <div class="chips chips-static" id="novos"></div>
-          <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig14_temas_novos.csv" download>Dados da figura (CSV)</a></p>
-        </figure>
-      </div>
-      <figure class="fig fig-wide">
-        <div class="fig-bar"><figcaption><span class="fig-n">Fig. 15</span> Os temas mais citados em cada grande área</figcaption></div>
-        <div class="area-grid" id="temas-area"></div>
-        <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig15_temas_por_grande_area.csv" download>Dados da figura (CSV)</a></p>
-      </figure>
     </section>
 
-    <section class="leg wrap" id="anfitrias">
-      <header class="leg-head">
-        <p class="leg-tag">Trecho 6</p>
-        <h2>Quem recebe</h2>
-      </header>
-      <div class="prose">
-        <p>As bolsas passaram por <b data-k="anfitrias">—</b> instituições diferentes no exterior. As universidades portuguesas aparecem no topo, seguidas de Harvard, da Universidade da Flórida e da École des Hautes Études en Sciences Sociales, um polo das humanidades. Procure qualquer uma das cem mais frequentes.</p>
+    <!-- 04 origem -->
+    <section class="ch wrap" id="origem">
+      <div class="ch-head">
+        <p class="ch-num"><b>04</b> Origem</p>
+        <h2>De onde <span class="serif">se sai</span></h2>
       </div>
-      <figure class="fig fig-wide">
-        <div class="fig-bar">
-          <figcaption><span class="fig-n">Fig. 16</span> As 100 instituições anfitriãs mais frequentes</figcaption>
-          <input class="search" id="host-search" type="search" placeholder="Buscar instituição, país ou área" aria-label="Buscar instituição anfitriã">
+      <div class="ch-body">
+        <div class="prose">
+          <p>A sede da bolsa é quase sempre uma universidade pública paulista. USP, UNESP e UNICAMP somam <b data-k3="estaduais">—</b> de todas as partidas, e a USP, sozinha, <b data-k3="usp">—</b>.</p>
+          <p>Entre as unidades, lideram a Faculdade de Filosofia, Letras e Ciências Humanas da USP, o Instituto de Ciências Biomédicas da USP e o Centro de Ciências Exatas e de Tecnologia da UFSCar. "Pessoa Física" é um registro antigo: até 2011, pesquisadores podiam pedir a bolsa sem vínculo institucional registrado.</p>
         </div>
-        <div class="table-scroll table-tall">
-          <table class="hosts" id="hosts">
-            <thead><tr><th class="num">#</th><th>Instituição</th><th>País</th><th>Grande área mais comum</th><th class="num">Anos</th><th class="num">Bolsas</th></tr></thead>
-            <tbody></tbody>
-          </table>
-        </div>
-        <p class="fig-note">Nomes como registrados pela FAPESP. Campi diferentes da mesma universidade aparecem separados, como Harvard em Boston e em Cambridge.</p>
-        <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig16_instituicoes_anfitrias.csv" download>Dados da figura (CSV)</a></p>
-      </figure>
+        <dl class="facts">
+          <div><dt>USP</dt><dd><span data-k3="usp">—</span><small>de todas as bolsas</small></dd></div>
+          <div><dt>USP, UNESP e UNICAMP</dt><dd><span data-k3="estaduais">—</span><small>somadas</small></dd></div>
+          <div><dt>Unidades sede</dt><dd><span data-k="unidades_br">—</span><small>faculdades, institutos e centros</small></dd></div>
+        </dl>
+      </div>
+      <div class="figs">
+        <figure class="fig rise">
+          <div class="fig-bar"><figcaption><span class="fig-n">Fig. 8</span>Instituições e unidades sede, por número de bolsas</figcaption></div>
+          <div class="chart chart-tree" id="chart-tree"></div>
+          <p class="fig-note">As 12 instituições com mais bolsas e, dentro de cada uma, as 10 maiores unidades. Toque ou passe o mouse para ver o número.</p>
+          <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig08_instituicoes_unidades_sede.csv" download>Dados da figura (CSV)</a></p>
+        </figure>
+        <figure class="fig rise">
+          <div class="fig-bar"><figcaption><span class="fig-n">Fig. 9</span>Cidades sede</figcaption></div>
+          <div class="bars" id="bars-cidades"></div>
+          <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig09_cidades_sede.csv" download>Dados da figura (CSV)</a></p>
+        </figure>
+      </div>
     </section>
 
-    <section class="leg wrap" id="gestao">
-      <header class="leg-head">
-        <p class="leg-tag">Torre de controle</p>
-        <h2>Quem conduz a FAPESP</h2>
-      </header>
-      <div class="prose">
-        <p>Toda bolsa passa por uma estrutura de conselhos e coordenações. O <strong>Conselho Superior</strong>, com doze membros, define a política científica da Fundação. O <strong>Conselho Técnico-Administrativo</strong> é a diretoria executiva, com três diretores. A <strong>Assessoria Científica</strong> reúne coordenadores, gestores de área, assessores e comitês de programas, organizados em três coordenadorias gerais e na assessoria da Diretoria Científica, num total de <b id="n-assessoria">—</b> posições.</p>
-        <p>As listas foram transcritas das páginas oficiais da FAPESP <a href="#ref-3">[3]</a><a href="#ref-4">[4]</a><a href="#ref-5">[5]</a><a href="#ref-6">[6]</a> e servem de base para cruzamentos com as bolsas. Uma mesma pessoa pode ocupar mais de uma posição.</p>
+    <section class="band" aria-label="Temas">
+      <img src="assets/img/bepe-02.jpg" alt="Pesquisadora em trabalho de campo numa área úmida costeira" loading="lazy" data-parallax>
+      <div class="wrap band-body">
+        <p class="band-big"><span data-k="temas">15.143</span> <span class="serif">temas diferentes</span></p>
+        <p>Das palavras-chave de cada bolsa sai um retrato do que a pesquisa paulista foi buscar lá fora, da química à microbiota.</p>
       </div>
-      <figure class="fig">
-        <div class="fig-bar"><figcaption><span class="fig-n">Fig. 17</span> Conselho Superior e Conselho Técnico-Administrativo</figcaption></div>
-        <div class="people-cols" id="gestao-lista"></div>
-        <p class="fig-src">Fonte: FAPESP <a href="#ref-4">[4]</a><a href="#ref-5">[5]</a><a href="#ref-6">[6]</a>. <a class="csv" href="data/fapesp_gestao.csv" download>Lista (CSV)</a></p>
-      </figure>
-      <figure class="fig fig-wide">
-        <div class="fig-bar">
-          <figcaption><span class="fig-n">Fig. 18</span> Assessoria Científica, por coordenadoria e área</figcaption>
-          <input class="search" id="assessoria-search" type="search" placeholder="Buscar nome, área ou programa" aria-label="Buscar na Assessoria Científica">
-        </div>
-        <div class="directory" id="assessoria-lista"></div>
-        <p class="fig-src">Fonte: FAPESP, Assessoria Científica <a href="#ref-3">[3]</a>, página atualizada em 28/10/2026. Os nomes levam ao perfil publicado pela FAPESP ou pela BV, quando há. <a class="csv" href="data/fapesp_assessoria_cientifica.csv" download>Lista (CSV)</a></p>
-      </figure>
     </section>
 
-    <section class="leg wrap" id="metodo">
-      <header class="leg-head">
-        <p class="leg-tag">Bagagem</p>
-        <h2>Fontes e dados</h2>
-      </header>
-      <div class="method">
-        <p class="downloads">
-          <a class="dl-main" href="data/partidas_dados.zip" download>Baixar todos os dados (ZIP, 1,4 MB)</a>
-          <a href="data/LEIAME.md">Dicionário dos dados</a>
-          <a href="https://github.com/aikiesan/data_BEPE">Repositório no GitHub</a>
-        </p>
-
-        <h3 class="method-h">Referências</h3>
-        <ol class="refs">
-          <li id="ref-1">FAPESP. Biblioteca Virtual. <em>Bolsas no exterior concluídas</em>. Exportação em CSV, dados atualizados em 25/10/2026. <a href="https://bv.fapesp.br/">bv.fapesp.br</a></li>
-          <li id="ref-2">FAPESP. Biblioteca Virtual. <em>Bolsas no exterior em andamento</em>. Exportação em CSV, dados atualizados em 25/10/2026. <a href="https://bv.fapesp.br/">bv.fapesp.br</a></li>
-          <li id="ref-3">FAPESP. <em>Assessoria Científica</em>. Página atualizada em 28/10/2026. <a href="https://fapesp.br/assessoria">fapesp.br/assessoria</a></li>
-          <li id="ref-4">FAPESP. <em>Conselho Superior da FAPESP</em>. Página atualizada em 03/09/2026. <a href="https://fapesp.br/32/conselho-superior-da-fapesp">fapesp.br/32/conselho-superior-da-fapesp</a></li>
-          <li id="ref-5">FAPESP. <em>Conselho Técnico-Administrativo da FAPESP</em>. Consultada em 03/11/2026. <a href="https://fapesp.br/73/conselho-tecnico-administrativo-da-fapesp">fapesp.br/73/conselho-tecnico-administrativo-da-fapesp</a></li>
-          <li id="ref-6">FAPESP. <em>Conselho Superior e Diretoria</em>. Página atualizada em 24/04/2026. <a href="https://fapesp.br/gestao">fapesp.br/gestao</a></li>
-          <li id="ref-7">Natural Earth, via <em>world-atlas</em> 2.0.2, países em escala 1:110m. Base dos mapas. <a href="https://github.com/topojson/world-atlas">github.com/topojson/world-atlas</a></li>
-        </ol>
-
-        <h3 class="method-h">Tabelas completas</h3>
-        <div class="table-scroll">
-          <table class="files">
-            <thead><tr><th>Arquivo</th><th>Conteúdo</th><th class="num">Linhas</th><th class="num">Tamanho</th><th>Fonte</th></tr></thead>
-            <tbody>
-              <tr><td><a href="data/bolsas_fapesp_exterior.csv" download>bolsas_fapesp_exterior.csv</a></td><td>Uma linha por bolsa: processo, situação, ano do pedido, início, duração, modalidade, áreas, sede, destino e assuntos. Sem nomes e sem resumos.</td><td class="num">21.032</td><td class="num">6,8 MB</td><td><a href="#ref-1">[1]</a><a href="#ref-2">[2]</a></td></tr>
-              <tr><td><a href="data/fapesp_assessoria_cientifica.csv" download>fapesp_assessoria_cientifica.csv</a></td><td>Coordenadores, gestores de área, assessores e comitês científicos, com link para o perfil.</td><td class="num">205</td><td class="num">39 KB</td><td><a href="#ref-3">[3]</a></td></tr>
-              <tr><td><a href="data/fapesp_gestao.csv" download>fapesp_gestao.csv</a></td><td>Integrantes do Conselho Superior e do Conselho Técnico-Administrativo.</td><td class="num">15</td><td class="num">2 KB</td><td><a href="#ref-4">[4]</a><a href="#ref-5">[5]</a><a href="#ref-6">[6]</a></td></tr>
-              <tr><td><a href="data/bepe.json" download>bepe.json</a></td><td>Agregados que alimentam todos os gráficos (JSON).</td><td class="num"></td><td class="num">137 KB</td><td><a href="#ref-1">[1]</a><a href="#ref-2">[2]</a></td></tr>
-              <tr><td><a href="data/LEIAME.md" download>LEIAME.md</a></td><td>Dicionário dos arquivos, fontes e regras de tratamento.</td><td class="num"></td><td class="num">5 KB</td><td></td></tr>
-            </tbody>
-          </table>
+    <!-- 05 temas -->
+    <section class="ch wrap" id="temas">
+      <div class="ch-head">
+        <p class="ch-num"><b>05</b> Temas</p>
+        <h2>O que se vai <span class="serif">pesquisar</span></h2>
+      </div>
+      <div class="ch-body">
+        <div class="prose">
+          <p>Ciências Exatas e da Terra dominavam os anos 1990, com quase um terço das bolsas. Desde a criação do BEPE, Ciências Biológicas dividem a liderança, e as Ciências Agrárias passaram de 6% para cerca de 10%. Química, Física e Medicina são as áreas individuais com mais partidas.</p>
+          <p>As palavras-chave contam a história mais recente: aprendizado de máquina, inteligência artificial, impressão 3D e microbiota cresceram muito mais rápido que o total. Use o explorador para seguir qualquer um dos 400 temas mais frequentes.</p>
         </div>
+        <dl class="facts">
+          <div><dt>Tema mais citado</dt><dd><span data-f="top_tema">—</span><small><span data-f="top_tema_n">—</span> bolsas</small></dd></div>
+          <div><dt>Maior crescimento</dt><dd><span data-f="top_cresc">—</span><small>fatia <span data-f="top_cresc_x">—</span> maior em 2021–2026 que em 2012–2017</small></dd></div>
+          <div><dt>Área com mais bolsas</dt><dd><span data-f="top_area">—</span><small><span data-f="top_area_n">—</span> bolsas</small></dd></div>
+        </dl>
+      </div>
+      <div class="figs">
+        <figure class="fig rise">
+          <div class="fig-bar"><figcaption><span class="fig-n">Fig. 10</span>Composição das bolsas por grande área, ano a ano</figcaption></div>
+          <div class="legend" id="legend-areas"></div>
+          <div class="chart" id="chart-stream"></div>
+          <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig10_grande_area_por_ano.csv" download>Dados da figura (CSV)</a></p>
+        </figure>
+        <div class="fig-row">
+          <figure class="fig rise">
+            <div class="fig-bar"><figcaption><span class="fig-n">Fig. 11</span>As 30 áreas com mais bolsas</figcaption></div>
+            <div class="bars" id="bars-areas"></div>
+            <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig11_areas_mais_frequentes.csv" download>Dados da figura (CSV)</a></p>
+          </figure>
+          <figure class="fig rise">
+            <div class="fig-bar"><figcaption><span class="fig-n">Fig. 12</span>Explorador de temas</figcaption></div>
+            <div class="explorer">
+              <label class="explorer-label" for="tema-input">Adicione um tema (até 6)</label>
+              <div class="explorer-input">
+                <input id="tema-input" list="tema-list" type="text" autocomplete="off" placeholder="ex.: Mudança climática">
+                <button type="button" id="tema-add">Adicionar</button>
+              </div>
+              <datalist id="tema-list"></datalist>
+              <div class="chips" id="tema-chips"></div>
+            </div>
+            <div class="chart" id="chart-temas"></div>
+            <p class="fig-note">Percentual das bolsas de cada ano que citam o tema, de 2002 em diante.</p>
+            <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig12_temas_por_ano.csv" download>Dados da figura (CSV)</a></p>
+          </figure>
+        </div>
+        <div class="fig-row">
+          <figure class="fig rise">
+            <div class="fig-bar"><figcaption><span class="fig-n">Fig. 13</span>Temas em ascensão: 2012–2017 contra 2021–2026</figcaption></div>
+            <div class="chart" id="chart-slope"></div>
+            <p class="fig-note">Fatia das bolsas que citam o tema em cada período. Só temas com ao menos 5 bolsas no primeiro período e 25 no segundo, ordenados pelo crescimento relativo.</p>
+            <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig13_temas_em_ascensao.csv" download>Dados da figura (CSV)</a></p>
+          </figure>
+          <figure class="fig rise">
+            <div class="fig-bar"><figcaption><span class="fig-n">Fig. 14</span>Novos no vocabulário</figcaption></div>
+            <p class="fig-lead">Temas citados em 25 ou mais bolsas desde 2021 que não apareciam em nenhuma entre 2012 e 2017. Parte deles reflete a pandemia; parte, mudanças no vocabulário de assuntos da FAPESP.</p>
+            <div class="chips chips-static" id="novos"></div>
+            <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig14_temas_novos.csv" download>Dados da figura (CSV)</a></p>
+          </figure>
+        </div>
+        <figure class="fig rise">
+          <div class="fig-bar"><figcaption><span class="fig-n">Fig. 15</span>Os temas mais citados em cada grande área</figcaption></div>
+          <div class="area-grid" id="temas-area"></div>
+          <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig15_temas_por_grande_area.csv" download>Dados da figura (CSV)</a></p>
+        </figure>
+      </div>
+    </section>
 
-        <h3 class="method-h">Dados de cada figura</h3>
-        <ul class="fig-files">
-          <li><a href="data/figuras/fig00_resumo.csv" download>fig00_resumo.csv</a> <span>13 linhas</span></li>
-          <li><a href="data/figuras/fig01_bolsas_por_ano_modalidade.csv" download>fig01_bolsas_por_ano_modalidade.csv</a> <span>35 linhas</span></li>
-          <li><a href="data/figuras/fig02_ficha_modalidades.csv" download>fig02_ficha_modalidades.csv</a> <span>6 linhas</span></li>
-          <li><a href="data/figuras/fig03_inicios_por_mes_modalidade.csv" download>fig03_inicios_por_mes_modalidade.csv</a> <span>12 linhas</span></li>
-          <li><a href="data/figuras/fig04_inicios_mes_ano.csv" download>fig04_inicios_mes_ano.csv</a> <span>168 linhas</span></li>
-          <li><a href="data/figuras/fig05_destinos_por_periodo.csv" download>fig05_destinos_por_periodo.csv</a> <span>82 linhas</span></li>
-          <li><a href="data/figuras/fig06_posicao_destinos_por_periodo.csv" download>fig06_posicao_destinos_por_periodo.csv</a> <span>15 linhas</span></li>
-          <li><a href="data/figuras/fig07_grande_area_por_destino.csv" download>fig07_grande_area_por_destino.csv</a> <span>9 linhas</span></li>
-          <li><a href="data/figuras/fig08_instituicoes_unidades_sede.csv" download>fig08_instituicoes_unidades_sede.csv</a> <span>72 linhas</span></li>
-          <li><a href="data/figuras/fig09_cidades_sede.csv" download>fig09_cidades_sede.csv</a> <span>15 linhas</span></li>
-          <li><a href="data/figuras/fig10_grande_area_por_ano.csv" download>fig10_grande_area_por_ano.csv</a> <span>35 linhas</span></li>
-          <li><a href="data/figuras/fig11_areas_mais_frequentes.csv" download>fig11_areas_mais_frequentes.csv</a> <span>30 linhas</span></li>
-          <li><a href="data/figuras/fig12_temas_por_ano.csv" download>fig12_temas_por_ano.csv</a> <span>6.700 linhas</span></li>
-          <li><a href="data/figuras/fig13_temas_em_ascensao.csv" download>fig13_temas_em_ascensao.csv</a> <span>68 linhas</span></li>
-          <li><a href="data/figuras/fig14_temas_novos.csv" download>fig14_temas_novos.csv</a> <span>7 linhas</span></li>
-          <li><a href="data/figuras/fig15_temas_por_grande_area.csv" download>fig15_temas_por_grande_area.csv</a> <span>72 linhas</span></li>
-          <li><a href="data/figuras/fig16_instituicoes_anfitrias.csv" download>fig16_instituicoes_anfitrias.csv</a> <span>100 linhas</span></li>
-        </ul>
+    <section class="band" aria-label="Anfitriãs">
+      <img src="assets/img/bepe-12.jpg" alt="Estudante lê anotações num gramado diante da Tower Bridge, em Londres" loading="lazy" data-parallax>
+      <div class="wrap band-body">
+        <p class="band-big"><span data-k="anfitrias">2.909</span> <span class="serif">instituições anfitriãs</span></p>
+        <p>Universidades, laboratórios e centros de pesquisa que receberam bolsistas paulistas em 35 anos.</p>
+      </div>
+    </section>
 
-        <h3 class="method-h">Tratamento</h3>
-        <ul>
-          <li><strong>Correção de colunas.</strong> As exportações da BV têm 33 campos por linha e 30 nomes no cabeçalho. As colunas foram lidas por posição. Uma linha por processo, <span data-k="total">—</span> no total, sem repetições.</li>
-          <li><strong>Ano.</strong> Os dois primeiros dígitos do número do processo, que indicam o ano do pedido. Cerca de 43% das bolsas começam no ano seguinte ao do pedido.</li>
-          <li><strong>Época do ano.</strong> Mês da data de início do estágio. A data de concessão não está na exportação.</li>
-          <li><strong>Modalidades.</strong> Doutorado inclui Doutorado Direto. "Outras" reúne Novas Fronteiras, Capacitação e Doutorado pleno.</li>
-          <li><strong>Destinos.</strong> Inglaterra, Escócia, País de Gales e Irlanda do Norte somados como Reino Unido; Holanda e Países Baixos unificados. Bolsas com mais de um país contam no primeiro.</li>
-          <li><strong>Temas.</strong> Palavras-chave do campo Assuntos, contadas uma vez por bolsa. Sinônimos não foram unidos.</li>
-          <li><strong>Pessoas.</strong> Nomes de bolsistas e orientadores e os resumos ficaram fora do site e das tabelas. As listas de gestão e da Assessoria Científica são públicas e foram transcritas das páginas da FAPESP nas datas indicadas.</li>
-          <li><strong>Reprodução.</strong> <a href="https://github.com/aikiesan/data_BEPE/blob/main/scripts/prepare_data.py">prepare_data.py</a> gera a tabela por bolsa e os agregados; <a href="https://github.com/aikiesan/data_BEPE/blob/main/scripts/export_figuras.py">export_figuras.py</a> gera os CSVs das figuras e o ZIP.</li>
-        </ul>
+    <!-- 06 anfitriãs -->
+    <section class="ch wrap" id="anfitrias">
+      <div class="ch-head">
+        <p class="ch-num"><b>06</b> Anfitriãs</p>
+        <h2>Quem <span class="serif">recebe</span></h2>
+      </div>
+      <div class="ch-body">
+        <div class="prose">
+          <p>As bolsas passaram por <b data-k="anfitrias">—</b> instituições diferentes no exterior. As universidades portuguesas aparecem no topo, seguidas de Harvard, da Universidade da Flórida e da École des Hautes Études en Sciences Sociales, um polo das humanidades. Procure qualquer uma das cem mais frequentes.</p>
+        </div>
+        <dl class="facts">
+          <div><dt>Mais frequente</dt><dd><span data-f="top_host">—</span><small><span data-f="top_host_n">—</span> bolsas</small></dd></div>
+          <div><dt>Portugal no top 10</dt><dd><span data-f="pt_top10">—</span><small>instituições portuguesas entre as dez primeiras</small></dd></div>
+        </dl>
+      </div>
+      <div class="figs">
+        <figure class="fig rise">
+          <div class="fig-bar">
+            <figcaption><span class="fig-n">Fig. 16</span>As 100 instituições anfitriãs mais frequentes</figcaption>
+            <input class="search" id="host-search" type="search" placeholder="Buscar instituição, país ou área" aria-label="Buscar instituição anfitriã">
+          </div>
+          <div class="table-scroll table-tall">
+            <table class="hosts" id="hosts">
+              <thead><tr><th class="num">#</th><th>Instituição</th><th>País</th><th>Grande área mais comum</th><th class="num">Anos</th><th class="num">Bolsas</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="fig-note">Nomes como registrados pela FAPESP. Campi diferentes da mesma universidade aparecem separados, como Harvard em Boston e em Cambridge.</p>
+          <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/fig16_instituicoes_anfitrias.csv" download>Dados da figura (CSV)</a></p>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 07 gestão -->
+    <section class="ch wrap" id="gestao">
+      <div class="ch-head">
+        <p class="ch-num"><b>07</b> Gestão</p>
+        <h2>Quem conduz <span class="serif">a FAPESP</span></h2>
+      </div>
+      <div class="ch-body">
+        <div class="prose">
+          <p>Toda bolsa passa por uma estrutura de conselhos e coordenações. O <strong>Conselho Superior</strong> define a política científica da Fundação. O <strong>Conselho Técnico-Administrativo</strong> é a diretoria executiva. A <strong>Assessoria Científica</strong> reúne coordenadores, gestores de área, assessores e comitês de programas, em três coordenadorias gerais e na assessoria da Diretoria Científica.</p>
+          <p>As listas foram transcritas das páginas oficiais da FAPESP <a href="#ref-3">[3]</a><a href="#ref-4">[4]</a><a href="#ref-5">[5]</a><a href="#ref-6">[6]</a> e servem de base para cruzamentos com as bolsas. Uma mesma pessoa pode ocupar mais de uma posição.</p>
+        </div>
+        <dl class="facts">
+          <div><dt>Conselho Superior</dt><dd>12<small>conselheiros, mandato de seis anos</small></dd></div>
+          <div><dt>Conselho Técnico-Administrativo</dt><dd>3<small>diretores, mandato de três anos</small></dd></div>
+          <div><dt>Assessoria Científica</dt><dd><span id="n-assessoria">—</span><small>posições listadas</small></dd></div>
+        </dl>
+      </div>
+      <div class="figs">
+        <figure class="fig rise">
+          <div class="fig-bar"><figcaption><span class="fig-n">Fig. 17</span>Conselho Superior e Conselho Técnico-Administrativo</figcaption></div>
+          <div class="people-cols" id="gestao-lista"></div>
+          <p class="fig-src">Fonte: FAPESP <a href="#ref-4">[4]</a><a href="#ref-5">[5]</a><a href="#ref-6">[6]</a>. <a class="csv" href="data/fapesp_gestao.csv" download>Lista (CSV)</a></p>
+        </figure>
+        <figure class="fig rise">
+          <div class="fig-bar">
+            <figcaption><span class="fig-n">Fig. 18</span>Assessoria Científica, por coordenadoria e área</figcaption>
+            <input class="search" id="assessoria-search" type="search" placeholder="Buscar nome, área ou programa" aria-label="Buscar na Assessoria Científica">
+          </div>
+          <div class="directory" id="assessoria-lista"></div>
+          <p class="fig-src">Fonte: FAPESP, Assessoria Científica <a href="#ref-3">[3]</a>, página atualizada em 28/10/2026. Os nomes levam ao perfil publicado pela FAPESP ou pela BV, quando há. <a class="csv" href="data/fapesp_assessoria_cientifica.csv" download>Lista (CSV)</a></p>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 08 fontes e dados -->
+    <section class="ch wrap" id="metodo">
+      <div class="ch-head">
+        <p class="ch-num"><b>08</b> Bagagem</p>
+        <h2>Fontes e <span class="serif">dados</span></h2>
+      </div>
+      <div class="data-grid method">
+        <div class="panel panel-wide">
+          <h3>Todos os números desta página, para baixar</h3>
+          <p class="downloads">
+            <a class="cta cta-dark" href="data/partidas_dados.zip" download>
+              <span class="cta-pill">Baixar tudo (ZIP, 1,4 MB)</span>
+              <span class="cta-dot" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 4v12M5 11l5 5 5-5"/></svg></span>
+            </a>
+            <a href="data/LEIAME.md">Dicionário dos dados</a>
+            <a href="https://github.com/aikiesan/data_BEPE">Repositório no GitHub</a>
+          </p>
+        </div>
+        <div class="panel panel-wide">
+          <h3>Referências</h3>
+          <ol class="refs">
+            <li id="ref-1">FAPESP. Biblioteca Virtual. <em>Bolsas no exterior concluídas</em>. Exportação em CSV, dados atualizados em 25/10/2026. <a href="https://bv.fapesp.br/">bv.fapesp.br</a></li>
+            <li id="ref-2">FAPESP. Biblioteca Virtual. <em>Bolsas no exterior em andamento</em>. Exportação em CSV, dados atualizados em 25/10/2026. <a href="https://bv.fapesp.br/">bv.fapesp.br</a></li>
+            <li id="ref-3">FAPESP. <em>Assessoria Científica</em>. Página atualizada em 28/10/2026. <a href="https://fapesp.br/assessoria">fapesp.br/assessoria</a></li>
+            <li id="ref-4">FAPESP. <em>Conselho Superior da FAPESP</em>. Página atualizada em 03/09/2026. <a href="https://fapesp.br/32/conselho-superior-da-fapesp">fapesp.br/32/conselho-superior-da-fapesp</a></li>
+            <li id="ref-5">FAPESP. <em>Conselho Técnico-Administrativo da FAPESP</em>. Consultada em 03/11/2026. <a href="https://fapesp.br/73/conselho-tecnico-administrativo-da-fapesp">fapesp.br/73/conselho-tecnico-administrativo-da-fapesp</a></li>
+            <li id="ref-6">FAPESP. <em>Conselho Superior e Diretoria</em>. Página atualizada em 24/04/2026. <a href="https://fapesp.br/gestao">fapesp.br/gestao</a></li>
+            <li id="ref-7">Natural Earth, via <em>world-atlas</em> 2.0.2, países em escala 1:110m. Base dos mapas. <a href="https://github.com/topojson/world-atlas">github.com/topojson/world-atlas</a></li>
+            <li id="ref-8">Agência FAPESP. <em>Comunicado do Conselho Técnico-Administrativo da FAPESP</em>. Publicado em 02/09/2026. <a href="https://agencia.fapesp.br/comunicado-do-conselho-tecnico-administrativo-da-fapesp/59112">agencia.fapesp.br/comunicado-do-conselho-tecnico-administrativo-da-fapesp/59112</a></li>
+            <li id="ref-9">FAPESP. <em>Bolsa Estágio de Pesquisa no Exterior (BEPE): norma vigente a partir de 01/09/2026</em>. Consultada em 03/11/2026. <a href="https://fapesp.br/bolsas/bepe">fapesp.br/bolsas/bepe</a></li>
+          </ol>
+        </div>
+        <div class="panel panel-wide">
+          <h3>Tabelas completas</h3>
+          <div class="table-scroll">
+            <table class="files">
+              <thead><tr><th>Arquivo</th><th>Conteúdo</th><th class="num">Linhas</th><th class="num">Tamanho</th><th>Fonte</th></tr></thead>
+              <tbody>
+                <tr><td><a href="data/bolsas_fapesp_exterior.csv" download>bolsas_fapesp_exterior.csv</a></td><td>Uma linha por bolsa: processo, situação, ano do pedido, início, duração, modalidade, áreas, sede, destino e assuntos. Sem nomes e sem resumos.</td><td class="num">21.032</td><td class="num">6,8 MB</td><td><a href="#ref-1">[1]</a><a href="#ref-2">[2]</a></td></tr>
+                <tr><td><a href="data/fapesp_assessoria_cientifica.csv" download>fapesp_assessoria_cientifica.csv</a></td><td>Coordenadores, gestores de área, assessores e comitês científicos, com link para o perfil.</td><td class="num">205</td><td class="num">39 KB</td><td><a href="#ref-3">[3]</a></td></tr>
+                <tr><td><a href="data/fapesp_gestao.csv" download>fapesp_gestao.csv</a></td><td>Integrantes do Conselho Superior e do Conselho Técnico-Administrativo.</td><td class="num">15</td><td class="num">2 KB</td><td><a href="#ref-4">[4]</a><a href="#ref-5">[5]</a><a href="#ref-6">[6]</a></td></tr>
+                <tr><td><a href="data/bepe.json" download>bepe.json</a></td><td>Agregados que alimentam todos os gráficos (JSON).</td><td class="num"></td><td class="num">137 KB</td><td><a href="#ref-1">[1]</a><a href="#ref-2">[2]</a></td></tr>
+                <tr><td><a href="data/LEIAME.md" download>LEIAME.md</a></td><td>Dicionário dos arquivos, fontes e regras de tratamento.</td><td class="num"></td><td class="num">5 KB</td><td></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>Dados de cada figura</h3>
+          <ul class="fig-files">
+            <li><a href="data/figuras/fig00_resumo.csv" download>fig00_resumo.csv</a> <span>13 linhas</span></li>
+            <li><a href="data/figuras/fig00b_bepe_por_ano_modalidade.csv" download>fig00b_bepe_por_ano_modalidade.csv</a> <span>64 linhas</span></li>
+            <li><a href="data/figuras/fig01_bolsas_por_ano_modalidade.csv" download>fig01_bolsas_por_ano_modalidade.csv</a> <span>35 linhas</span></li>
+            <li><a href="data/figuras/fig02_ficha_modalidades.csv" download>fig02_ficha_modalidades.csv</a> <span>6 linhas</span></li>
+            <li><a href="data/figuras/fig03_inicios_por_mes_modalidade.csv" download>fig03_inicios_por_mes_modalidade.csv</a> <span>12 linhas</span></li>
+            <li><a href="data/figuras/fig04_inicios_mes_ano.csv" download>fig04_inicios_mes_ano.csv</a> <span>168 linhas</span></li>
+            <li><a href="data/figuras/fig05_destinos_por_periodo.csv" download>fig05_destinos_por_periodo.csv</a> <span>82 linhas</span></li>
+            <li><a href="data/figuras/fig06_posicao_destinos_por_periodo.csv" download>fig06_posicao_destinos_por_periodo.csv</a> <span>15 linhas</span></li>
+            <li><a href="data/figuras/fig07_grande_area_por_destino.csv" download>fig07_grande_area_por_destino.csv</a> <span>9 linhas</span></li>
+            <li><a href="data/figuras/fig08_instituicoes_unidades_sede.csv" download>fig08_instituicoes_unidades_sede.csv</a> <span>72 linhas</span></li>
+            <li><a href="data/figuras/fig09_cidades_sede.csv" download>fig09_cidades_sede.csv</a> <span>15 linhas</span></li>
+            <li><a href="data/figuras/fig10_grande_area_por_ano.csv" download>fig10_grande_area_por_ano.csv</a> <span>35 linhas</span></li>
+            <li><a href="data/figuras/fig11_areas_mais_frequentes.csv" download>fig11_areas_mais_frequentes.csv</a> <span>30 linhas</span></li>
+            <li><a href="data/figuras/fig12_temas_por_ano.csv" download>fig12_temas_por_ano.csv</a> <span>6.700 linhas</span></li>
+            <li><a href="data/figuras/fig13_temas_em_ascensao.csv" download>fig13_temas_em_ascensao.csv</a> <span>68 linhas</span></li>
+            <li><a href="data/figuras/fig14_temas_novos.csv" download>fig14_temas_novos.csv</a> <span>7 linhas</span></li>
+            <li><a href="data/figuras/fig15_temas_por_grande_area.csv" download>fig15_temas_por_grande_area.csv</a> <span>72 linhas</span></li>
+            <li><a href="data/figuras/fig16_instituicoes_anfitrias.csv" download>fig16_instituicoes_anfitrias.csv</a> <span>100 linhas</span></li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>Tratamento</h3>
+          <ul>
+            <li><strong>Correção de colunas.</strong> As exportações da BV têm 33 campos por linha e 30 nomes no cabeçalho. As colunas foram lidas por posição. Uma linha por processo, <span data-k="total">—</span> no total, sem repetições.</li>
+            <li><strong>Ano.</strong> Os dois primeiros dígitos do número do processo, que indicam o ano do pedido. Cerca de 43% das bolsas começam no ano seguinte ao do pedido.</li>
+            <li><strong>Época do ano.</strong> Mês da data de início do estágio. A data de concessão não está na exportação.</li>
+            <li><strong>Modalidades.</strong> Doutorado inclui Doutorado Direto. "Outras" reúne Novas Fronteiras, Capacitação e Doutorado pleno.</li>
+            <li><strong>Destinos.</strong> Inglaterra, Escócia, País de Gales e Irlanda do Norte somados como Reino Unido; Holanda e Países Baixos unificados. Bolsas com mais de um país contam no primeiro.</li>
+            <li><strong>Temas.</strong> Palavras-chave do campo Assuntos, contadas uma vez por bolsa. Sinônimos não foram unidos.</li>
+            <li><strong>Pessoas.</strong> Nomes de bolsistas e orientadores e os resumos ficaram fora do site e das tabelas. As listas de gestão e da Assessoria Científica são públicas e foram transcritas das páginas da FAPESP nas datas indicadas.</li>
+            <li><strong>Imagens.</strong> Fotografias apenas ilustrativas; não retratam necessariamente bolsistas da FAPESP. Direitos dos respectivos autores.</li>
+            <li><strong>Reprodução.</strong> <a href="https://github.com/aikiesan/data_BEPE/blob/main/scripts/prepare_data.py">prepare_data.py</a> gera a tabela por bolsa e os agregados; <a href="https://github.com/aikiesan/data_BEPE/blob/main/scripts/export_figuras.py">export_figuras.py</a> gera os CSVs das figuras e o ZIP.</li>
+          </ul>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer class="foot">
-    <div class="airmail airmail-thin" aria-hidden="true"></div>
-    <div class="wrap foot-inner">
-      <p>Dados públicos da <a href="https://bv.fapesp.br/">BV FAPESP</a> e de <a href="https://fapesp.br/">fapesp.br</a>, ver <a href="#metodo">fontes e dados</a>. Visualização independente, sem vínculo oficial com a Fundação.</p>
+  <footer class="foot night">
+    <div class="wrap foot-top">
+      <h2>Os dados são <span class="serif">abertos</span></h2>
+      <a class="cta cta-dark" href="data/partidas_dados.zip" download>
+        <span class="cta-pill">Baixar tudo</span>
+        <span class="cta-dot" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 4v12M5 11l5 5 5-5"/></svg></span>
+      </a>
+    </div>
+    <div class="wrap"><p class="foot-word">data bepe<i>.</i></p></div>
+    <div class="wrap foot-meta">
+      <p>Dados públicos da <a href="https://bv.fapesp.br/">BV FAPESP</a> e de <a href="https://fapesp.br/">fapesp.br</a>, ver <a href="#metodo">fontes e dados</a>. Projeto independente, sem vínculo com a Fundação. As análises e opiniões são dos autores.</p>
       <p><a href="https://github.com/aikiesan/data_BEPE">github.com/aikiesan/data_BEPE</a></p>
     </div>
   </footer>
@@ -364,6 +549,6 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
-  <script src="assets/js/app.js"></script>
+  <script src="assets/js/app.js?v=20261103"></script>
 </body>
 </html>

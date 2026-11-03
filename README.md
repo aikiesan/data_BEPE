@@ -1,6 +1,6 @@
-# Partidas
+# Data BEPE
 
-Ensaio visual sobre as **21.032 bolsas no exterior** concedidas pela FAPESP entre 1992 e 2026: quantas foram, em que época do ano começam, para onde foram, de onde saíram e o que foram estudar.
+Leitura crítica, em dados, das **21.032 bolsas no exterior** concedidas pela FAPESP entre 1992 e 2026, e do que muda com as novas regras da BEPE em vigor desde 01/09/2026: iniciação científica e mestrado fora do fluxo contínuo e estágio inicial de 6 meses.
 
 **Site:** https://aikiesan.github.io/data_BEPE/
 
@@ -8,6 +8,7 @@ Ensaio visual sobre as **21.032 bolsas no exterior** concedidas pela FAPESP entr
 
 | Trecho | Pergunta | Figuras |
 |---|---|---|
+| Em jogo | O que muda com as regras de 2026? | IC e mestrado = 44% das BEPE de 2025; 3 de cada 4 estágios de doutorado e pós-doc planejados para mais de 6 meses |
 | 1 · Ritmo | Quantas bolsas por ano? | barras empilhadas por modalidade, ficha das modalidades |
 | 2 · Calendário | Em que mês começam? | relógio radial por modalidade, mapa de calor mês × ano |
 | 3 · Destinos | Para onde vão? | mapa por período, ranking dos 10 maiores destinos, matriz grande área × país |
@@ -26,6 +27,8 @@ Ensaio visual sobre as **21.032 bolsas no exterior** concedidas pela FAPESP entr
 5. FAPESP. Conselho Técnico-Administrativo da FAPESP, consultada em 03/11/2026. https://fapesp.br/73/conselho-tecnico-administrativo-da-fapesp
 6. FAPESP. Conselho Superior e Diretoria, página atualizada em 24/04/2026. https://fapesp.br/gestao
 7. Natural Earth via world-atlas 2.0.2 (países 1:110m), base dos mapas. https://github.com/topojson/world-atlas
+8. Agência FAPESP. Comunicado do Conselho Técnico-Administrativo da FAPESP, 02/09/2026. https://agencia.fapesp.br/comunicado-do-conselho-tecnico-administrativo-da-fapesp/59112
+9. FAPESP. Bolsa Estágio de Pesquisa no Exterior (BEPE), norma vigente a partir de 01/09/2026. https://fapesp.br/bolsas/bepe
 
 Cada figura do site cita a sua fonte e tem um link para o CSV com os números que desenha. O dicionário completo está em [`data/LEIAME.md`](data/LEIAME.md).
 
@@ -38,11 +41,12 @@ Cada figura do site cita a sua fonte e tem um link para o CSV com os números qu
 
 ```
 index.html                  página única
-assets/css/style.css        tipografia, cores (claro/escuro), layout
+assets/css/style.css        tipografia, cores, layout
+assets/img/bepe-01..12.jpg  fotos ilustrativas do mosaico e das faixas
 assets/js/app.js            todos os gráficos (D3 v7)
 data/bepe.json              agregados usados pela página
 data/bolsas_fapesp_exterior.csv   base limpa, uma linha por bolsa
-data/figuras/figNN_*.csv    os números de cada figura
+data/figuras/figNN_*.csv    os números de cada figura (fig00b: BEPE por ano e modalidade, base da seção Em jogo)
 data/fapesp_assessoria_cientifica.csv   Assessoria Científica da FAPESP [3]
 data/fapesp_gestao.csv      Conselho Superior e Conselho Técnico-Administrativo [4][5]
 data/partidas_dados.zip     tudo acima num arquivo só
@@ -52,7 +56,7 @@ scripts/export_figuras.py   gera os CSVs das figuras e o ZIP
 .github/workflows/pages.yml publicação no GitHub Pages
 ```
 
-Sem build: é HTML, CSS e JS estáticos. D3 e TopoJSON vêm do cdnjs; o contorno dos países (world-atlas 110m) vem do jsDelivr.
+Sem build: é HTML, CSS e JS estáticos. As fotos são apenas ilustrativas; direitos dos respectivos autores. D3 e TopoJSON vêm do cdnjs; o contorno dos países (world-atlas 110m) vem do jsDelivr.
 
 ## Atualizar os dados
 

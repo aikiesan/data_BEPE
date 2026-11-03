@@ -28,6 +28,26 @@ def r4(x):
     return round(x, 4)
 
 
+def em_jogo():
+    """BEPE por ano e modalidade, com a duração dos estágios: base da seção "Em jogo"."""
+    import statistics
+    with open(DADOS / 'bolsas_fapesp_exterior.csv', encoding='utf-8') as f:
+        bepe = [r for r in csv.DictReader(f) if r['grupo'].startswith('BEPE')]
+    por = {}
+    for r in bepe:
+        por.setdefault((r['ano_pedido'], r['grupo']), []).append(float(r['meses']) if r['meses'] else None)
+    linhas = []
+    for (ano, grupo), ms in sorted(por.items()):
+        ms_ok = [m for m in ms if m is not None]
+        tot_ano = sum(len(v) for (a, _), v in por.items() if a == ano)
+        linhas.append([ano, grupo, len(ms), tot_ano, r4(len(ms) / tot_ano),
+                       round(statistics.median(ms_ok), 1) if ms_ok else '',
+                       sum(m > 6.5 for m in ms_ok), len(ms_ok)])
+    grava('fig00b_bepe_por_ano_modalidade.csv',
+          ['ano_pedido', 'modalidade', 'bolsas', 'bolsas_bepe_no_ano', 'fatia_do_ano',
+           'meses_mediana', 'estagios_acima_de_6_meses', 'estagios_com_duracao'], linhas)
+
+
 def main():
     d = json.loads((DADOS / 'bepe.json').read_text(encoding='utf-8'))
     SAIDA.mkdir(exist_ok=True)
@@ -104,6 +124,8 @@ def main():
 
     grava('fig16_instituicoes_anfitrias.csv', ['posicao', 'instituicao', 'pais', 'grande_area_mais_comum', 'primeiro_ano', 'ultimo_ano', 'bolsas'],
           [[i + 1, h['nome'], h['pais'], h['area'], h['primeiro'], h['ultimo'], h['n']] for i, h in enumerate(d['anfitrias'])])
+
+    em_jogo()
 
     with zipfile.ZipFile(DADOS / 'partidas_dados.zip', 'w', zipfile.ZIP_DEFLATED) as z:
         for f in sorted(DADOS.rglob('*')):
