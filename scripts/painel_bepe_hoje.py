@@ -18,7 +18,8 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 DADOS = RAIZ / 'data'
 FIG = DADOS / 'figuras'
-CORTE = 16000          # número de processo onde as curvas de 2026 e 2025 se separam (não corresponde a uma data exata)
+FAIXA = 2000           # largura das faixas da numeração dos processos
+LIMIAR = 0.5           # início da queda: primeira faixa a partir da qual todas ficam abaixo de 50% do ano anterior
 BIN = 500
 MODS = ['BEPE Iniciação Científica', 'BEPE Mestrado', 'BEPE Doutorado', 'BEPE Pós-doutorado']
 CURTO = {'BEPE Iniciação Científica': 'Iniciação científica', 'BEPE Mestrado': 'Mestrado',
@@ -38,7 +39,8 @@ EVENTOS = [
 ATUALIZACOES = [
     {'data': '2026-11-03', 'texto': 'Primeira versão do painel, com a exportação da BV de 25/10/2026.'},
     {'data': '2026-11-03', 'texto': 'Revisão de todos os números contra as exportações da BV e as páginas da FAPESP. Corrigidos: duração da chamada de iniciação científica (4 meses), bolsistas no exterior agora (sem os estágios já terminados) e a leitura da numeração dos processos, que não indica o mês do pedido.'},
-    {'data': '2026-11-03', 'texto': 'Nova seção Mês a mês: partidas por mês de início em 2026 e 2025, duração dos estágios de doutorado e pós-doutorado e grandes áreas antes e depois do processo 16.000.'},
+    {'data': '2026-11-03', 'texto': 'Nova seção Mês a mês: partidas por mês de início em 2026 e 2025, duração dos estágios de doutorado e pós-doutorado e grandes áreas antes e depois da queda na numeração.'},
+    {'data': '2026-11-03', 'texto': 'O corte fixo no processo 16.000 foi trocado por faixas de 2.000 processos. A área destacada passa a começar na primeira faixa a partir da qual todas ficam abaixo da metade do ano anterior (hoje, o processo 18.000), regra recalculada a cada exportação.'},
 ]
 
 
@@ -71,13 +73,33 @@ def main():
     atuais = fora + iniciar   # sem os poucos registros "em andamento" com término já passado
     cont = lambda a, lo, hi: sum(1 for r in bepe if r['ano'] == a and lo <= r['seq'] < hi)
 
+    # faixas de 2.000 processos, ano atual x anterior, por modalidade
+    sigla_m = {'BEPE Iniciação Científica': 'ic', 'BEPE Mestrado': 'me', 'BEPE Doutorado': 'do', 'BEPE Pós-doutorado': 'pd'}
+    faixas = []
+    for lo in range(0, mx + 1, FAIXA):
+        hi = min(lo + FAIXA, mx + 1)
+        d = {'de': lo, 'ate': hi - 1}
+        for a, k in ((ano, 'atual'), (ant, 'ant')):
+            d[k] = {g: sum(1 for r in bepe if r['ano'] == a and lo <= r['seq'] < hi and sigla_m[r['grupo']] == g) for g in sigla_m.values()}
+        faixas.append(d)
+    tot = lambda o: sum(o.values())
+    CORTE = faixas[-1]['de']
+    for i in range(len(faixas)):
+        if all(tot(f['atual']) < LIMIAR * tot(f['ant']) for f in faixas[i:]):
+            CORTE = faixas[i]['de']
+            break
+    grava('hoje03_faixas_numeracao.csv',
+          ['faixa_de', 'faixa_ate', 'modalidade', f'bepe_{ano}', f'bepe_{ant}'],
+          [[f['de'], f['ate'], g, f['atual'][g], f['ant'][g]] for f in faixas for g in sigla_m.values()])
+
     kpis = {
         'no_exterior': len(fora), 'a_iniciar': len(iniciar), 'ano': ano, 'ano_anterior': ant,
         'pedidos_ano': cont(ano, 0, 10**6), 'pedidos_ant_mesmo_ponto': cont(ant, 0, mx + 1),
         'pedidos_ant_total': cont(ant, 0, 10**6),
         'antes_corte': cont(ano, 0, CORTE), 'antes_corte_ant': cont(ant, 0, CORTE),
         'depois_corte': cont(ano, CORTE, mx + 1), 'depois_corte_ant': cont(ant, CORTE, mx + 1),
-        'max_seq': mx, 'corte': CORTE,
+        'max_seq': mx, 'corte': CORTE, 'faixa': FAIXA, 'limiar': LIMIAR,
+        'corte_inicio_min': min((r['inicio'] for r in bepe if r['ano'] == ano and r['seq'] >= CORTE), default=''),
     }
 
     # curva acumulada pela numeração do processo
@@ -102,9 +124,6 @@ def main():
         f = lambda a, lo, hi: sum(1 for r in bepe if r['ano'] == a and r['grupo'] == m and lo <= r['seq'] < hi)
         mods.append({'modalidade': CURTO[m], 'antes': f(ano, 0, CORTE), 'antes_ant': f(ant, 0, CORTE),
                      'depois': f(ano, CORTE, mx + 1), 'depois_ant': f(ant, CORTE, mx + 1)})
-    grava('hoje03_modalidades_antes_depois.csv',
-          ['modalidade', f'{ano}_ate_{CORTE - 1}', f'{ant}_ate_{CORTE - 1}', f'{ano}_de_{CORTE}_a_{mx}', f'{ant}_de_{CORTE}_a_{mx}'],
-          [[d['modalidade'], d['antes'], d['antes_ant'], d['depois'], d['depois_ant']] for d in mods])
 
     # quem está fora agora ou vai sair
     top = lambda key, n, fn=lambda x: x: [[fn(k), v] for k, v in Counter(r[key] for r in atuais).most_common(n)]
@@ -194,7 +213,7 @@ def main():
     })
 
     grava('hoje01_indicadores.csv', ['indicador', 'valor'], [[k, v] for k, v in kpis.items()])
-    painel = {'dados_de': ref, 'gerado_em': date.today().isoformat(), 'kpis': kpis, 'acumulado': acum,
+    painel = {'faixas': faixas, 'dados_de': ref, 'gerado_em': date.today().isoformat(), 'kpis': kpis, 'acumulado': acum,
               'modalidades': mods, 'agora': agora, 'inicios': inicios, 'duracao': dur,
               'mensal': mensal, 'duracao_mensal': dur_m, 'areas_corte': areas_corte,
               'eventos': EVENTOS, 'atualizacoes': ATUALIZACOES}

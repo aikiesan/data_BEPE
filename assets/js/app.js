@@ -957,6 +957,8 @@
       ...k,
       var_mesmo_ponto: varP(k.pedidos_ano, k.pedidos_ant_mesmo_ponto),
       var_depois: varP(k.depois_corte, k.depois_corte_ant),
+      var_antes: varP(k.antes_corte, k.antes_corte_ant),
+      corte_inicio: fData(k.corte_inicio_min),
       var_ic: ic ? varP(ic.depois, ic.depois_ant) : '—',
       atuais: k.no_exterior + k.a_iniciar,
       acima6_pct: fP0(d3.sum(dp, (d) => d.acima6) / d3.sum(dp, (d) => d.n)),
@@ -997,7 +999,7 @@
       .attr('x', x).attr('y', Hh - m.b + 18).attr('text-anchor', 'middle').attr('class', 'lbl').text(fN);
     svg.append('text').attr('x', (m.l + W - m.r) / 2).attr('y', Hh - 4).attr('text-anchor', 'middle').attr('class', 'lbl')
       .text('número do processo (ordem do pedido no ano)');
-    // processo 16.000: onde as curvas se separam
+    // início da faixa em que 2026 fica abaixo da metade de 2025
     const xc = x(H.kpis.corte);
     svg.append('rect').attr('x', xc).attr('y', m.t).attr('width', Math.max(0, x(H.kpis.max_seq) - xc)).attr('height', Hh - m.b - m.t)
       .attr('fill', cssv('--red')).attr('fill-opacity', 0.06);
@@ -1052,7 +1054,7 @@
     box.replaceChildren();
     const k = H.kpis;
     const head = el('div', 'mods-row mods-head');
-    head.append(el('span', '', ''), el('span', '', 'Até o processo ' + fN(k.corte)), el('span', '', 'Do ' + fN(k.corte) + ' em diante'));
+    head.append(el('span', '', ''), el('span', '', 'Antes do processo ' + fN(k.corte)), el('span', '', 'Do ' + fN(k.corte) + ' em diante'));
     box.append(head);
     const maxA = d3.max(dados, (d) => Math.max(d.antes, d.antes_ant));
     const maxD = d3.max(dados, (d) => Math.max(d.depois, d.depois_ant));
@@ -1072,7 +1074,7 @@
     };
     for (const d of dados) {
       const row = el('div', 'mods-row');
-      const c1 = celula(d.antes, d.antes_ant, maxA); c1.dataset.label = 'Até o processo ' + fN(k.corte);
+      const c1 = celula(d.antes, d.antes_ant, maxA); c1.dataset.label = 'Antes do processo ' + fN(k.corte);
       const c2 = celula(d.depois, d.depois_ant, maxD); c2.dataset.label = 'Do ' + fN(k.corte) + ' em diante';
       row.append(el('span', 'mods-name', d.modalidade), c1, c2);
       box.append(row);
@@ -1259,6 +1261,50 @@
     }
   }
 
+  const estFaixa = { mod: 'todas' };
+  function drawFaixas() {
+    const box = document.getElementById('chart-faixas');
+    box.replaceChildren();
+    const k = H.kpis;
+    const rows = H.faixas.map((f) => ({ ...f, a: somaMod(f.atual, estFaixa.mod), b: somaMod(f.ant, estFaixa.mod) }));
+    legenda('legend-faixas', [[String(k.ano_anterior), cssv('--muted')], [String(k.ano), cssv('--red')]]);
+    const W = box.clientWidth || 800;
+    const estreito = W < 560;
+    const Hh = estreito ? 260 : 320;
+    const m = { t: 34, r: 6, b: estreito ? 40 : 34, l: 38 };
+    const nome = (f) => fN(f.de / 1000) + '–' + ((f.ate + 1) % 1000 === 0 ? fN((f.ate + 1) / 1000) : L.format(',.1f')(f.ate / 1000)) + ' mil';
+    const x = d3.scaleBand(rows.map((r) => r.de), [m.l, W - m.r]).padding(0.22);
+    const xi = d3.scaleBand(['b', 'a'], [0, x.bandwidth()]).padding(0.08);
+    const y = d3.scaleLinear([0, d3.max(rows, (r) => Math.max(r.a, r.b)) || 1], [Hh - m.b, m.t]).nice();
+    const svg = d3.select(box).append('svg').attr('viewBox', `0 0 ${W} ${Hh}`).attr('width', W).attr('height', Hh);
+    const xc = x(k.corte) - (x.step() * x.paddingInner()) / 2;
+    svg.append('rect').attr('x', xc).attr('y', m.t - 26).attr('width', W - m.r - xc).attr('height', Hh - m.b - m.t + 26)
+      .attr('fill', cssv('--red')).attr('fill-opacity', 0.06);
+    svg.append('text').attr('x', xc + 6).attr('y', m.t - 12).attr('class', 'lbl-strong').attr('fill', cssv('--red'))
+      .text(estreito ? 'queda' : 'menos da metade de ' + k.ano_anterior);
+    svg.append('g').selectAll('line').data(y.ticks(4)).join('line')
+      .attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y).attr('stroke', cssv('--rule')).attr('stroke-dasharray', (d) => (d ? '2 3' : null));
+    svg.append('g').selectAll('text').data(y.ticks(4)).join('text')
+      .attr('x', m.l - 6).attr('y', (d) => y(d) + 4).attr('text-anchor', 'end').attr('class', 'lbl').text(fN);
+    svg.append('g').selectAll('text').data(rows).join('text')
+      .attr('x', (r) => x(r.de) + x.bandwidth() / 2).attr('y', Hh - m.b + 16).attr('text-anchor', 'middle').attr('class', 'lbl')
+      .text((r) => (estreito ? fN(r.de / 1000) : nome(r)));
+    if (estreito) {
+      svg.append('text').attr('x', (m.l + W - m.r) / 2).attr('y', Hh - 4).attr('text-anchor', 'middle').attr('class', 'lbl').text('início da faixa, em milhares');
+    }
+    const g = svg.append('g').selectAll('g').data(rows).join('g').attr('transform', (r) => `translate(${x(r.de)},0)`);
+    g.append('rect').attr('x', xi('b')).attr('width', xi.bandwidth()).attr('y', (r) => y(r.b)).attr('height', (r) => y(0) - y(r.b)).attr('rx', 2).attr('fill', cssv('--muted'));
+    g.append('rect').attr('x', xi('a')).attr('width', xi.bandwidth()).attr('y', (r) => y(r.a)).attr('height', (r) => y(0) - y(r.a)).attr('rx', 2).attr('fill', cssv('--red'));
+    if (!estreito) {
+      g.append('text').attr('x', x.bandwidth() / 2).attr('y', (r) => y(Math.max(r.a, r.b)) - 6).attr('text-anchor', 'middle')
+        .attr('class', 'lbl').text((r) => (r.b ? varP(r.a, r.b) : ''));
+    }
+    g.append('rect').attr('width', x.bandwidth()).attr('y', m.t).attr('height', Hh - m.b - m.t).attr('fill', 'transparent')
+      .on('pointermove', (event, r) => tip(event, 'Processos ' + fN(r.de) + ' a ' + fN(r.ate), [
+        { label: String(k.ano), value: fN(r.a) }, { label: String(k.ano_anterior), value: fN(r.b) }, { label: 'Diferença', value: varP(r.a, r.b) }]))
+      .on('pointerleave', hideTip);
+  }
+
   function startMes() {
     segmented(document.getElementById('seg-mensal'), MODS_MES.map(([value, label]) => ({ value, label })), estMes.mod,
       (v) => { estMes.mod = v; drawMensal(); });
@@ -1274,7 +1320,9 @@
       H = d;
       fillHoje();
       reg(drawAcum);
-      drawModsHoje();
+      segmented(document.getElementById('seg-faixas'), MODS_MES.map(([value, label]) => ({ value, label })), estFaixa.mod,
+        (v) => { estFaixa.mod = v; drawFaixas(); });
+      reg(drawFaixas);
       startMes();
       reg(drawInicios);
       reg(drawDur);
