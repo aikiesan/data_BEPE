@@ -1,0 +1,73 @@
+grande_area,posicao,tema
+Ciências Exatas e da Terra,1,Aprendizado computacional
+Ciências Exatas e da Terra,2,Eletroquímica
+Ciências Exatas e da Terra,3,Sistemas dinâmicos
+Ciências Exatas e da Terra,4,Inteligência artificial
+Ciências Exatas e da Terra,5,Materiais nanoestruturados
+Ciências Exatas e da Terra,6,Mudança climática
+Ciências Exatas e da Terra,7,Espectroscopia
+Ciências Exatas e da Terra,8,Nanopartículas
+Ciências Biológicas,1,Filogenia
+Ciências Biológicas,2,Biologia computacional
+Ciências Biológicas,3,Inflamação
+Ciências Biológicas,4,Biologia molecular
+Ciências Biológicas,5,Neoplasias
+Ciências Biológicas,6,Obesidade
+Ciências Biológicas,7,Sistemática
+Ciências Biológicas,8,Biogeografia
+Ciências Humanas,1,Brasil
+Ciências Humanas,2,Teoria crítica
+Ciências Humanas,3,Democracia
+Ciências Humanas,4,Psicanálise
+Ciências Humanas,5,Formação de professores
+Ciências Humanas,6,Sexualidade
+Ciências Humanas,7,Políticas públicas
+Ciências Humanas,8,Geografia urbana
+Ciências da Saúde,1,Obesidade
+Ciências da Saúde,2,Inflamação
+Ciências da Saúde,3,Fisioterapia
+Ciências da Saúde,4,Exercício físico
+Ciências da Saúde,5,Oncologia
+Ciências da Saúde,6,Neoplasias
+Ciências da Saúde,7,Biologia molecular
+Ciências da Saúde,8,Atividade física
+Engenharias,1,Biomateriais
+Engenharias,2,Impressão tridimensional
+Engenharias,3,Materiais nanoestruturados
+Engenharias,4,Método dos elementos finitos
+Engenharias,5,Tratamento de águas residuárias
+Engenharias,6,Polímeros (materiais)
+Engenharias,7,Propriedades mecânicas
+Engenharias,8,Materiais cerâmicos
+Ciências Agrárias,1,Bovinos
+Ciências Agrárias,2,Nutrição animal
+Ciências Agrárias,3,Cana-de-açúcar
+Ciências Agrárias,4,Biologia molecular
+Ciências Agrárias,5,Genômica
+Ciências Agrárias,6,Gado Nelore
+Ciências Agrárias,7,Qualidade da carne
+Ciências Agrárias,8,Bovinos de corte
+"Linguística, Letras e Artes",1,Poesia
+"Linguística, Letras e Artes",2,História da arte
+"Linguística, Letras e Artes",3,Análise do discurso
+"Linguística, Letras e Artes",4,Tradução
+"Linguística, Letras e Artes",5,Língua portuguesa
+"Linguística, Letras e Artes",6,Literatura portuguesa
+"Linguística, Letras e Artes",7,Romance
+"Linguística, Letras e Artes",8,Dramaturgia
+Ciências Sociais Aplicadas,1,Políticas públicas
+Ciências Sociais Aplicadas,2,Brasil
+Ciências Sociais Aplicadas,3,História da arquitetura
+Ciências Sociais Aplicadas,4,Planejamento territorial urbano
+Ciências Sociais Aplicadas,5,Sustentabilidade
+Ciências Sociais Aplicadas,6,Mudança climática
+Ciências Sociais Aplicadas,7,Finanças
+Ciências Sociais Aplicadas,8,Desenvolvimento econômico
+Interdisciplinar,1,Mudança climática
+Interdisciplinar,2,Sustentabilidade
+Interdisciplinar,3,Biomateriais
+Interdisciplinar,4,Biologia computacional
+Interdisciplinar,5,Geriatria
+Interdisciplinar,6,Políticas públicas
+Interdisciplinar,7,Biotecnologia
+Interdisciplinar,8,Inteligência artificial

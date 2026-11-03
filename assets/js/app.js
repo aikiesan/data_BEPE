@@ -748,6 +748,77 @@
     }
   }
 
+  /* ---------- gestão e assessoria ---------- */
+  const pessoa = (nome, url) => {
+    if (!url) return el('span', 'p-name', nome);
+    const a = el('a', 'p-name', nome); a.href = url; a.target = '_blank'; a.rel = 'noopener';
+    return a;
+  };
+
+  function drawGestao(rows) {
+    const box = document.getElementById('gestao-lista');
+    box.replaceChildren();
+    for (const [orgao, lista] of d3.group(rows, (r) => r.orgao)) {
+      const col = el('div', 'people');
+      col.append(el('h3', '', orgao));
+      const ul = el('ul');
+      for (const r of lista) {
+        const li = el('li');
+        li.append(el('span', 'p-name', r.nome), el('span', 'p-role', r.cargo));
+        ul.append(li);
+      }
+      col.append(ul);
+      box.append(col);
+    }
+  }
+
+  let ASSESSORIA = [];
+  function drawAssessoria() {
+    const box = document.getElementById('assessoria-lista');
+    const q = document.getElementById('assessoria-search').value.trim().toLowerCase();
+    box.replaceChildren();
+    const rows = q ? ASSESSORIA.filter((r) => `${r.nome} ${r.area} ${r.grupo} ${r.papel} ${r.coordenadoria}`.toLowerCase().includes(q)) : ASSESSORIA;
+    for (const [coord, porArea] of d3.group(rows, (r) => r.coordenadoria, (r) => r.area)) {
+      const det = el('details', 'coord');
+      det.open = true;
+      const n = d3.sum([...porArea.values()], (l) => l.length);
+      const sum = el('summary');
+      sum.append(el('span', '', coord), el('b', '', fN(n)));
+      det.append(sum);
+      const grid = el('div', 'dir-grid');
+      for (const [area, lista] of porArea) {
+        const card = el('div', 'dir-card');
+        card.append(el('h4', '', area));
+        for (const [grupo, gl] of d3.group(lista, (r) => r.grupo)) {
+          if (grupo) card.append(el('p', 'dir-group', grupo));
+          const ul = el('ul');
+          for (const r of gl) {
+            const li = el('li');
+            li.append(pessoa(r.nome, r.perfil_url), el('span', 'p-role', r.papel));
+            ul.append(li);
+          }
+          card.append(ul);
+        }
+        grid.append(card);
+      }
+      det.append(grid);
+      box.append(det);
+    }
+    if (!rows.length) box.append(el('p', 'fig-note', 'Ninguém encontrado na Assessoria Científica.'));
+  }
+
+  function startPessoas() {
+    Promise.all([d3.csv('data/fapesp_gestao.csv'), d3.csv('data/fapesp_assessoria_cientifica.csv')]).then(([gestao, assessoria]) => {
+      drawGestao(gestao);
+      ASSESSORIA = assessoria;
+      document.getElementById('n-assessoria').textContent = fN(assessoria.length);
+      drawAssessoria();
+      document.getElementById('assessoria-search').addEventListener('input', drawAssessoria);
+    }).catch(() => {
+      document.getElementById('assessoria-lista').append(el('p', 'fig-note', 'Não foi possível carregar as listas. Use os links de CSV abaixo.'));
+    });
+  }
+
   /* ---------- montagem ---------- */
   function start() {
     fillNumbers();
@@ -787,6 +858,7 @@
     document.getElementById('host-search').addEventListener('input', drawHosts);
   }
 
+  startPessoas();
   Promise.allSettled([
     d3.json('data/bepe.json'),
     d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json'),

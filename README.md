@@ -14,10 +14,20 @@ Ensaio visual sobre as **21.032 bolsas no exterior** concedidas pela FAPESP entr
 | 4 · Origem | De onde saem? | treemap instituição → unidade, cidades sede |
 | 5 · Temas | O que foram estudar? | fatia de cada grande área, 30 áreas, explorador de temas, temas em ascensão, termos novos |
 | 6 · Anfitriãs | Quem recebe? | as 100 instituições estrangeiras mais frequentes, com busca |
+| Gestão | Quem conduz a FAPESP? | Conselho Superior, Conselho Técnico-Administrativo e Assessoria Científica, com busca |
+| Fontes e dados | De onde vem cada número? | referências numeradas, tabelas completas e um CSV por figura |
 
-## Fonte
+## Fontes
 
-Exportações CSV da [Biblioteca Virtual da FAPESP](https://bv.fapesp.br/) — bolsas no exterior concluídas e em andamento (Pesquisa no Exterior e as modalidades BEPE), atualizadas em 25/10/2026.
+1. FAPESP, Biblioteca Virtual. Bolsas no exterior concluídas, exportação CSV, dados de 25/10/2026. https://bv.fapesp.br/
+2. FAPESP, Biblioteca Virtual. Bolsas no exterior em andamento, exportação CSV, dados de 25/10/2026. https://bv.fapesp.br/
+3. FAPESP. Assessoria Científica, página atualizada em 28/10/2026. https://fapesp.br/assessoria
+4. FAPESP. Conselho Superior da FAPESP, página atualizada em 03/09/2026. https://fapesp.br/32/conselho-superior-da-fapesp
+5. FAPESP. Conselho Técnico-Administrativo da FAPESP, consultada em 03/11/2026. https://fapesp.br/73/conselho-tecnico-administrativo-da-fapesp
+6. FAPESP. Conselho Superior e Diretoria, página atualizada em 24/04/2026. https://fapesp.br/gestao
+7. Natural Earth via world-atlas 2.0.2 (países 1:110m), base dos mapas. https://github.com/topojson/world-atlas
+
+Cada figura do site cita a sua fonte e tem um link para o CSV com os números que desenha. O dicionário completo está em [`data/LEIAME.md`](data/LEIAME.md).
 
 - **Ano** é o do número do processo, ou seja, o ano do pedido.
 - **Mês** é o da data de início, porque a exportação não traz a data de concessão.
@@ -32,7 +42,13 @@ assets/css/style.css        tipografia, cores (claro/escuro), layout
 assets/js/app.js            todos os gráficos (D3 v7)
 data/bepe.json              agregados usados pela página
 data/bolsas_fapesp_exterior.csv   base limpa, uma linha por bolsa
-scripts/prepare_data.py     gera os dois arquivos acima a partir da BV
+data/figuras/figNN_*.csv    os números de cada figura
+data/fapesp_assessoria_cientifica.csv   Assessoria Científica da FAPESP [3]
+data/fapesp_gestao.csv      Conselho Superior e Conselho Técnico-Administrativo [4][5]
+data/partidas_dados.zip     tudo acima num arquivo só
+data/LEIAME.md              dicionário dos dados e fontes
+scripts/prepare_data.py     gera a base limpa e bepe.json a partir da BV
+scripts/export_figuras.py   gera os CSVs das figuras e o ZIP
 .github/workflows/pages.yml publicação no GitHub Pages
 ```
 
@@ -48,7 +64,9 @@ Sem build: é HTML, CSS e JS estáticos. D3 e TopoJSON vêm do cdnjs; o contorno
    ```
 
    O script lê as colunas por posição (a exportação da BV traz 33 campos para 30 cabeçalhos), descarta o rodapé, confere processos duplicados e avisa se surgir um país sem coordenadas no dicionário `PAISES`.
-3. Faça commit de `data/` e dê push em `main`.
+3. Rode `python scripts/export_figuras.py` para refazer os CSVs das figuras e o ZIP.
+4. Se as páginas da FAPESP mudarem, atualize à mão `data/fapesp_assessoria_cientifica.csv` e `data/fapesp_gestao.csv` (e as datas em `data/LEIAME.md` e na seção Fontes do `index.html`).
+5. Faça commit de `data/` e dê push em `main`.
 
 ## Ver localmente
 
@@ -60,4 +78,4 @@ Depois abra http://localhost:8000.
 
 ## Publicação
 
-O workflow `.github/workflows/pages.yml` publica a raiz do repositório a cada push em `main`. Em *Settings → Pages*, a fonte deve estar como **GitHub Actions**.
+O workflow `.github/workflows/pages.yml` publica a raiz do repositório a cada push em `main`. O Pages precisa estar ativado com a fonte **GitHub Actions** antes do primeiro deploy (em *Settings → Pages*, ou com `gh api repos/aikiesan/data_BEPE/pages -X POST -f build_type=workflow`); sem isso o passo `configure-pages` falha com "Not Found".

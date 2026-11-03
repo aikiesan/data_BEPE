@@ -1,0 +1,101 @@
+posicao,instituicao,pais,grande_area_mais_comum,primeiro_ano,ultimo_ano,bolsas
+1,Universidade de Lisboa,Portugal,Ciências Humanas,1997,2026,242
+2,Universidade do Porto (UP),Portugal,Engenharias,1993,2026,211
+3,"Harvard University, Boston",Estados Unidos,Ciências da Saúde,1993,2026,187
+4,"University of Florida, Gainesville (UF)",Estados Unidos,Ciências Agrárias,1996,2026,180
+5,École des Hautes Études en Sciences Sociales (EHESS),França,Ciências Humanas,1992,2024,179
+6,University of Oxford,Reino Unido,Ciências Biológicas,1992,2026,175
+7,Universidade de Coimbra (UC),Portugal,Ciências Exatas e da Terra,1993,2026,157
+8,Universidade Nova de Lisboa,Portugal,Ciências Humanas,1996,2026,146
+9,University of Cambridge,Reino Unido,Ciências Biológicas,1992,2026,144
+10,King's College London,Reino Unido,Ciências Humanas,1995,2026,137
+11,"University of California, Davis (UC Davis)",Estados Unidos,Ciências Agrárias,1992,2026,131
+12,University of Michigan,Estados Unidos,Ciências da Saúde,1992,2026,129
+13,"University of California, San Diego (UC San Diego)",Estados Unidos,Ciências Biológicas,1992,2026,121
+14,Universitat de Barcelona (UB),Espanha,Ciências Humanas,1994,2026,120
+15,"University of California, Berkeley (UC Berkeley)",Estados Unidos,Ciências Biológicas,1992,2026,120
+16,Universitat Autònoma de Barcelona (UAB),Espanha,Ciências Exatas e da Terra,1993,2026,118
+17,University of Illinois at Urbana-Champaign,Estados Unidos,Ciências Agrárias,1992,2026,117
+18,University College London (UCL),Reino Unido,Ciências da Saúde,1993,2026,113
+19,University of Toronto (U of T),Canadá,Ciências da Saúde,1994,2026,112
+20,Universidade de Aveiro (UA),Portugal,Ciências Biológicas,1992,2026,109
+21,"Harvard University, Cambridge",Estados Unidos,Ciências Biológicas,1993,2025,109
+22,University of London,Reino Unido,Ciências Humanas,1992,2026,108
+23,Universidade do Minho (UMinho),Portugal,Ciências Humanas,1992,2026,108
+24,New York University,Estados Unidos,Ciências da Saúde,1994,2026,107
+25,"University of Leuven, Leuven (KU Leuven)",Bélgica,Ciências da Saúde,1992,2026,100
+26,Columbia University in the City of New York,Estados Unidos,Ciências Humanas,1992,2026,99
+27,University of Wisconsin-Madison (UW-Madison),Estados Unidos,Ciências Agrárias,1992,2026,98
+28,Massachusetts Institute of Technology (MIT),Estados Unidos,Ciências Exatas e da Terra,1992,2026,98
+29,Université Paris 1 Panthéon-Sorbonne,França,Ciências Humanas,1993,2026,97
+30,"University of British Columbia, Vancouver (UBC)",Canadá,Ciências Biológicas,1993,2026,95
+31,University of Pennsylvania,Estados Unidos,Ciências Biológicas,1992,2026,90
+32,Cornell University,Estados Unidos,Ciências Biológicas,1992,2026,90
+33,"Ohio State University, Columbus",Estados Unidos,Ciências Agrárias,1992,2019,90
+34,Università degli Studi di Roma La Sapienza,Itália,Ciências Humanas,1993,2026,89
+35,Imperial College London,Reino Unido,Ciências Exatas e da Terra,1992,2026,85
+36,University of Manchester,Reino Unido,Ciências Exatas e da Terra,1992,2026,85
+37,University of Washington,Estados Unidos,Ciências Biológicas,1992,2025,85
+38,Université Paris-Sorbonne (Paris 4),França,"Linguística, Letras e Artes",1992,2026,82
+39,Université Sorbonne Nouvelle - Paris 3,França,"Linguística, Letras e Artes",1992,2026,82
+40,Universidad de Sevilla (US),Espanha,Ciências Sociais Aplicadas,2000,2026,81
+41,Freie Universität Berlin,Alemanha,Ciências Humanas,1992,2026,80
+42,Universidad Complutense de Madrid (UCM),Espanha,Ciências Humanas,1992,2026,77
+43,Ghent University (UGent),Bélgica,Ciências Exatas e da Terra,1998,2026,72
+44,Université Vincennes Saint-Denis (Paris 8),França,Ciências Humanas,1992,2026,72
+45,"University of Queensland, Brisbane (UQ)",Austrália,Ciências Biológicas,1992,2026,71
+46,Texas A&M University,Estados Unidos,Ciências Agrárias,1992,2025,71
+47,Università di Bologna,Itália,Ciências Humanas,1992,2026,70
+48,Yale University,Estados Unidos,Ciências Biológicas,1995,2026,70
+49,Stanford University,Estados Unidos,Ciências Biológicas,1992,2025,70
+50,Universitat de València,Espanha,Ciências Exatas e da Terra,1994,2026,69
+51,Princeton University,Estados Unidos,Ciências Humanas,1993,2026,67
+52,University of Edinburgh,Reino Unido,Ciências Biológicas,2001,2026,66
+53,University of Alberta,Canadá,Ciências Exatas e da Terra,1997,2026,65
+54,Purdue University,Estados Unidos,Ciências Agrárias,1995,2026,65
+55,University of Pittsburgh (Pitt),Estados Unidos,Ciências Biológicas,1992,2025,65
+56,Universidad de Buenos Aires (UBA),Argentina,Ciências Humanas,2005,2026,63
+57,University of Illinois at Chicago (UIC),Estados Unidos,Ciências da Saúde,1996,2026,63
+58,Consejo Superior de Investigaciones Científicas (CSIC),Espanha,Ciências Biológicas,1994,2026,63
+59,Université de Montréal,Canadá,Ciências Biológicas,1992,2026,63
+60,Pennsylvania State University,Estados Unidos,Ciências Exatas e da Terra,1996,2026,62
+61,Université Paris Ouest Nanterre La Défense (Paris 10),França,Ciências Humanas,1993,2026,62
+62,University of Texas at Austin (UT),Estados Unidos,Ciências Exatas e da Terra,1992,2026,62
+63,"University of California, Los Angeles (UCLA)",Estados Unidos,Ciências Biológicas,1992,2026,62
+64,University of Minnesota (U of M),Estados Unidos,Ciências Exatas e da Terra,1992,2026,61
+65,Université Paris Diderot - Paris 7,França,Ciências Humanas,1992,2022,61
+66,Aarhus University,Dinamarca,Ciências Biológicas,1993,2026,60
+67,Technical University of Denmark (DTU),Dinamarca,Engenharias,1998,2026,59
+68,University of Birmingham,Reino Unido,Ciências da Saúde,1993,2026,57
+69,Humboldt University,Alemanha,Ciências Humanas,1997,2026,54
+70,"École Normale Supérieure, Paris (ENS)",França,Ciências Humanas,1993,2025,54
+71,Johns Hopkins University (JHU),Estados Unidos,Ciências Biológicas,1992,2026,54
+72,University of Waterloo,Canadá,Ciências Exatas e da Terra,1993,2025,54
+73,Universidad de Granada (UGR),Espanha,Ciências Exatas e da Terra,2002,2026,53
+74,University of Ottawa (uOttawa),Canadá,Ciências Humanas,2009,2026,53
+75,Smithsonian National Museum of Natural History,Estados Unidos,Ciências Biológicas,1997,2026,53
+76,Ludwig Maximilian University of Munich (LMU Munich),Alemanha,Ciências Biológicas,1992,2026,51
+77,North Carolina State University (NC State),Estados Unidos,Ciências Agrárias,1992,2025,51
+78,Indiana University,Estados Unidos,Ciências Humanas,1993,2026,51
+79,Queen Mary University of London,Reino Unido,Ciências Biológicas,2004,2026,50
+80,University of Chicago,Estados Unidos,Ciências Exatas e da Terra,1992,2026,50
+81,Université Laval,Canadá,Engenharias,1992,2026,50
+82,University of Groningen,Países Baixos,Ciências Exatas e da Terra,1999,2025,50
+83,"McGill University, Montreal",Canadá,Ciências da Saúde,1994,2025,50
+84,"University of Copenhagen, Copenhagen",Dinamarca,Ciências Biológicas,1997,2023,50
+85,University of Glasgow,Reino Unido,Ciências Biológicas,1992,2026,49
+86,Universitat Politécnica de Valéncia (UPV),Espanha,Engenharias,1996,2026,48
+87,University of Bristol,Reino Unido,Ciências Exatas e da Terra,1994,2026,48
+88,University of Calgary,Canadá,Ciências Biológicas,1994,2026,48
+89,"University of Maryland, College Park",Estados Unidos,Ciências Exatas e da Terra,1992,2022,48
+90,Colorado State University,Estados Unidos,Ciências Agrárias,1994,2026,47
+91,University of Sydney,Austrália,Ciências da Saúde,1996,2026,46
+92,Università degli Studi di Torino (UNITO),Itália,Ciências Exatas e da Terra,1993,2026,46
+93,Universidad de Zaragoza,Espanha,Ciências Exatas e da Terra,1992,2026,45
+94,University of Melbourne,Austrália,Ciências Biológicas,1994,2025,45
+95,Virginia Polytechnic Institute and State University,Estados Unidos,Ciências Agrárias,1992,2026,44
+96,"Universidad de Castilla-La Mancha, Ciudad Real (UCLM)",Espanha,Engenharias,2012,2026,44
+97,University of North Carolina at Chapel Hill (UNC),Estados Unidos,Ciências da Saúde,1992,2026,43
+98,University of Vienna,Áustria,Ciências Exatas e da Terra,1994,2026,43
+99,University of Southern California (USC),Estados Unidos,Ciências da Saúde,1992,2025,43
+100,University of Guelph,Canadá,Ciências Agrárias,1998,2025,43

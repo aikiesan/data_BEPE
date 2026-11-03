@@ -237,6 +237,50 @@ td { padding: 7px 10px; border-bottom: 1px solid var(--rule); vertical-align: to
 .method ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 8px; font-size: 1rem; }
 .downloads { display: flex; flex-wrap: wrap; gap: 10px 22px; margin: 0; font-family: var(--label); font-weight: 600; }
 
+/* fontes de cada figura */
+.fig-src { margin: 0; font-family: var(--label); font-size: .8rem; line-height: 1.45; color: var(--muted); }
+.fig-src::after { content: ""; display: block; clear: both; }
+.fig-src a { color: var(--ink-2); text-decoration: none; }
+.fig-src a[href^="#ref"] { color: var(--blue); font-weight: 600; }
+.fig-src a.csv { float: right; margin-left: 14px; color: var(--blue); font-weight: 600; border-bottom: 1px solid currentColor; }
+.fig-src a.csv::before { content: "↓ "; }
+.fig-src a:hover { color: var(--red); }
+.hero-src { padding-top: 10px; }
+
+/* gestão e assessoria */
+.people-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: 24px 48px; }
+.people h3, .dir-card h4 { margin: 0 0 6px; font-family: var(--label); font-size: .95rem; font-weight: 600; padding-bottom: 6px; border-bottom: 2px solid var(--ink); }
+.people ul, .dir-card ul { list-style: none; margin: 0; padding: 0; font-family: var(--label); font-size: .9rem; }
+.people li, .dir-card li { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 5px 0; border-bottom: 1px solid var(--rule); }
+.p-name { color: var(--ink); text-decoration: none; }
+a.p-name:hover { color: var(--blue); text-decoration: underline; }
+.p-role { color: var(--muted); font-size: .8rem; white-space: nowrap; }
+.directory { display: grid; gap: 14px; }
+.coord { border-top: 1px solid var(--ink); }
+.coord summary { cursor: pointer; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 10px 0; font-family: var(--display); font-variation-settings: "wdth" 80; font-weight: 700; font-size: 1.25rem; list-style: none; }
+.coord summary::-webkit-details-marker { display: none; }
+.coord summary::before { content: "+"; font-family: var(--label); color: var(--red); width: 1em; }
+.coord[open] summary::before { content: "–"; }
+.coord summary span { flex: 1; }
+.coord summary b { font-family: var(--label); font-size: .9rem; color: var(--blue); font-variant-numeric: tabular-nums; }
+.dir-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr)); gap: 22px 32px; padding: 6px 0 18px; }
+.dir-group { margin: 10px 0 2px; font-family: var(--label); font-size: .76rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--red); }
+
+/* fontes e dados */
+.method-h { margin: 10px 0 0; font-family: var(--label); font-size: .8rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.method { max-width: 92ch; }
+.refs { margin: 0; padding-left: 2.2rem; display: grid; gap: 6px; font-size: 1rem; }
+.refs li::marker { content: "[" counter(list-item) "]  "; font-family: var(--label); font-weight: 600; color: var(--blue); }
+.refs li:target { background: var(--paper-2); outline: 2px solid var(--blue); outline-offset: 3px; }
+.refs a, .method a { color: var(--blue); overflow-wrap: anywhere; }
+.files td:first-child { white-space: nowrap; font-weight: 600; }
+.files td { font-size: .88rem; }
+.fig-files { list-style: none; margin: 0; padding: 0; columns: 2 20rem; column-gap: 40px; font-family: var(--label); font-size: .88rem; }
+.fig-files li { break-inside: avoid; padding: 4px 0; border-bottom: 1px solid var(--rule); display: flex; justify-content: space-between; gap: 10px; }
+.fig-files span { color: var(--muted); white-space: nowrap; }
+.downloads a.dl-main { background: var(--ink); color: var(--paper); padding: 8px 14px; border-radius: 2px; text-decoration: none; }
+.downloads a.dl-main::before { content: "↓ "; }
+
 /* rodapé */
 .foot { margin-top: 72px; }
 .foot-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-block: 22px 40px; font-family: var(--label); font-size: .88rem; color: var(--muted); }
