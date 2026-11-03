@@ -4,6 +4,11 @@ Leitura crítica, em dados, das **21.032 bolsas no exterior** concedidas pela FA
 
 **Site:** https://aikiesan.github.io/data_BEPE/
 
+Duas abas:
+
+- **BEPE hoje** (`index.html`, a principal): o cenário BEPE 2026, com bolsistas no exterior, partidas marcadas, a comparação de 2026 com 2025 pela ordem dos pedidos, as regras de setembro de 2026 e a linha do tempo. É atualizada a cada nova exportação da BV.
+- **Histórico** (`historico.html`): o ensaio sobre 35 anos de bolsas, de 1992 a 2026.
+
 ## O que tem na página
 
 | Trecho | Pergunta | Figuras |
@@ -40,11 +45,13 @@ Cada figura do site cita a sua fonte e tem um link para o CSV com os números qu
 ## Estrutura
 
 ```
-index.html                  página única
+index.html                  aba BEPE hoje (principal)
+historico.html              aba Histórico 1992–2026
 assets/css/style.css        tipografia, cores, layout
 assets/img/bepe-01..12.jpg  fotos ilustrativas do mosaico e das faixas
 assets/js/app.js            todos os gráficos (D3 v7)
-data/bepe.json              agregados usados pela página
+data/bepe.json              agregados usados pelo histórico
+data/painel_bepe_hoje.json  números da aba BEPE hoje
 data/bolsas_fapesp_exterior.csv   base limpa, uma linha por bolsa
 data/figuras/figNN_*.csv    os números de cada figura (fig00b: BEPE por ano e modalidade, base da seção Em jogo)
 data/fapesp_assessoria_cientifica.csv   Assessoria Científica da FAPESP [3]
@@ -52,6 +59,7 @@ data/fapesp_gestao.csv      Conselho Superior e Conselho Técnico-Administrativo
 data/partidas_dados.zip     tudo acima num arquivo só
 data/LEIAME.md              dicionário dos dados e fontes
 scripts/prepare_data.py     gera a base limpa e bepe.json a partir da BV
+scripts/painel_bepe_hoje.py gera o painel BEPE hoje e os CSVs hoje0N_*
 scripts/export_figuras.py   gera os CSVs das figuras e o ZIP
 .github/workflows/pages.yml publicação no GitHub Pages
 ```
@@ -68,9 +76,10 @@ Sem build: é HTML, CSS e JS estáticos. As fotos são apenas ilustrativas; dire
    ```
 
    O script lê as colunas por posição (a exportação da BV traz 33 campos para 30 cabeçalhos), descarta o rodapé, confere processos duplicados e avisa se surgir um país sem coordenadas no dicionário `PAISES`.
-3. Rode `python scripts/export_figuras.py` para refazer os CSVs das figuras e o ZIP.
-4. Se as páginas da FAPESP mudarem, atualize à mão `data/fapesp_assessoria_cientifica.csv` e `data/fapesp_gestao.csv` (e as datas em `data/LEIAME.md` e na seção Fontes do `index.html`).
-5. Faça commit de `data/` e dê push em `main`.
+3. Rode `python scripts/painel_bepe_hoje.py` para refazer o painel BEPE hoje. Acrescente uma linha em `ATUALIZACOES` no script (data e o que mudou); se houver fato novo sobre as regras, acrescente em `EVENTOS`, com a fonte.
+4. Rode `python scripts/export_figuras.py` para refazer os CSVs das figuras e o ZIP.
+5. Se as páginas da FAPESP mudarem, atualize à mão `data/fapesp_assessoria_cientifica.csv` e `data/fapesp_gestao.csv` (e as datas em `data/LEIAME.md` e na seção Fontes do `index.html`).
+6. Faça commit de `data/` e dê push em `main`.
 
 ## Ver localmente
 

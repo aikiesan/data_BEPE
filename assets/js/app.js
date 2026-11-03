@@ -127,7 +127,7 @@
   const FOTOS = d3.range(1, 13).map((i) => `assets/img/bepe-${String(i).padStart(2, '0')}.jpg`);
   const mosaic = document.getElementById('mosaic');
   const tiles = [];
-  for (let c = 0; c < 4; c++) {
+  for (let c = 0; mosaic && c < 4; c++) {
     const col = el('div', 'mosaic-col');
     for (let r = 0; r < 4; r++) {
       const t = el('div', 'tile');
@@ -143,7 +143,7 @@
     }
     mosaic.append(col);
   }
-  if (!reduz) {
+  if (!reduz && tiles.length) {
     let passo = 0;
     setInterval(() => {
       if (document.hidden || heroEl.getBoundingClientRect().bottom < 0) return;
@@ -224,7 +224,7 @@
   });
 
   /* ---------- navegação ---------- */
-  const navLinks = [...document.querySelectorAll('#menu a')];
+  const navLinks = [...document.querySelectorAll('#menu a')].filter((a) => a.getAttribute('href').startsWith('#'));
   const io = new IntersectionObserver((entries) => {
     for (const e of entries) {
       if (!e.isIntersecting) continue;
@@ -931,6 +931,246 @@
     });
   }
 
+  /* ---------- aba BEPE hoje ---------- */
+  let H = null;
+  const fData = (s) => (s ? s.split('-').reverse().join('/') : '—');
+  const varP = (a, b) => {
+    if (!b) return '—';
+    const v = a / b - 1;
+    return (v >= 0 ? '+' : '−') + fP0(Math.abs(v));
+  };
+
+  function fillHoje() {
+    const k = H.kpis;
+    const ic = H.modalidades.find((m) => m.modalidade === 'Iniciação científica');
+    const dp = H.duracao.filter((d) => d.modalidade === 'Doutorado' || d.modalidade === 'Pós-doutorado');
+    const V = {
+      ...k,
+      var_mesmo_ponto: varP(k.pedidos_ano, k.pedidos_ant_mesmo_ponto),
+      var_depois: varP(k.depois_corte, k.depois_corte_ant),
+      var_ic: ic ? varP(ic.depois, ic.depois_ant) : '—',
+      atuais: k.no_exterior + k.a_iniciar,
+      acima6_pct: fP0(d3.sum(dp, (d) => d.acima6) / d3.sum(dp, (d) => d.n)),
+      top_pais: H.agora.paises[0][0], top_pais_n: H.agora.paises[0][1],
+    };
+    for (const n of document.querySelectorAll('[data-h]')) {
+      const v = V[n.dataset.h];
+      if (v === undefined) continue;
+      n.textContent = typeof v === 'number' && !/^ano/.test(n.dataset.h) ? fN(v) : String(v);
+    }
+    for (const n of document.querySelectorAll('[data-h-data]')) n.textContent = fData(H[n.dataset.hData]);
+  }
+
+  function drawAcum() {
+    const box = document.getElementById('chart-acum');
+    box.replaceChildren();
+    const anos = Object.keys(H.acumulado).sort();
+    const atual = String(H.kpis.ano);
+    const W = box.clientWidth || 800;
+    const Hh = W < 560 ? 300 : 400;
+    const m = { t: 16, r: W < 560 ? 64 : 96, b: 40, l: 46 };
+    const xmax = d3.max(anos, (a) => d3.max(H.acumulado[a], (p) => p[0]));
+    const ymax = d3.max(anos, (a) => d3.max(H.acumulado[a], (p) => p[1]));
+    const x = d3.scaleLinear([0, xmax], [m.l, W - m.r]);
+    const y = d3.scaleLinear([0, ymax], [Hh - m.b, m.t]).nice();
+    const cor = (a) => (a === atual ? cssv('--red') : a === String(H.kpis.ano_anterior) ? cssv('--ink') : cssv('--muted'));
+    const op = (a) => (a === atual || a === String(H.kpis.ano_anterior) ? 1 : 0.45);
+    const svg = d3.select(box).append('svg').attr('viewBox', `0 0 ${W} ${Hh}`).attr('width', W).attr('height', Hh);
+    svg.append('g').selectAll('line').data(y.ticks(5)).join('line')
+      .attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y)
+      .attr('stroke', cssv('--rule')).attr('stroke-dasharray', (d) => (d ? '2 3' : null));
+    svg.append('g').selectAll('text').data(y.ticks(5)).join('text')
+      .attr('x', m.l - 8).attr('y', (d) => y(d) + 4).attr('text-anchor', 'end').attr('class', 'lbl').text(fN);
+    svg.append('g').selectAll('text').data(x.ticks(W < 560 ? 3 : 6)).join('text')
+      .attr('x', x).attr('y', Hh - m.b + 18).attr('text-anchor', 'middle').attr('class', 'lbl').text(fN);
+    svg.append('text').attr('x', (m.l + W - m.r) / 2).attr('y', Hh - 4).attr('text-anchor', 'middle').attr('class', 'lbl')
+      .text('número do processo (ordem do pedido no ano)');
+    // corte de agosto
+    const xc = x(H.kpis.corte);
+    svg.append('rect').attr('x', xc).attr('y', m.t).attr('width', Math.max(0, x(H.kpis.max_seq) - xc)).attr('height', Hh - m.b - m.t)
+      .attr('fill', cssv('--red')).attr('fill-opacity', 0.06);
+    svg.append('line').attr('x1', xc).attr('x2', xc).attr('y1', m.t).attr('y2', Hh - m.b)
+      .attr('stroke', cssv('--red')).attr('stroke-dasharray', '4 3');
+    svg.append('text').attr('x', xc - 6).attr('y', m.t + 12).attr('text-anchor', 'end').attr('class', 'lbl-strong')
+      .attr('fill', cssv('--red')).text('≈ agosto');
+    const line = d3.line().x((p) => x(p[0])).y((p) => y(p[1])).curve(d3.curveStepAfter);
+    const labels = [];
+    for (const a of anos) {
+      const pts = H.acumulado[a];
+      svg.append('path').attr('d', line(pts)).attr('fill', 'none').attr('stroke', cor(a)).attr('stroke-opacity', op(a))
+        .attr('stroke-width', a === atual ? 3 : 1.6);
+      const last = pts[pts.length - 1];
+      labels.push({ a, x: x(last[0]), y: y(last[1]), n: last[1] });
+      if (a === atual) svg.append('circle').attr('cx', x(last[0])).attr('cy', y(last[1])).attr('r', 4.5).attr('fill', cssv('--red'));
+    }
+    // rótulos: o ano atual no fim da própria linha; os demais na margem direita
+    const fim = labels.filter((l) => l.a !== atual).map((l) => ({ ...l, x: W - m.r + 8 }));
+    dodge(fim, 15, m.t + 6, Hh - m.b);
+    const estreito = W < 560;
+    const cur = labels.filter((l) => l.a === atual).map((l) => (estreito ? { ...l, x: l.x, y: l.y + 22, anchor: 'end' } : { ...l, x: l.x + 8 }));
+    for (const l of [...fim, ...cur]) {
+      svg.append('text').attr('x', l.x).attr('y', l.y + 4).attr('class', 'lbl-strong').attr('fill', cor(l.a))
+        .attr('text-anchor', l.anchor || 'start').attr('fill-opacity', op(l.a)).text(`${l.a} · ${fN(l.n)}`);
+    }
+    // leitura no passar do mouse
+    const rule = svg.append('line').attr('y1', m.t).attr('y2', Hh - m.b).attr('stroke', cssv('--ink')).attr('visibility', 'hidden');
+    svg.append('rect').attr('x', m.l).attr('y', m.t).attr('width', W - m.l - m.r).attr('height', Hh - m.t - m.b).attr('fill', 'transparent')
+      .on('pointermove', (event) => {
+        const [px] = d3.pointer(event);
+        const s = x.invert(px);
+        rule.attr('x1', px).attr('x2', px).attr('visibility', 'visible');
+        tip(event, `Até o processo ${fN(Math.round(s / 100) * 100)}`, anos.slice().reverse().map((a) => {
+          const pts = H.acumulado[a];
+          const p = pts[Math.min(pts.length - 1, d3.bisector((q) => q[0]).left(pts, s))];
+          const fora = a === atual && s > H.kpis.max_seq;
+          return { label: a, value: fora ? 'ainda sem dados' : fN(p[1]), color: cor(a) };
+        }));
+      })
+      .on('pointerleave', () => { rule.attr('visibility', 'hidden'); hideTip(); });
+    const lg = document.getElementById('legend-acum');
+    lg.replaceChildren();
+    for (const a of anos.slice().reverse()) {
+      const sp = el('span'); const i = el('i'); i.style.background = cor(a); i.style.opacity = op(a);
+      sp.append(i, a); lg.append(sp);
+    }
+  }
+
+  function drawModsHoje() {
+    const box = document.getElementById('mods-hoje');
+    box.replaceChildren();
+    const k = H.kpis;
+    const head = el('div', 'mods-row mods-head');
+    head.append(el('span', '', ''), el('span', '', 'Pedidos até julho'), el('span', '', 'De agosto em diante'));
+    box.append(head);
+    const maxA = d3.max(H.modalidades, (d) => Math.max(d.antes, d.antes_ant));
+    const maxD = d3.max(H.modalidades, (d) => Math.max(d.depois, d.depois_ant));
+    const celula = (atual, ant, max) => {
+      const c = el('div', 'mods-cell');
+      for (const [ano, v, cls] of [[k.ano_anterior, ant, 'b-ant'], [k.ano, atual, 'b-atual']]) {
+        const r = el('div', 'mods-bar ' + cls);
+        const t = el('span', 't'); const f = el('span', 'f'); f.style.width = (v / max) * 100 + '%';
+        t.append(f);
+        r.append(el('span', 'y', String(ano)), t, el('b', '', fN(v)));
+        c.append(r);
+      }
+      const v = varP(atual, ant);
+      const chip = el('span', 'mods-var' + (atual < ant * 0.8 ? ' neg' : ''), v);
+      c.append(chip);
+      return c;
+    };
+    for (const d of H.modalidades) {
+      const row = el('div', 'mods-row');
+      const c1 = celula(d.antes, d.antes_ant, maxA); c1.dataset.label = 'Pedidos até julho';
+      const c2 = celula(d.depois, d.depois_ant, maxD); c2.dataset.label = 'De agosto em diante';
+      row.append(el('span', 'mods-name', d.modalidade), c1, c2);
+      box.append(row);
+    }
+  }
+
+  function drawInicios() {
+    const box = document.getElementById('chart-inicios');
+    box.replaceChildren();
+    const rows = H.inicios;
+    const W = box.clientWidth || 800;
+    const Hh = 260;
+    const m = { t: 22, r: 8, b: 42, l: 40 };
+    const x = d3.scaleBand(rows.map((r) => r[0]), [m.l, W - m.r]).padding(0.22);
+    const y = d3.scaleLinear([0, d3.max(rows, (r) => r[1])], [Hh - m.b, m.t]).nice();
+    const svg = d3.select(box).append('svg').attr('viewBox', `0 0 ${W} ${Hh}`).attr('width', W).attr('height', Hh);
+    svg.append('g').selectAll('line').data(y.ticks(4)).join('line')
+      .attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y).attr('stroke', cssv('--rule')).attr('stroke-dasharray', (d) => (d ? '2 3' : null));
+    svg.append('g').selectAll('text').data(y.ticks(4)).join('text')
+      .attr('x', m.l - 6).attr('y', (d) => y(d) + 4).attr('text-anchor', 'end').attr('class', 'lbl').text(fN);
+    const lbl = (s) => { const [a, mm] = s.split('-'); return MESES[+mm - 1] + (mm === '01' || s === rows[0][0] ? '/' + a.slice(2) : ''); };
+    const passo = W < 560 ? 3 : 1;
+    svg.append('g').selectAll('text').data(rows.filter((r, i) => i % passo === 0)).join('text')
+      .attr('x', (r) => x(r[0]) + x.bandwidth() / 2).attr('y', Hh - m.b + 16).attr('text-anchor', 'middle').attr('class', 'lbl').text((r) => lbl(r[0]));
+    svg.append('g').selectAll('rect').data(rows).join('rect')
+      .attr('x', (r) => x(r[0])).attr('width', x.bandwidth()).attr('y', (r) => y(r[1])).attr('height', (r) => y(0) - y(r[1]))
+      .attr('rx', 3).attr('fill', (r) => (r[2] ? 'transparent' : cssv('--blue')))
+      .attr('stroke', (r) => (r[2] ? cssv('--red') : 'none')).attr('stroke-width', 1.6)
+      .on('pointermove', (event, r) => tip(event, lbl(r[0]).replace(/\/\d+$/, '') + ' de ' + r[0].slice(0, 4), [{ label: r[2] ? 'Partidas marcadas' : 'Estágios iniciados', value: fN(r[1]) }]))
+      .on('pointerleave', hideTip);
+    const futuro = rows.findIndex((r) => r[2]);
+    if (futuro > 0) {
+      const xf = x(rows[futuro][0]) - (x.step() * x.paddingInner()) / 2;
+      svg.append('line').attr('x1', xf).attr('x2', xf).attr('y1', m.t - 10).attr('y2', Hh - m.b).attr('stroke', cssv('--ink')).attr('stroke-dasharray', '3 3');
+      svg.append('text').attr('x', xf + 6).attr('y', m.t - 2).attr('class', 'lbl-strong').text('dados de ' + fData(H.dados_de));
+    }
+  }
+
+  const FAIXAS = ['até 3 meses', '3 a 6', '6 a 9', '9 a 12'];
+  function drawDur() {
+    const box = document.getElementById('dur-hoje');
+    box.replaceChildren();
+    const cores = ['#dcd7ce', '#b0aa9f', '#93a3ee', cssv('--blue')];
+    const lg = document.getElementById('legend-dur');
+    lg.replaceChildren();
+    FAIXAS.forEach((f, i) => { const sp = el('span'); const ii = el('i'); ii.style.background = cores[i]; sp.append(ii, f); lg.append(sp); });
+    for (const d of H.duracao) {
+      const row = el('div', 'dur-row');
+      const track = el('div', 'dur-track');
+      d.faixas.forEach((v, i) => {
+        if (!v) return;
+        const s = el('span', 'dur-seg'); s.style.width = (v / d.n) * 100 + '%'; s.style.background = cores[i];
+        s.addEventListener('pointermove', (e) => tip(e, `${d.modalidade}: ${FAIXAS[i]}`, [{ label: 'Bolsas', value: `${fN(v)} · ${fP0(v / d.n)}` }]));
+        s.addEventListener('pointerleave', hideTip);
+        track.append(s);
+      });
+      const seis = el('i', 'dur-six'); seis.style.left = ((d.faixas[0] + d.faixas[1]) / d.n) * 100 + '%';
+      track.append(seis);
+      const l = el('div', 'l', d.modalidade); l.append(el('small', '', fN(d.n) + ' bolsas'));
+      row.append(l, track, el('div', 'v', d.acima6 ? fP0(d.acima6 / d.n) + ' > 6 m' : '0% > 6 m'));
+      box.append(row);
+    }
+  }
+
+  function drawTimeline() {
+    const ol = document.getElementById('timeline');
+    ol.replaceChildren();
+    const hoje = new Date().toISOString().slice(0, 10);
+    for (const e of H.eventos) {
+      const li = el('li', e.data <= hoje ? 'past' : 'future');
+      const quando = el('time', '', e.rotulo || fData(e.data)); quando.dateTime = e.data;
+      const corpo = el('div');
+      const h = el('h3', '', e.titulo);
+      const p = el('p', '', e.texto + ' ');
+      if (e.ref) { const a = el('a', '', `[${e.ref}]`); a.href = `#ref-${e.ref}`; p.append(a); }
+      corpo.append(h, p);
+      li.append(quando, corpo);
+      ol.append(li);
+    }
+  }
+
+  function drawChangelog() {
+    const ol = document.getElementById('changelog');
+    ol.replaceChildren();
+    for (const u of H.atualizacoes.slice().reverse()) {
+      const li = el('li'); const t = el('time', '', fData(u.data)); t.dateTime = u.data;
+      li.append(t, el('span', '', u.texto)); ol.append(li);
+    }
+  }
+
+  function startHoje() {
+    d3.json('data/painel_bepe_hoje.json').then((d) => {
+      H = d;
+      fillHoje();
+      reg(drawAcum);
+      drawModsHoje();
+      reg(drawInicios);
+      reg(drawDur);
+      drawTimeline();
+      drawChangelog();
+      const pares = (lista) => lista.map(([k, v]) => ({ k, v }));
+      reg(() => barras('bars-paises-hoje', pares(H.agora.paises), { label: 'k', value: 'v' }));
+      reg(() => barras('bars-areas-hoje', pares(H.agora.areas), { label: 'k', value: 'v', color: () => cssv('--a1') }));
+      reg(() => barras('bars-inst-hoje', pares(H.agora.instituicoes), { label: 'k', value: 'v', color: () => cssv('--ink-2') }));
+    }).catch((e) => {
+      console.error(e);
+      document.querySelector('main').prepend(el('p', 'wrap fig-note', 'Não foi possível carregar os dados do painel. Recarregue a página.'));
+    });
+  }
+
   /* ---------- montagem ---------- */
   function start() {
     fillNumbers();
@@ -971,6 +1211,7 @@
     document.getElementById('host-search').addEventListener('input', drawHosts);
   }
 
+  if (document.body.dataset.page === 'hoje') { startHoje(); return; }
   startPessoas();
   Promise.allSettled([
     d3.json('data/bepe.json'),
