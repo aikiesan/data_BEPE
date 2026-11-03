@@ -42,7 +42,7 @@ def em_jogo():
         tot_ano = sum(len(v) for (a, _), v in por.items() if a == ano)
         linhas.append([ano, grupo, len(ms), tot_ano, r4(len(ms) / tot_ano),
                        round(statistics.median(ms_ok), 1) if ms_ok else '',
-                       sum(m > 6.5 for m in ms_ok), len(ms_ok)])
+                       sum(m > 6.1 for m in ms_ok), len(ms_ok)])
     grava('fig00b_bepe_por_ano_modalidade.csv',
           ['ano_pedido', 'modalidade', 'bolsas', 'bolsas_bepe_no_ano', 'fatia_do_ano',
            'meses_mediana', 'estagios_acima_de_6_meses', 'estagios_com_duracao'], linhas)
@@ -115,7 +115,7 @@ def main():
     grava('fig12_temas_por_ano.csv', ['tema', 'bolsas_tema_total', 'ano_pedido', 'bolsas_no_ano', 'bolsas_do_ano', 'fatia_do_ano'], linhas)
 
     cab = ['tema', 'bolsas_2012_2017', 'bolsas_2021_2026', 'fatia_2012_2017', 'fatia_2021_2026', 'crescimento_relativo']
-    lin = lambda a: [a['tema'], a['antes'], a['depois'], r4(a['share_antes']), r4(a['share_depois']), r4(a['razao'])]
+    lin = lambda a: [a['tema'], a['antes'], a['depois'], r4(a['share_antes']), r4(a['share_depois']), r4(a['razao']) if a['razao'] else '']
     grava('fig13_temas_em_ascensao.csv', cab, [lin(a) for a in d['ascensao'] if a['antes'] >= 5])
     grava('fig14_temas_novos.csv', cab, [lin(a) for a in d['ascensao'] if a['antes'] == 0])
 

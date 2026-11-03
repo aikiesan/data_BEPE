@@ -18,7 +18,7 @@ Todos os arquivos são CSV em UTF-8, separados por vírgula, com ponto como sepa
 
 | Arquivo | Conteúdo | Fonte |
 |---|---|---|
-| `bolsas_fapesp_exterior.csv` | Uma linha por bolsa: processo, situação, ano do pedido, início, duração em meses, modalidade, grande área, área, instituição, unidade e cidade sede, país e instituição de destino, assuntos (separados por `:`). Sem nomes e sem resumos. | [1] [2] |
+| `bolsas_fapesp_exterior.csv` | Uma linha por bolsa: processo, situação, ano do pedido, início, término, duração em meses (dias entre início e término ÷ 30,44, uma casa decimal; "mais de 6 meses" no site = acima de 6,1), modalidade, grande área, área, instituição, unidade e cidade sede, país e instituição de destino, assuntos (separados por `:`). Sem nomes e sem resumos. | [1] [2] |
 | `bepe.json` | Agregados que alimentam todos os gráficos da página. | [1] [2] |
 | `figuras/fig00_resumo.csv` | Números do topo da página. | [1] [2] |
 | `figuras/fig01_bolsas_por_ano_modalidade.csv` | Fig. 1. Bolsas por ano do pedido e modalidade. | [1] [2] |

@@ -40,7 +40,7 @@
   };
   const sigla = (nome) => {
     const m = nome.match(/\(([^()]+)\)\s*$/);
-    if (nome === 'Pessoa Física') return 'Pessoa Física (até 2011)';
+    if (nome === 'Pessoa Física') return 'Pessoa Física (até 2008)';
     return m ? m[1] : nome;
   };
   const corta = (s, n) => (s.length > n ? s.slice(0, n - 1) + '…' : s);
@@ -985,14 +985,14 @@
       .attr('x', x).attr('y', Hh - m.b + 18).attr('text-anchor', 'middle').attr('class', 'lbl').text(fN);
     svg.append('text').attr('x', (m.l + W - m.r) / 2).attr('y', Hh - 4).attr('text-anchor', 'middle').attr('class', 'lbl')
       .text('número do processo (ordem do pedido no ano)');
-    // corte de agosto
+    // processo 16.000: onde as curvas se separam
     const xc = x(H.kpis.corte);
     svg.append('rect').attr('x', xc).attr('y', m.t).attr('width', Math.max(0, x(H.kpis.max_seq) - xc)).attr('height', Hh - m.b - m.t)
       .attr('fill', cssv('--red')).attr('fill-opacity', 0.06);
     svg.append('line').attr('x1', xc).attr('x2', xc).attr('y1', m.t).attr('y2', Hh - m.b)
       .attr('stroke', cssv('--red')).attr('stroke-dasharray', '4 3');
     svg.append('text').attr('x', xc - 6).attr('y', m.t + 12).attr('text-anchor', 'end').attr('class', 'lbl-strong')
-      .attr('fill', cssv('--red')).text('≈ agosto');
+      .attr('fill', cssv('--red')).text('nº ' + fN(H.kpis.corte));
     const line = d3.line().x((p) => x(p[0])).y((p) => y(p[1])).curve(d3.curveStepAfter);
     const labels = [];
     for (const a of anos) {
@@ -1040,7 +1040,7 @@
     box.replaceChildren();
     const k = H.kpis;
     const head = el('div', 'mods-row mods-head');
-    head.append(el('span', '', ''), el('span', '', 'Pedidos até julho'), el('span', '', 'De agosto em diante'));
+    head.append(el('span', '', ''), el('span', '', 'Até o processo ' + fN(k.corte)), el('span', '', 'Do ' + fN(k.corte) + ' em diante'));
     box.append(head);
     const maxA = d3.max(H.modalidades, (d) => Math.max(d.antes, d.antes_ant));
     const maxD = d3.max(H.modalidades, (d) => Math.max(d.depois, d.depois_ant));
@@ -1060,8 +1060,8 @@
     };
     for (const d of H.modalidades) {
       const row = el('div', 'mods-row');
-      const c1 = celula(d.antes, d.antes_ant, maxA); c1.dataset.label = 'Pedidos até julho';
-      const c2 = celula(d.depois, d.depois_ant, maxD); c2.dataset.label = 'De agosto em diante';
+      const c1 = celula(d.antes, d.antes_ant, maxA); c1.dataset.label = 'Até o processo ' + fN(k.corte);
+      const c2 = celula(d.depois, d.depois_ant, maxD); c2.dataset.label = 'Do ' + fN(k.corte) + ' em diante';
       row.append(el('span', 'mods-name', d.modalidade), c1, c2);
       box.append(row);
     }

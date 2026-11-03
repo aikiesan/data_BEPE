@@ -120,10 +120,10 @@ def main(concluidas, andamento):
     # tabela por bolsa, para download
     with open(OUT / "bolsas_fapesp_exterior.csv", "w", encoding="utf-8", newline="") as f:
         w = csv.writer(f)
-        w.writerow(["processo", "situacao", "ano_pedido", "inicio", "meses", "grupo", "modalidade", "grande_area", "area",
+        w.writerow(["processo", "situacao", "ano_pedido", "inicio", "termino", "meses", "grupo", "modalidade", "grande_area", "area",
                     "instituicao_br", "unidade_br", "cidade_br", "pais_destino", "instituicao_exterior", "assuntos"])
         for r in sorted(rs, key=lambda r: (r["ano"], r["processo"])):
-            w.writerow([r["processo"], r["situacao"], r["ano"], r["inicio"], r["meses"], r["grupo"],
+            w.writerow([r["processo"], r["situacao"], r["ano"], r["inicio"], r["termino"], r["meses"], r["grupo"],
                         r["modalidade"].replace("Bolsas no Exterior - ", ""), r["grande_area"], r["area"],
                         r["universidade"], r["unidade"], r["cidade"], r["pais_destino"], r["inst_exterior"], r["assuntos"]])
 
@@ -216,8 +216,8 @@ def main(concluidas, andamento):
     ca, cd = C(t for r in antes for t in r["temas"]), C(t for r in depois for t in r["temas"])
     ascensao = sorted(({"tema": t, "antes": ca.get(t, 0), "depois": n,
                         "share_antes": ca.get(t, 0) / len(antes), "share_depois": n / len(depois),
-                        "razao": (n / len(depois)) / ((ca.get(t, 0) + 1) / len(antes))}
-                       for t, n in cd.items() if n >= 25), key=lambda d: -d["razao"])
+                        "razao": (n / len(depois)) / (ca[t] / len(antes)) if ca.get(t) else None}
+                       for t, n in cd.items() if n >= 25), key=lambda d: -(d["razao"] or 0))
     temas_area = {g: [t for t, _ in C(t for r in rs if r["grande_area"] == g for t in r["temas"]).most_common(8)] for g in gas}
 
     # modalidades

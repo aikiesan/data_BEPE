@@ -18,7 +18,7 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 DADOS = RAIZ / 'data'
 FIG = DADOS / 'figuras'
-CORTE = 16000          # número de processo a partir do qual estão, aproximadamente, os pedidos de agosto em diante
+CORTE = 16000          # número de processo onde as curvas de 2026 e 2025 se separam (não corresponde a uma data exata)
 BIN = 500
 MODS = ['BEPE Iniciação Científica', 'BEPE Mestrado', 'BEPE Doutorado', 'BEPE Pós-doutorado']
 CURTO = {'BEPE Iniciação Científica': 'Iniciação científica', 'BEPE Mestrado': 'Mestrado',
@@ -28,15 +28,16 @@ EVENTOS = [
     {'data': '2026-08-26', 'titulo': 'FAPESP anuncia novas regras da BEPE',
      'texto': 'Comunicado do Conselho Técnico-Administrativo. Iniciação científica e mestrado saem do fluxo contínuo; estágio inicial passa a 6 meses.', 'ref': 8},
     {'data': '2026-09-01', 'titulo': 'Regras em vigor',
-     'texto': 'Só doutorado direto, doutorado e pós-doutorado pedem BEPE a qualquer momento, por 6 meses, prorrogáveis por mais 6 mediante análise.', 'ref': 9},
+     'texto': 'Só doutorado direto, doutorado e pós-doutorado pedem BEPE a qualquer momento, por 6 meses. A prorrogação por mais 6 meses passa a ser excepcional.', 'ref': 9},
     {'data': '2026-09-28', 'titulo': 'Chamadas para IC e mestrado',
-     'texto': 'Chamadas FAPESP 52/2026 (iniciação científica) e 54/2026 (mestrado), só para bolsas aprovadas até 31/08/2026. Estágio de 6 meses, sem prorrogação.', 'ref': 10},
+     'texto': 'Chamadas de propostas BEPE Iniciação Científica e BEPE Mestrado, só para quem teve a bolsa no país aprovada até 31/08/2026. Estágio fixo e improrrogável: 4 meses na iniciação científica, 6 no mestrado.', 'ref': 10},
     {'data': '2026-12-11', 'titulo': 'Fim das submissões das chamadas', 'texto': 'Resultado previsto para março de 2027.', 'ref': 10},
     {'data': '2027-01-01', 'rotulo': '1º sem. 2027', 'titulo': 'Chamada para os novos bolsistas',
      'texto': 'Nova chamada prevista para bolsistas de IC e mestrado com bolsa concedida a partir de 01/09/2026.', 'ref': 8},
 ]
 ATUALIZACOES = [
     {'data': '2026-11-03', 'texto': 'Primeira versão do painel, com a exportação da BV de 25/10/2026.'},
+    {'data': '2026-11-03', 'texto': 'Revisão de todos os números contra as exportações da BV e as páginas da FAPESP. Corrigidos: duração da chamada de iniciação científica (4 meses), bolsistas no exterior agora (sem os estágios já terminados) e a leitura da numeração dos processos, que não indica o mês do pedido.'},
 ]
 
 
@@ -63,9 +64,10 @@ def main():
     ano = max(r['ano'] for r in bepe)
     ant = ano - 1
     mx = max(r['seq'] for r in bepe if r['ano'] == ano)
-    atuais = [r for r in bepe if r['situacao'] == 'Em andamento']
-    fora = [r for r in atuais if r['inicio'] <= ref]
-    iniciar = [r for r in atuais if r['inicio'] > ref]
+    andamento = [r for r in bepe if r['situacao'] == 'Em andamento']
+    fora = [r for r in andamento if r['inicio'] <= ref and (not r['termino'] or r['termino'] >= ref)]
+    iniciar = [r for r in andamento if r['inicio'] > ref]
+    atuais = fora + iniciar   # sem os poucos registros "em andamento" com término já passado
     cont = lambda a, lo, hi: sum(1 for r in bepe if r['ano'] == a and lo <= r['seq'] < hi)
 
     kpis = {

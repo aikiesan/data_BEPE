@@ -13,7 +13,7 @@ Duas abas:
 
 | Trecho | Pergunta | Figuras |
 |---|---|---|
-| Em jogo | O que muda com as regras de 2026? | IC e mestrado = 44% das BEPE de 2025; 3 de cada 4 estágios de doutorado e pós-doc planejados para mais de 6 meses |
+| Em jogo | O que muda com as regras de 2026? | IC e mestrado = 45% das BEPE de 2025 (804 de 1.806); 3 de cada 4 estágios de doutorado e pós-doc planejados para mais de 6 meses |
 | 1 · Ritmo | Quantas bolsas por ano? | barras empilhadas por modalidade, ficha das modalidades |
 | 2 · Calendário | Em que mês começam? | relógio radial por modalidade, mapa de calor mês × ano |
 | 3 · Destinos | Para onde vão? | mapa por período, ranking dos 10 maiores destinos, matriz grande área × país |

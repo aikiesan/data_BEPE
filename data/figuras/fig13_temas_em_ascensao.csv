@@ -1,69 +1,69 @@
 tema,bolsas_2012_2017,bolsas_2021_2026,fatia_2012_2017,fatia_2021_2026,crescimento_relativo
-Aprendizado de máquina,5,61,0.0007,0.0081,9.2324
-Aprendizagem profunda,6,62,0.0009,0.0083,8.0432
-Inteligência artificial,16,104,0.0023,0.0139,5.5555
-Hidrogéis,5,31,0.0007,0.0041,4.6919
-Aprendizado computacional,37,178,0.0054,0.0237,4.2538
-Geoquímica,5,25,0.0007,0.0033,3.7838
-Microbiota,12,49,0.0018,0.0065,3.4229
-Vesículas extracelulares,8,33,0.0012,0.0044,3.3297
-Ecotoxicologia,11,43,0.0016,0.0057,3.2541
-Bioinformática,10,37,0.0015,0.0049,3.0545
-Fotocatálise,9,32,0.0013,0.0043,2.9059
-Luminescência,8,26,0.0012,0.0035,2.6234
-Teoria do funcional da densidade,12,33,0.0018,0.0044,2.3052
-Saúde mental,9,25,0.0013,0.0033,2.2703
-Repetições palindrômicas curtas agrupadas e regularmente espaçadas,10,26,0.0015,0.0035,2.1464
-Democracia,10,26,0.0015,0.0035,2.1464
-Virologia,13,32,0.0019,0.0043,2.0757
-Sustentabilidade,25,59,0.0037,0.0079,2.0607
-Biomateriais,28,64,0.0041,0.0085,2.0041
-Biotecnologia,21,48,0.0031,0.0064,1.9813
-Mitocôndrias,16,37,0.0023,0.0049,1.9765
-Espectroscopia,15,33,0.0022,0.0044,1.873
-Metabolômica,26,55,0.0038,0.0073,1.8499
-Sensoriamento remoto,24,49,0.0035,0.0065,1.7799
-Catálise,16,32,0.0023,0.0043,1.7094
-Amazônia,25,45,0.0037,0.006,1.5717
-Epigenômica,19,33,0.0028,0.0044,1.4984
-Macrófagos,18,31,0.0026,0.0041,1.4817
-Cultura de células,15,26,0.0022,0.0035,1.4757
-Mudança climática,62,102,0.0091,0.0136,1.4703
-Metabolismo,25,42,0.0037,0.0056,1.4669
-Biofilmes,15,25,0.0022,0.0033,1.4189
-Geografia urbana,17,28,0.0025,0.0037,1.4126
-Simulação de dinâmica molecular,16,26,0.0023,0.0035,1.3889
-Eletroquímica,46,71,0.0068,0.0095,1.3718
-Nanopartículas,40,61,0.0059,0.0081,1.3511
-Engenharia tecidual,19,29,0.0028,0.0039,1.3168
-América Latina,21,31,0.0031,0.0041,1.2796
-Inflamação,52,73,0.0076,0.0097,1.2508
-Biomarcadores,31,44,0.0046,0.0059,1.2486
-História da arte,21,30,0.0031,0.004,1.2383
-Materiais nanoestruturados,39,54,0.0057,0.0072,1.2259
-Biologia computacional,65,83,0.0095,0.0111,1.142
-Envelhecimento,25,32,0.0037,0.0043,1.1177
-Neurociências,26,33,0.0038,0.0044,1.1099
-Nanotecnologia,32,40,0.0047,0.0053,1.1007
-Síntese orgânica,20,25,0.0029,0.0033,1.0811
-Saúde pública,22,27,0.0032,0.0036,1.066
-Políticas públicas,36,43,0.0053,0.0057,1.0554
-Modelos matemáticos,29,34,0.0043,0.0045,1.0292
-Mata Atlântica,22,26,0.0032,0.0035,1.0266
-Biodiversidade,33,37,0.0048,0.0049,0.9882
-Estresse oxidativo,30,33,0.0044,0.0044,0.9667
-Neoplasias,68,71,0.01,0.0095,0.9344
-Brasil,73,75,0.0107,0.01,0.9204
-Obesidade,61,62,0.009,0.0083,0.9081
-Sistemas dinâmicos,33,34,0.0048,0.0045,0.9081
-Proteômica,44,44,0.0065,0.0059,0.8879
-Biogeografia,29,29,0.0043,0.0039,0.8778
-São Paulo,26,26,0.0038,0.0035,0.8745
-Genômica,41,38,0.006,0.0051,0.8216
-Biologia molecular,71,65,0.0104,0.0087,0.8198
-Ressonância magnética nuclear,31,28,0.0046,0.0037,0.7946
-Filogenia,61,53,0.009,0.0071,0.7763
-Produtos naturais,34,29,0.005,0.0039,0.7524
-Espectrometria de massas,40,33,0.0059,0.0044,0.7309
-Expressão gênica,51,33,0.0075,0.0044,0.5763
-MicroRNAs,52,27,0.0076,0.0036,0.4626
+Aprendizado de máquina,5,61,0.0007,0.0081,11.0789
+Aprendizagem profunda,6,62,0.0009,0.0083,9.3838
+Inteligência artificial,16,104,0.0023,0.0139,5.9027
+Hidrogéis,5,31,0.0007,0.0041,5.6303
+Geoquímica,5,25,0.0007,0.0033,4.5405
+Aprendizado computacional,37,178,0.0054,0.0237,4.3687
+Vesículas extracelulares,8,33,0.0012,0.0044,3.7459
+Microbiota,12,49,0.0018,0.0065,3.7081
+Ecotoxicologia,11,43,0.0016,0.0057,3.5499
+Bioinformática,10,37,0.0015,0.0049,3.36
+Fotocatálise,9,32,0.0013,0.0043,3.2288
+Luminescência,8,26,0.0012,0.0035,2.9514
+Saúde mental,9,25,0.0013,0.0033,2.5225
+Teoria do funcional da densidade,12,33,0.0018,0.0044,2.4973
+Repetições palindrômicas curtas agrupadas e regularmente espaçadas,10,26,0.0015,0.0035,2.3611
+Democracia,10,26,0.0015,0.0035,2.3611
+Virologia,13,32,0.0019,0.0043,2.2353
+Sustentabilidade,25,59,0.0037,0.0079,2.1431
+Mitocôndrias,16,37,0.0023,0.0049,2.1
+Biotecnologia,21,48,0.0031,0.0064,2.0757
+Biomateriais,28,64,0.0041,0.0085,2.0757
+Espectroscopia,15,33,0.0022,0.0044,1.9978
+Metabolômica,26,55,0.0038,0.0073,1.921
+Sensoriamento remoto,24,49,0.0035,0.0065,1.8541
+Catálise,16,32,0.0023,0.0043,1.8162
+Amazônia,25,45,0.0037,0.006,1.6346
+Epigenômica,19,33,0.0028,0.0044,1.5772
+Cultura de células,15,26,0.0022,0.0035,1.5741
+Macrófagos,18,31,0.0026,0.0041,1.564
+Metabolismo,25,42,0.0037,0.0056,1.5256
+Biofilmes,15,25,0.0022,0.0033,1.5135
+Geografia urbana,17,28,0.0025,0.0037,1.4957
+Mudança climática,62,102,0.0091,0.0136,1.494
+Simulação de dinâmica molecular,16,26,0.0023,0.0035,1.4757
+Eletroquímica,46,71,0.0068,0.0095,1.4016
+Engenharia tecidual,19,29,0.0028,0.0039,1.3861
+Nanopartículas,40,61,0.0059,0.0081,1.3849
+América Latina,21,31,0.0031,0.0041,1.3405
+História da arte,21,30,0.0031,0.004,1.2973
+Biomarcadores,31,44,0.0046,0.0059,1.2889
+Inflamação,52,73,0.0076,0.0097,1.2748
+Materiais nanoestruturados,39,54,0.0057,0.0072,1.2574
+Envelhecimento,25,32,0.0037,0.0043,1.1624
+Biologia computacional,65,83,0.0095,0.0111,1.1596
+Neurociências,26,33,0.0038,0.0044,1.1526
+Nanotecnologia,32,40,0.0047,0.0053,1.1351
+Síntese orgânica,20,25,0.0029,0.0033,1.1351
+Saúde pública,22,27,0.0032,0.0036,1.1145
+Políticas públicas,36,43,0.0053,0.0057,1.0847
+Mata Atlântica,22,26,0.0032,0.0035,1.0732
+Modelos matemáticos,29,34,0.0043,0.0045,1.0647
+Biodiversidade,33,37,0.0048,0.0049,1.0182
+Estresse oxidativo,30,33,0.0044,0.0044,0.9989
+Neoplasias,68,71,0.01,0.0095,0.9482
+Sistemas dinâmicos,33,34,0.0048,0.0045,0.9356
+Brasil,73,75,0.0107,0.01,0.933
+Obesidade,61,62,0.009,0.0083,0.923
+Proteômica,44,44,0.0065,0.0059,0.9081
+São Paulo,26,26,0.0038,0.0035,0.9081
+Biogeografia,29,29,0.0043,0.0039,0.9081
+Genômica,41,38,0.006,0.0051,0.8417
+Biologia molecular,71,65,0.0104,0.0087,0.8314
+Ressonância magnética nuclear,31,28,0.0046,0.0037,0.8202
+Filogenia,61,53,0.009,0.0071,0.789
+Produtos naturais,34,29,0.005,0.0039,0.7746
+Espectrometria de massas,40,33,0.0059,0.0044,0.7492
+Expressão gênica,51,33,0.0075,0.0044,0.5876
+MicroRNAs,52,27,0.0076,0.0036,0.4715
