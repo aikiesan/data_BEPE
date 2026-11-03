@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=Instrument+Serif:ital@0;1&display=swap">
-  <link rel="stylesheet" href="assets/css/style.css?v=20261103f">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261103g">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23171513'/%3E%3Cpath d='M7 24 C12 11 21 8 26 8' fill='none' stroke='%23ebe8e2' stroke-width='2.6'/%3E%3Ccircle cx='7' cy='24' r='3' fill='%23e2412f'/%3E%3C/svg%3E">
 </head>
 <body data-page="hoje">
@@ -40,7 +40,7 @@
       <p class="eyebrow">Cenário BEPE 2026 · painel em atualização contínua</p>
       <h1 class="brand-h1">Data <span class="serif">BEPE</span></h1>
       <p class="hero-kicker">A BEPE hoje: quem está fora, quem vai partir e o que mudou desde setembro.</p>
-      <p class="hero-dek">Nas faixas mais recentes da numeração de 2026, do processo nº <span data-h="corte">18.000</span> em diante, a Biblioteca Virtual da FAPESP mostra até agora <strong><span data-h="depois_corte">61</span> BEPE concedidas</strong>, contra <span data-h="depois_corte_ant">305</span> no mesmo trecho de 2025. Este painel acompanha esse número a cada nova exportação.</p>
+      <p class="hero-dek">Desde 1º de setembro, a BEPE tem regras novas: estágio de 6 meses, e iniciação científica e mestrado fora do fluxo contínuo. Nos trechos da numeração de 2026 que já estão fechados, a FAPESP concedeu <span data-h="fechado">553</span> BEPE, contra <span data-h="fechado_ant">546</span> em 2025. Para <span data-h="prox_periodo">novembro de 2026 a março de 2027</span>, a Biblioteca Virtual mostra até agora <strong><span data-h="prox_ini">226</span> partidas marcadas</strong>, contra <span data-h="prox_ini_ant">792</span> no mesmo período um ano antes. Parte dessas bolsas ainda vai ser concedida, e este painel acompanha o número a cada nova exportação.</p>
       <div class="hero-foot">
         <div class="hero-ctas">
           <a class="cta" href="#hoje">
@@ -83,12 +83,12 @@
         <article class="now-card rise">
           <p class="now-n" data-h="pedidos_ano">—</p>
           <h3>BEPE concedidas com pedido em <span data-h="ano">2026</span></h3>
-          <p>Em <span data-h="ano_anterior">2025</span>, no mesmo ponto da numeração dos processos: <b data-h="pedidos_ant_mesmo_ponto">—</b> (<span data-h="var_mesmo_ponto">—</span>).</p>
+          <p>Nos trechos fechados da numeração, até o processo <span data-h="fechado_ate">—</span>: <b data-h="fechado">—</b> em <span data-h="ano">2026</span> e <span data-h="fechado_ant">—</span> em <span data-h="ano_anterior">2025</span> (<span data-h="var_fechado">—</span>).</p>
         </article>
         <article class="now-card now-alert rise">
-          <p class="now-n" data-h="depois_corte">—</p>
-          <h3>concedidas do processo nº <span data-h="corte">—</span> em diante</h3>
-          <p>No mesmo trecho de <span data-h="ano_anterior">2025</span>: <b data-h="depois_corte_ant">—</b> (<span data-h="var_depois">—</span>). Parte da diferença pode ser pedido ainda em análise.</p>
+          <p class="now-n" data-h="prox_ini">—</p>
+          <h3>partidas marcadas de <span data-h="prox_periodo">—</span></h3>
+          <p>No mesmo período um ano antes, partiram <b data-h="prox_ini_ant">—</b>. Comparação em aberto: parte das bolsas é concedida poucas semanas antes da partida.</p>
         </article>
       </div>
       <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/hoje01_indicadores.csv" download>Indicadores (CSV)</a></p>
@@ -97,17 +97,17 @@
     <section class="ch wrap" id="ritmo-2026">
       <div class="ch-head">
         <p class="ch-num"><b>02</b> 2026</p>
-        <h2>Nas primeiras faixas, 2026 acompanha 2025. <span class="serif">Nas mais recentes, fica abaixo da metade.</span></h2>
+        <h2>Nos trechos fechados, 2026 acompanha 2025. <span class="serif">Os mais recentes ainda estão em aberto.</span></h2>
       </div>
       <div class="ch-body">
         <div class="prose">
-          <p>A FAPESP numera os processos na ordem em que são abertos, e a numeração recomeça a cada ano. Dividimos a numeração em faixas de 2.000 processos e comparamos as BEPE concedidas em cada faixa. Nas primeiras faixas, 2026 oscila para cima e para baixo em torno de 2025: antes do processo <span data-h="corte">—</span>, são <b data-h="antes_corte">—</b> bolsas em 2026 e <span data-h="antes_corte_ant">—</span> em 2025.</p>
-          <p>Do processo <span data-h="corte">—</span> em diante, todas as faixas de 2026 têm menos da metade das BEPE de 2025, e a queda aparece em todas as modalidades. A maior é na iniciação científica, uma das duas modalidades que saíram do fluxo contínuo em 1º de setembro.</p>
+          <p>A FAPESP numera os processos na ordem em que são abertos, e a numeração recomeça a cada ano. Dividimos a numeração em faixas de 2.000 processos. Uma faixa está fechada quando, um ano antes, nesta mesma data, ao menos 80% dos estágios dela já tinham começado: àquela altura, quase todos os pedidos da faixa já tinham sido decididos. Hoje, as faixas fechadas vão até o processo <span data-h="fechado_ate">—</span>. Nelas, <span data-h="ano">2026</span> tem <b data-h="fechado">—</b> BEPE e <span data-h="ano_anterior">2025</span> tem <span data-h="fechado_ant">—</span>.</p>
+          <p>Do processo <span data-h="aberto">—</span> em diante, os pedidos de <span data-h="ano">2026</span> ainda estão sendo decididos, e os de <span data-h="ano_anterior">2025</span> já tiveram um ano inteiro. Comparar os dois exageraria qualquer queda. Nesse trecho, o painel mostra só o que já foi concedido, sem calcular diferença. A regra é recalculada a cada exportação, e as faixas vão se fechando conforme a FAPESP decide os pedidos.</p>
         </div>
         <dl class="facts">
-          <div><dt>Antes do processo <span data-h="corte">—</span></dt><dd><span data-h="var_antes">—</span><small>em relação a 2025</small></dd></div>
-          <div><dt>Do processo <span data-h="corte">—</span> em diante</dt><dd><span data-h="var_depois">—</span><small>em relação a 2025</small></dd></div>
-          <div><dt>Iniciação científica, do <span data-h="corte">—</span> em diante</dt><dd><span data-h="var_ic">—</span><small>em relação a 2025</small></dd></div>
+          <div><dt>Trechos fechados, até o processo <span data-h="fechado_ate">—</span></dt><dd><span data-h="var_fechado">—</span><small>em relação a <span data-h="ano_anterior">2025</span></small></dd></div>
+          <div><dt>Trecho em aberto, do processo <span data-h="aberto">—</span> em diante</dt><dd><span data-h="aberto_n">—</span><small>concedidas até agora, sem comparação</small></dd></div>
+          <div><dt>Maior número de <span data-h="ano">2026</span> já publicado</dt><dd><span data-h="max_seq">—</span><small>em <span data-h="ano_anterior">2025</span>, a numeração das BEPE chegou ao <span data-h="max_seq_ant">—</span></small></dd></div>
         </dl>
       </div>
       <div class="figs">
@@ -115,12 +115,12 @@
           <div class="fig-bar"><figcaption><span class="fig-n">Painel 1</span>BEPE concedidas, acumuladas pela ordem do pedido</figcaption></div>
           <div class="legend" id="legend-acum"></div>
           <div class="chart" id="chart-acum"></div>
-          <p class="fig-note">Eixo horizontal: número do processo, que segue a ordem dos pedidos no ano. O número não traz a data do pedido, por isso o painel não fala em meses. A área sombreada começa no processo <span data-h="corte">—</span>, como no Painel 2. Em 2026, o estágio mais cedo desse trecho começa em <span data-h="corte_inicio">—</span>, então ao menos parte desses pedidos é anterior às novas regras.</p>
+          <p class="fig-note">Eixo horizontal: número do processo, que segue a ordem dos pedidos no ano. O número não traz a data do pedido, por isso o painel não fala em meses. A área sombreada é o trecho em aberto, do processo <span data-h="aberto">—</span> em diante, pela mesma regra do Painel 2. Ali, a curva de <span data-h="ano">2026</span> ainda vai subir, e a distância para <span data-h="ano_anterior">2025</span> não deve ser lida como queda.</p>
           <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/hoje02_acumulado_por_numero_processo.csv" download>Dados do painel (CSV)</a></p>
         </figure>
         <aside class="caveat rise">
           <h3>O que este gráfico não mostra</h3>
-          <p>A Biblioteca Virtual só publica bolsas <strong>concedidas</strong>. Um pedido negado e um pedido ainda em análise não aparecem, e os dados não permitem separar um do outro. Por isso a queda nas faixas mais recentes é um sinal, não uma contagem de negativas. Se esses pedidos continuarem ausentes nas próximas exportações, deixa de ser atraso de análise. Os números de negativas por mês só a FAPESP tem, e podem ser pedidos pela Lei de Acesso à Informação.</p>
+          <p>A Biblioteca Virtual só publica bolsas <strong>concedidas</strong>. Um pedido negado e um pedido ainda em análise não aparecem, e os dados não permitem separar um do outro. Por isso o painel só calcula diferenças nos trechos fechados. Nos trechos em aberto, uma bolsa que não aparece pode ser negativa ou pedido em análise. Se continuar ausente nas próximas exportações, deixa de ser atraso de análise. Os números de negativas por mês só a FAPESP tem, e podem ser pedidos pela Lei de Acesso à Informação.</p>
         </aside>
         <figure class="fig rise">
           <div class="fig-bar">
@@ -129,7 +129,7 @@
           </div>
           <div class="legend" id="legend-faixas"></div>
           <div class="chart" id="chart-faixas"></div>
-          <p class="fig-note">Faixas de 2.000 processos. A última vai até o maior número de <span data-h="ano">2026</span> já publicado (<span data-h="max_seq">—</span>) e é comparada com o mesmo trecho de <span data-h="ano_anterior">2025</span>. Área sombreada: a partir da primeira faixa em que <span data-h="ano">2026</span> e todas as faixas seguintes ficam abaixo da metade de <span data-h="ano_anterior">2025</span>. A regra é recalculada a cada exportação, e as faixas mais recentes podem crescer conforme pedidos em análise forem concedidos.</p>
+          <p class="fig-note">Faixas de 2.000 processos. A última vai até o maior número de <span data-h="ano">2026</span> já publicado (<span data-h="max_seq">—</span>) e é comparada com o mesmo trecho de <span data-h="ano_anterior">2025</span>. Faixa fechada: um ano antes, nesta mesma data, ao menos 80% dos estágios daquela faixa já tinham começado. As faixas fechadas mostram a variação. As faixas em aberto, na área sombreada, mostram só o que já foi concedido e devem crescer nas próximas exportações. A regra é recalculada a cada exportação.</p>
           <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/hoje03_faixas_numeracao.csv" download>Dados do painel (CSV)</a></p>
         </figure>
       </div>
@@ -138,30 +138,31 @@
     <section class="ch wrap" id="mes-a-mes">
       <div class="ch-head">
         <p class="ch-num"><b>03</b> Mês a mês</p>
-        <h2>As partidas cresceram até outubro. <span class="serif">O choque está no que vem depois.</span></h2>
+        <h2>As partidas cresceram até <span data-h="mes_ref">outubro</span>. <span class="serif">Para os próximos meses, há bem menos marcadas.</span></h2>
       </div>
       <div class="ch-body">
         <div class="prose">
-          <p>A Biblioteca Virtual não informa a data da concessão. O único calendário disponível é o dia em que cada estágio começa. Por ele, <span data-h="ano">2026</span> teve mais partidas que <span data-h="ano_anterior">2025</span> em <b data-h="ini_meses_maior">—</b> de <span data-h="ini_meses">—</span> meses, de janeiro a outubro: <b data-h="ini_ate_ref">—</b> estágios, contra <span data-h="ini_ate_ref_ant">—</span>. Boa parte delas, <span data-h="ini_ate_ref_pedido_ant">—</span>, veio do recorde de pedidos de <span data-h="ano_anterior">2025</span>.</p>
-          <p>O choque aparece nas partidas marcadas. Dezembro, janeiro e fevereiro são os meses da iniciação científica: no último verão partiram <b data-h="ic_verao_ant">—</b> bolsistas de IC; para o próximo, há <b data-h="ic_verao">—</b> marcados até agora. Desde 1º de setembro a IC não pede BEPE a qualquer momento, e a chamada específica só divulga o resultado em março de 2027 <a href="#ref-10">[10]</a>.</p>
-          <p>Quem ainda recebe a bolsa recebe, quase sempre, pelo padrão antigo. Dos pós-doutorados pedidos do processo <span data-h="corte">—</span> em diante, <b data-h="pd_depois_acima6">—</b> de <span data-h="pd_depois_n">—</span> têm mais de seis meses, a maioria doze. A norma nova só admite pedidos de 6 meses <a href="#ref-9">[9]</a>, mas a BV não traz a data de cada pedido, então os dados não mostram quantas dessas bolsas foram pedidas antes de 1º de setembro.</p>
-          <p data-h="areas_texto">Nas faixas mais recentes da numeração, a queda atinge todas as grandes áreas.</p>
+          <p>A Biblioteca Virtual não informa a data da concessão. O único calendário disponível é o dia em que cada estágio começa. Por ele, <span data-h="ano">2026</span> teve mais partidas que <span data-h="ano_anterior">2025</span> em <b data-h="ini_meses_maior">—</b> de <span data-h="ini_meses">—</span> meses, de janeiro a <span data-h="mes_ref">outubro</span>: <b data-h="ini_ate_ref">—</b> estágios, contra <span data-h="ini_ate_ref_ant">—</span>. Boa parte delas, <span data-h="ini_ate_ref_pedido_ant">—</span>, veio do recorde de pedidos de <span data-h="ano_anterior">2025</span>.</p>
+          <p>Daqui em diante, a comparação fica em aberto. Para <span data-h="prox_periodo">—</span>, a BV mostra <b data-h="prox_ini">—</b> partidas marcadas até agora; no mesmo período um ano antes, partiram <span data-h="prox_ini_ant">—</span>. Parte das bolsas é concedida poucas semanas antes da partida, e a BV não informa quando, então essa diferença ainda vai diminuir. Quanto, só as próximas exportações vão mostrar.</p>
+          <p>Dezembro, janeiro e fevereiro são os meses da iniciação científica: no último verão partiram <b data-h="ic_verao_ant">—</b> bolsistas de IC; para o próximo, há <b data-h="ic_verao">—</b> marcados até agora. Desde 1º de setembro a IC não pede BEPE a qualquer momento, e a chamada específica só divulga o resultado em março de 2027 <a href="#ref-10">[10]</a>.</p>
+          <p>Quem ainda recebe a bolsa recebe, quase sempre, pelo padrão antigo. Dos pós-doutorados com partida marcada depois de <span data-h-data="dados_de">—</span>, <b data-h="pd_fut_acima6">—</b> de <span data-h="pd_fut_n">—</span> têm mais de seis meses, <span data-h="pd_fut_12">—</span> deles com doze. A norma nova só admite pedidos de 6 meses <a href="#ref-9">[9]</a>, mas a BV não traz a data de cada pedido, então os dados não mostram quantas dessas bolsas foram pedidas antes de 1º de setembro.</p>
+          <p data-h="areas_texto">Por grande área, as partidas de janeiro a outubro crescem em relação ao ano anterior.</p>
         </div>
         <dl class="facts">
-          <div><dt>Partidas de janeiro a outubro</dt><dd><span data-h="var_ini">—</span><small>em relação a <span data-h="ano_anterior">2025</span></small></dd></div>
+          <div><dt>Partidas de janeiro a <span data-h="mes_ref">outubro</span></dt><dd><span data-h="var_ini">—</span><small>em relação a <span data-h="ano_anterior">2025</span></small></dd></div>
           <div><dt>Iniciação científica, dezembro a fevereiro</dt><dd><span data-h="ic_verao">—</span><small>marcadas, contra <span data-h="ic_verao_ant">—</span> no verão anterior</small></dd></div>
-          <div><dt>Pós-doutorado, pedidos do <span data-h="corte">—</span> em diante</dt><dd><span data-h="pd_depois_pct">—</span><small>com mais de 6 meses</small></dd></div>
+          <div><dt>Pós-doutorado com partida marcada</dt><dd><span data-h="pd_fut_pct">—</span><small>com mais de 6 meses</small></dd></div>
         </dl>
       </div>
       <div class="figs">
         <figure class="fig rise">
           <div class="fig-bar">
-            <figcaption><span class="fig-n">Painel 3</span>Estágios por mês de início, <span data-h="ano">2026</span> contra <span data-h="ano_anterior">2025</span></figcaption>
+            <figcaption><span class="fig-n">Painel 3</span>Estágios por mês de início, contra o mesmo mês um ano antes</figcaption>
             <div class="seg seg-wrap" role="group" aria-label="Modalidade" id="seg-mensal"></div>
           </div>
           <div class="legend" id="legend-mensal"></div>
           <div class="chart" id="chart-mensal"></div>
-          <p class="fig-note">Colunas vazadas: estágios ainda por começar, concedidos até a data dos dados. Esses meses ainda podem crescer nas próximas exportações, porque parte das bolsas é concedida poucas semanas antes da partida. Os de <span data-h="ano_anterior">2025</span> já estão completos.</p>
+          <p class="fig-note">Colunas vazadas, na área sombreada: estágios marcados, concedidos até a data dos dados. São comparações em aberto: esses meses ainda vão crescer nas próximas exportações, porque parte das bolsas é concedida poucas semanas antes da partida. As colunas cinza, do ano anterior, já estão completas.</p>
           <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/hoje07_inicios_por_mes_ano.csv" download>Dados do painel (CSV)</a></p>
         </figure>
         <figure class="fig rise">
@@ -175,10 +176,10 @@
           <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>; norma da BEPE <a href="#ref-9">[9]</a>. Elaboração própria. <a class="csv" href="data/figuras/hoje08_duracao_doutorado_posdoc_por_mes.csv" download>Dados do painel (CSV)</a></p>
         </figure>
         <figure class="fig rise">
-          <div class="fig-bar"><figcaption><span class="fig-n">Painel 5</span>Por grande área: antes e depois do processo <span data-h="corte">—</span>, <span data-h="ano">2026</span> contra <span data-h="ano_anterior">2025</span></figcaption></div>
+          <div class="fig-bar"><figcaption><span class="fig-n">Painel 5</span>Por grande área: partidas já feitas e partidas marcadas, contra o mesmo período um ano antes</figcaption></div>
           <div class="mods" id="areas-hoje"></div>
-          <p class="fig-note">Mesmos trechos da numeração do Painel 2. A grande área é a registrada na BV para cada bolsa. Números pequenos: em algumas áreas, poucas bolsas mudam muito a porcentagem.</p>
-          <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/hoje09_grandes_areas_antes_depois.csv" download>Dados do painel (CSV)</a></p>
+          <p class="fig-note">Primeira coluna: estágios iniciados de janeiro a <span data-h="mes_ref">outubro</span>. Segunda: estágios marcados para <span data-h="prox_periodo">—</span>, coluna em aberto, sem cálculo de diferença. A grande área é a registrada na BV para cada bolsa. Números pequenos: em algumas áreas, poucas bolsas mudam muito a porcentagem.</p>
+          <p class="fig-src">Fonte: FAPESP, Biblioteca Virtual <a href="#ref-1">[1]</a><a href="#ref-2">[2]</a>. Elaboração própria. <a class="csv" href="data/figuras/hoje09_grandes_areas_partidas.csv" download>Dados do painel (CSV)</a></p>
         </figure>
       </div>
     </section>
@@ -288,15 +289,15 @@
         <div class="panel">
           <h3>Dados do painel</h3>
           <ul class="fig-files">
-            <li><a href="data/figuras/hoje01_indicadores.csv" download>hoje01_indicadores.csv</a> <span>30 linhas</span></li>
+            <li><a href="data/figuras/hoje01_indicadores.csv" download>hoje01_indicadores.csv</a> <span>37 linhas</span></li>
             <li><a href="data/figuras/hoje02_acumulado_por_numero_processo.csv" download>hoje02_acumulado_por_numero_processo.csv</a> <span>194 linhas</span></li>
             <li><a href="data/figuras/hoje03_faixas_numeracao.csv" download>hoje03_faixas_numeracao.csv</a> <span>48 linhas</span></li>
             <li><a href="data/figuras/hoje04_bolsistas_atuais.csv" download>hoje04_bolsistas_atuais.csv</a> <span>31 linhas</span></li>
             <li><a href="data/figuras/hoje05_inicios_por_mes.csv" download>hoje05_inicios_por_mes.csv</a> <span>23 linhas</span></li>
             <li><a href="data/figuras/hoje06_duracao_bolsas_atuais.csv" download>hoje06_duracao_bolsas_atuais.csv</a> <span>4 linhas</span></li>
-            <li><a href="data/figuras/hoje07_inicios_por_mes_ano.csv" download>hoje07_inicios_por_mes_ano.csv</a> <span>48 linhas</span></li>
-            <li><a href="data/figuras/hoje08_duracao_doutorado_posdoc_por_mes.csv" download>hoje08_duracao_doutorado_posdoc_por_mes.csv</a> <span>27 linhas</span></li>
-            <li><a href="data/figuras/hoje09_grandes_areas_antes_depois.csv" download>hoje09_grandes_areas_antes_depois.csv</a> <span>9 linhas</span></li>
+            <li><a href="data/figuras/hoje07_inicios_por_mes_ano.csv" download>hoje07_inicios_por_mes_ano.csv</a> <span>72 linhas</span></li>
+            <li><a href="data/figuras/hoje08_duracao_doutorado_posdoc_por_mes.csv" download>hoje08_duracao_doutorado_posdoc_por_mes.csv</a> <span>30 linhas</span></li>
+            <li><a href="data/figuras/hoje09_grandes_areas_partidas.csv" download>hoje09_grandes_areas_partidas.csv</a> <span>9 linhas</span></li>
           </ul>
           <p class="downloads" style="margin-top: 16px"><a href="historico.html#metodo">Todos os dados e o dicionário</a></p>
         </div>
@@ -333,6 +334,6 @@
   <div class="tip" id="tip" role="tooltip" hidden></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
-  <script src="assets/js/app.js?v=20261103f"></script>
+  <script src="assets/js/app.js?v=20261103g"></script>
 </body>
 </html>

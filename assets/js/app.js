@@ -940,31 +940,40 @@
     return (v >= 0 ? '+' : '−') + fP0(Math.abs(v));
   };
 
+  const antes1 = (ch) => (+ch.slice(0, 4) - 1) + ch.slice(4);
+  const periodo = (de, ate) => {
+    const [a1, m1] = de.split('-'); const [a2, m2] = ate.split('-');
+    return a1 === a2 ? `${MESES_L[m1 - 1]} a ${MESES_L[m2 - 1]} de ${a1}` : `${MESES_L[m1 - 1]} de ${a1} a ${MESES_L[m2 - 1]} de ${a2}`;
+  };
+  const mesRef = () => MESES_L[+H.dados_de.slice(5, 7) - 1];
+
   function textoAreas() {
-    const q = H.areas_corte.filter((d) => d.depois_ant >= 20).map((d) => ({ ...d, v: d.depois / d.depois_ant - 1 })).sort((a, b) => a.v - b.v);
+    const k = H.kpis;
+    const q = H.areas_mes.filter((d) => d.antes_ant >= 20).map((d) => ({ ...d, v: d.antes / d.antes_ant - 1 })).sort((a, b) => a.v - b.v);
     if (!q.length) return '';
-    const nome = (d) => d.modalidade;
-    const todas = H.areas_corte.every((d) => d.depois < d.depois_ant);
-    const f = (d) => `${nome(d)} (${varP(d.depois, d.depois_ant)})`;
-    return `Entre os pedidos do processo ${fN(H.kpis.corte)} em diante, ${todas ? 'todas as grandes áreas caem' : 'a maioria das grandes áreas cai'}. As maiores quedas, entre as áreas com ao menos 20 bolsas no mesmo trecho de ${H.kpis.ano_anterior}, são em ${q.slice(0, 3).map(f).join(', ').replace(/, ([^,]*)$/, ' e $1')}; as menores, em ${q.slice(-2).map(f).join(' e ')}.`;
+    const f = (d) => `${d.modalidade} (${varP(d.antes, d.antes_ant)})`;
+    const sobe = q.filter((d) => d.v > 0).length;
+    let t = `De janeiro a ${mesRef()}, ${sobe === q.length ? 'as partidas crescem em todas as grandes áreas' : 'as partidas variam por grande área'} em relação a ${k.ano_anterior}, de ${f(q[0])} a ${f(q[q.length - 1])}, entre as áreas com ao menos 20 partidas no ano anterior.`;
+    if (H.areas_mes.every((d) => d.depois < d.depois_ant)) {
+      t += ` Nas partidas marcadas de ${periodo(k.prox_de, k.prox_ate)}, todas as áreas aparecem abaixo do mesmo período um ano antes, comparação que ainda está em aberto.`;
+    }
+    return t;
   }
 
   function fillHoje() {
     const k = H.kpis;
-    const ic = H.modalidades.find((m) => m.modalidade === 'Iniciação científica');
     const dp = H.duracao.filter((d) => d.modalidade === 'Doutorado' || d.modalidade === 'Pós-doutorado');
     const V = {
       ...k,
-      var_mesmo_ponto: varP(k.pedidos_ano, k.pedidos_ant_mesmo_ponto),
-      var_depois: varP(k.depois_corte, k.depois_corte_ant),
-      var_antes: varP(k.antes_corte, k.antes_corte_ant),
-      corte_inicio: fData(k.corte_inicio_min),
-      var_ic: ic ? varP(ic.depois, ic.depois_ant) : '—',
+      var_fechado: varP(k.fechado, k.fechado_ant),
       atuais: k.no_exterior + k.a_iniciar,
       acima6_pct: fP0(d3.sum(dp, (d) => d.acima6) / d3.sum(dp, (d) => d.n)),
       top_pais: H.agora.paises[0][0], top_pais_n: H.agora.paises[0][1],
       var_ini: varP(k.ini_ate_ref, k.ini_ate_ref_ant),
-      pd_depois_pct: k.pd_depois_n ? fP0(k.pd_depois_acima6 / k.pd_depois_n) : '—',
+      mes_ref: mesRef(),
+      prox_periodo: periodo(k.prox_de, k.prox_ate),
+      prox_periodo_ant: periodo(antes1(k.prox_de), antes1(k.prox_ate)),
+      pd_fut_pct: k.pd_fut_n ? fP0(k.pd_fut_acima6 / k.pd_fut_n) : '—',
       areas_texto: textoAreas(),
     };
     for (const n of document.querySelectorAll('[data-h]')) {
@@ -999,14 +1008,14 @@
       .attr('x', x).attr('y', Hh - m.b + 18).attr('text-anchor', 'middle').attr('class', 'lbl').text(fN);
     svg.append('text').attr('x', (m.l + W - m.r) / 2).attr('y', Hh - 4).attr('text-anchor', 'middle').attr('class', 'lbl')
       .text('número do processo (ordem do pedido no ano)');
-    // início da faixa em que 2026 fica abaixo da metade de 2025
-    const xc = x(H.kpis.corte);
+    // trecho em aberto da numeração: pedidos de 2026 ainda sendo decididos
+    const xc = x(H.kpis.aberto);
     svg.append('rect').attr('x', xc).attr('y', m.t).attr('width', Math.max(0, x(H.kpis.max_seq) - xc)).attr('height', Hh - m.b - m.t)
-      .attr('fill', cssv('--red')).attr('fill-opacity', 0.06);
+      .attr('fill', cssv('--ink')).attr('fill-opacity', 0.045);
     svg.append('line').attr('x1', xc).attr('x2', xc).attr('y1', m.t).attr('y2', Hh - m.b)
-      .attr('stroke', cssv('--red')).attr('stroke-dasharray', '4 3');
-    svg.append('text').attr('x', xc - 6).attr('y', m.t + 12).attr('text-anchor', 'end').attr('class', 'lbl-strong')
-      .attr('fill', cssv('--red')).text('nº ' + fN(H.kpis.corte));
+      .attr('stroke', cssv('--ink-2')).attr('stroke-dasharray', '4 3');
+    svg.append('text').attr('x', xc + 6).attr('y', m.t + 12).attr('class', 'lbl-strong')
+      .attr('fill', cssv('--ink-2')).text('em aberto');
     const line = d3.line().x((p) => x(p[0])).y((p) => y(p[1])).curve(d3.curveStepAfter);
     const labels = [];
     for (const a of anos) {
@@ -1049,33 +1058,31 @@
     }
   }
 
-  function drawModsHoje(id = 'mods-hoje', dados = H.modalidades) {
+  // duas colunas de comparação; a segunda pode estar em aberto (sem cálculo de variação)
+  function drawModsHoje(id, dados, cab) {
     const box = document.getElementById(id);
     box.replaceChildren();
-    const k = H.kpis;
     const head = el('div', 'mods-row mods-head');
-    head.append(el('span', '', ''), el('span', '', 'Antes do processo ' + fN(k.corte)), el('span', '', 'Do ' + fN(k.corte) + ' em diante'));
+    head.append(el('span', '', ''), el('span', '', cab.c1), el('span', '', cab.c2));
     box.append(head);
     const maxA = d3.max(dados, (d) => Math.max(d.antes, d.antes_ant));
     const maxD = d3.max(dados, (d) => Math.max(d.depois, d.depois_ant));
-    const celula = (atual, ant, max) => {
+    const celula = (atual, ant, max, anos, aberto) => {
       const c = el('div', 'mods-cell');
-      for (const [ano, v, cls] of [[k.ano_anterior, ant, 'b-ant'], [k.ano, atual, 'b-atual']]) {
+      for (const [ano, v, cls] of [[anos[0], ant, 'b-ant'], [anos[1], atual, aberto ? 'b-atual b-aberto' : 'b-atual']]) {
         const r = el('div', 'mods-bar ' + cls);
         const t = el('span', 't'); const f = el('span', 'f'); f.style.width = (v / max) * 100 + '%';
         t.append(f);
         r.append(el('span', 'y', String(ano)), t, el('b', '', fN(v)));
         c.append(r);
       }
-      const v = varP(atual, ant);
-      const chip = el('span', 'mods-var' + (atual < ant * 0.8 ? ' neg' : ''), v);
-      c.append(chip);
+      c.append(aberto ? el('span', 'mods-var aberto', 'em aberto') : el('span', 'mods-var' + (atual < ant * 0.8 ? ' neg' : ''), varP(atual, ant)));
       return c;
     };
     for (const d of dados) {
       const row = el('div', 'mods-row');
-      const c1 = celula(d.antes, d.antes_ant, maxA); c1.dataset.label = 'Antes do processo ' + fN(k.corte);
-      const c2 = celula(d.depois, d.depois_ant, maxD); c2.dataset.label = 'Do ' + fN(k.corte) + ' em diante';
+      const c1 = celula(d.antes, d.antes_ant, maxA, cab.anos1, false); c1.dataset.label = cab.c1;
+      const c2 = celula(d.depois, d.depois_ant, maxD, cab.anos2, cab.aberto2); c2.dataset.label = cab.c2;
       row.append(el('span', 'mods-name', d.modalidade), c1, c2);
       box.append(row);
     }
@@ -1182,40 +1189,47 @@
   function drawMensal() {
     const box = document.getElementById('chart-mensal');
     box.replaceChildren();
-    const k = H.kpis;
     const rows = H.mensal.map((d) => ({ mes: d.mes, a: somaMod(d.atual, estMes.mod), b: somaMod(d.ant, estMes.mod), futuro: d.futuro }));
-    legenda('legend-mensal', [[String(k.ano_anterior), cssv('--muted')], [String(k.ano), cssv('--red')], [k.ano + ', ainda por começar', 'transparent', cssv('--red')]]);
+    legenda('legend-mensal', [['Mesmo mês, um ano antes', cssv('--muted')], ['Estágios iniciados', cssv('--red')], ['Marcadas, ainda por começar', 'transparent', cssv('--red')]]);
     const W = box.clientWidth || 800;
-    const Hh = W < 560 ? 240 : 300;
+    const estreito = W < 560;
+    const Hh = estreito ? 240 : 300;
     const m = { t: 18, r: 6, b: 30, l: 38 };
-    const x = d3.scaleBand(rows.map((r) => r.mes), [m.l, W - m.r]).padding(0.24);
-    const xi = d3.scaleBand(['b', 'a'], [0, x.bandwidth()]).padding(0.08);
+    const x = d3.scaleBand(rows.map((r) => r.mes), [m.l, W - m.r]).padding(0.2);
+    const xi = d3.scaleBand(['b', 'a'], [0, x.bandwidth()]).padding(0.06);
     const y = d3.scaleLinear([0, d3.max(rows, (r) => Math.max(r.a, r.b)) || 1], [Hh - m.b, m.t]).nice();
     const svg = d3.select(box).append('svg').attr('viewBox', `0 0 ${W} ${Hh}`).attr('width', W).attr('height', Hh);
     svg.append('g').selectAll('line').data(y.ticks(4)).join('line')
       .attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y).attr('stroke', cssv('--rule')).attr('stroke-dasharray', (d) => (d ? '2 3' : null));
     svg.append('g').selectAll('text').data(y.ticks(4)).join('text')
       .attr('x', m.l - 6).attr('y', (d) => y(d) + 4).attr('text-anchor', 'end').attr('class', 'lbl').text(fN);
+    const lbl = (s, i) => { const [a, mm] = s.split('-'); return mm === '01' ? a : (estreito && i % 3 ? '' : MESES[+mm - 1]); };
     svg.append('g').selectAll('text').data(rows).join('text')
-      .attr('x', (r) => x(r.mes) + x.bandwidth() / 2).attr('y', Hh - m.b + 16).attr('text-anchor', 'middle').attr('class', 'lbl')
-      .text((r) => MESES[r.mes - 1]);
+      .attr('x', (r) => x(r.mes) + x.bandwidth() / 2).attr('y', Hh - m.b + 16).attr('text-anchor', 'middle')
+      .attr('class', (r) => (r.mes.endsWith('-01') ? 'lbl-strong' : 'lbl')).text((r, i) => lbl(r.mes, i));
     const g = svg.append('g').selectAll('g').data(rows).join('g').attr('transform', (r) => `translate(${x(r.mes)},0)`);
     g.append('rect').attr('x', xi('b')).attr('width', xi.bandwidth()).attr('y', (r) => y(r.b)).attr('height', (r) => y(0) - y(r.b))
       .attr('rx', 2).attr('fill', cssv('--muted'));
     g.append('rect').attr('x', xi('a')).attr('width', xi.bandwidth()).attr('y', (r) => y(r.a)).attr('height', (r) => y(0) - y(r.a))
       .attr('rx', 2).attr('fill', (r) => (r.futuro ? 'transparent' : cssv('--red')))
-      .attr('stroke', cssv('--red')).attr('stroke-width', (r) => (r.futuro ? 1.6 : 0));
+      .attr('stroke', cssv('--red')).attr('stroke-width', (r) => (r.futuro ? 1.4 : 0));
     g.append('rect').attr('width', x.bandwidth()).attr('y', m.t).attr('height', Hh - m.b - m.t).attr('fill', 'transparent')
-      .on('pointermove', (event, r) => tip(event, MESES_L[r.mes - 1], [
-        { label: k.ano + (r.futuro ? ' (marcadas até ' + fData(H.dados_de) + ')' : ''), value: fN(r.a) },
-        { label: String(k.ano_anterior), value: fN(r.b) },
-        { label: 'Diferença', value: varP(r.a, r.b) }]))
+      .on('pointermove', (event, r) => {
+        const [a, mm] = r.mes.split('-');
+        tip(event, MESES_L[+mm - 1] + ' de ' + a, [
+          { label: r.futuro ? 'Marcadas até ' + fData(H.dados_de) : 'Estágios iniciados', value: fN(r.a) },
+          { label: MESES_L[+mm - 1] + ' de ' + (+a - 1), value: fN(r.b) },
+          { label: 'Diferença', value: r.futuro ? 'em aberto' : varP(r.a, r.b) }]);
+      })
       .on('pointerleave', hideTip);
     const f = rows.findIndex((r) => r.futuro);
     if (f > 0) {
       const xf = x(rows[f].mes) - (x.step() * x.paddingInner()) / 2;
+      svg.append('rect').attr('x', xf).attr('y', m.t - 8).attr('width', W - m.r - xf).attr('height', Hh - m.b - m.t + 8)
+        .attr('fill', cssv('--ink')).attr('fill-opacity', 0.045);
       svg.append('line').attr('x1', xf).attr('x2', xf).attr('y1', m.t - 8).attr('y2', Hh - m.b).attr('stroke', cssv('--ink')).attr('stroke-dasharray', '3 3');
       svg.append('text').attr('x', xf - 6).attr('y', m.t).attr('text-anchor', 'end').attr('class', 'lbl-strong').text('dados de ' + fData(H.dados_de));
+      svg.append('text').attr('x', xf + 6).attr('y', m.t).attr('class', 'lbl-strong').attr('fill', cssv('--ink-2')).text('em aberto');
     }
   }
 
@@ -1267,7 +1281,7 @@
     box.replaceChildren();
     const k = H.kpis;
     const rows = H.faixas.map((f) => ({ ...f, a: somaMod(f.atual, estFaixa.mod), b: somaMod(f.ant, estFaixa.mod) }));
-    legenda('legend-faixas', [[String(k.ano_anterior), cssv('--muted')], [String(k.ano), cssv('--red')]]);
+    legenda('legend-faixas', [[String(k.ano_anterior), cssv('--muted')], [String(k.ano) + ', faixa fechada', cssv('--red')], [String(k.ano) + ', em aberto', 'transparent', cssv('--red')]]);
     const W = box.clientWidth || 800;
     const estreito = W < 560;
     const Hh = estreito ? 260 : 320;
@@ -1277,11 +1291,13 @@
     const xi = d3.scaleBand(['b', 'a'], [0, x.bandwidth()]).padding(0.08);
     const y = d3.scaleLinear([0, d3.max(rows, (r) => Math.max(r.a, r.b)) || 1], [Hh - m.b, m.t]).nice();
     const svg = d3.select(box).append('svg').attr('viewBox', `0 0 ${W} ${Hh}`).attr('width', W).attr('height', Hh);
-    const xc = x(k.corte) - (x.step() * x.paddingInner()) / 2;
-    svg.append('rect').attr('x', xc).attr('y', m.t - 26).attr('width', W - m.r - xc).attr('height', Hh - m.b - m.t + 26)
-      .attr('fill', cssv('--red')).attr('fill-opacity', 0.06);
-    svg.append('text').attr('x', xc + 6).attr('y', m.t - 12).attr('class', 'lbl-strong').attr('fill', cssv('--red'))
-      .text(estreito ? 'queda' : 'menos da metade de ' + k.ano_anterior);
+    if (x(k.aberto) !== undefined) {
+      const xc = x(k.aberto) - (x.step() * x.paddingInner()) / 2;
+      svg.append('rect').attr('x', xc).attr('y', m.t - 26).attr('width', W - m.r - xc).attr('height', Hh - m.b - m.t + 26)
+        .attr('fill', cssv('--ink')).attr('fill-opacity', 0.045);
+      svg.append('text').attr('x', xc + 6).attr('y', m.t - 12).attr('class', 'lbl-strong').attr('fill', cssv('--ink-2'))
+        .text(estreito ? 'em aberto' : 'em aberto: pedidos de ' + k.ano + ' ainda sendo decididos');
+    }
     svg.append('g').selectAll('line').data(y.ticks(4)).join('line')
       .attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y).attr('stroke', cssv('--rule')).attr('stroke-dasharray', (d) => (d ? '2 3' : null));
     svg.append('g').selectAll('text').data(y.ticks(4)).join('text')
@@ -1294,14 +1310,16 @@
     }
     const g = svg.append('g').selectAll('g').data(rows).join('g').attr('transform', (r) => `translate(${x(r.de)},0)`);
     g.append('rect').attr('x', xi('b')).attr('width', xi.bandwidth()).attr('y', (r) => y(r.b)).attr('height', (r) => y(0) - y(r.b)).attr('rx', 2).attr('fill', cssv('--muted'));
-    g.append('rect').attr('x', xi('a')).attr('width', xi.bandwidth()).attr('y', (r) => y(r.a)).attr('height', (r) => y(0) - y(r.a)).attr('rx', 2).attr('fill', cssv('--red'));
+    g.append('rect').attr('x', xi('a')).attr('width', xi.bandwidth()).attr('y', (r) => y(r.a)).attr('height', (r) => y(0) - y(r.a)).attr('rx', 2)
+      .attr('fill', (r) => (r.fechada ? cssv('--red') : 'transparent')).attr('stroke', cssv('--red')).attr('stroke-width', (r) => (r.fechada ? 0 : 1.4));
     if (!estreito) {
-      g.append('text').attr('x', x.bandwidth() / 2).attr('y', (r) => y(Math.max(r.a, r.b)) - 6).attr('text-anchor', 'middle')
+      g.filter((r) => r.fechada).append('text').attr('x', x.bandwidth() / 2).attr('y', (r) => y(Math.max(r.a, r.b)) - 6).attr('text-anchor', 'middle')
         .attr('class', 'lbl').text((r) => (r.b ? varP(r.a, r.b) : ''));
     }
     g.append('rect').attr('width', x.bandwidth()).attr('y', m.t).attr('height', Hh - m.b - m.t).attr('fill', 'transparent')
-      .on('pointermove', (event, r) => tip(event, 'Processos ' + fN(r.de) + ' a ' + fN(r.ate), [
-        { label: String(k.ano), value: fN(r.a) }, { label: String(k.ano_anterior), value: fN(r.b) }, { label: 'Diferença', value: varP(r.a, r.b) }]))
+      .on('pointermove', (event, r) => tip(event, 'Processos ' + fN(r.de) + ' a ' + fN(r.ate) + (r.fechada ? '' : ' (em aberto)'), [
+        { label: String(k.ano), value: fN(r.a) }, { label: String(k.ano_anterior), value: fN(r.b) },
+        { label: 'Diferença', value: r.fechada ? varP(r.a, r.b) : 'em aberto' }]))
       .on('pointerleave', hideTip);
   }
 
@@ -1312,7 +1330,12 @@
       (v) => { estMes.dur = v; drawDurMes(); });
     reg(drawMensal);
     reg(drawDurMes);
-    drawModsHoje('areas-hoje', H.areas_corte);
+    const k = H.kpis;
+    const ab = (ch) => MESES[+ch.slice(5, 7) - 1] + '/' + ch.slice(2, 4);
+    drawModsHoje('areas-hoje', H.areas_mes, {
+      c1: 'Partidas de janeiro a ' + mesRef(), anos1: [k.ano_anterior, k.ano],
+      c2: 'Marcadas, ' + ab(k.prox_de) + ' a ' + ab(k.prox_ate), anos2: [ab(antes1(k.prox_de)).slice(-2) + '–' + ab(antes1(k.prox_ate)).slice(-2), ab(k.prox_de).slice(-2) + '–' + ab(k.prox_ate).slice(-2)], aberto2: true,
+    });
   }
 
   function startHoje() {

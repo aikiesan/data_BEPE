@@ -480,6 +480,8 @@ a.p-name:hover { color: var(--blue); text-decoration: underline; }
 .mods-bar.b-atual .f { background: var(--red); }
 .mods-var { grid-column: 2; grid-row: 1 / span 2; font-weight: 600; font-size: .9rem; padding: 4px 10px; border-radius: 999px; background: var(--paper-2); }
 .mods-var.neg { background: var(--red); color: #fff; }
+.mods-var.aberto { font-weight: 500; color: var(--muted); background: transparent; box-shadow: inset 0 0 0 1px var(--rule); }
+.mods-bar.b-aberto .f { background: transparent; box-shadow: inset 0 0 0 1.5px var(--red); }
 
 /* ---------- duração ---------- */
 .dur { display: grid; gap: 14px; margin-top: 14px; }
