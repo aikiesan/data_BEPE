@@ -83,6 +83,20 @@ def ler(path, situacao):
             yield r
 
 
+def data_exportacao(*paths):
+    """Data da exportação, lida do rodapé da BV ("Dados atualizados em: 25/Oct/26 05:30:07")."""
+    from datetime import datetime
+    datas = []
+    for path in paths:
+        with open(path, encoding="utf-8-sig", errors="replace") as f:
+            for linha in f.readlines()[-10:]:
+                if linha.startswith("Dados atualizados em:"):
+                    datas.append(datetime.strptime(linha.split(":", 1)[1].strip(), "%d/%b/%y %H:%M:%S").date())
+    if not datas:
+        raise SystemExit("rodapé 'Dados atualizados em' não encontrado nos CSVs")
+    return max(datas).isoformat()
+
+
 def preparar(registros):
     for r in registros:
         yy = int(r["processo"][:2])
@@ -234,7 +248,7 @@ def main(concluidas, andamento):
     dados = {
         "meta": {"total": len(rs), "concluidas": sum(r["situacao"] == "Concluída" for r in rs),
                  "andamento": sum(r["situacao"] == "Em andamento" for r in rs), "primeiro_ano": anos[0],
-                 "ultimo_ano": anos[-1], "atualizado": "2026-10-25", "paises": len(paises),
+                 "ultimo_ano": anos[-1], "atualizado": data_exportacao(concluidas, andamento), "paises": len(paises),
                  "anfitrias": len({r["inst_exterior"] for r in rs if r["inst_exterior"]}),
                  "unidades_br": len({r["instituicao"] for r in rs if r["instituicao"]}),
                  "temas": len(cont), "ano_recorde": recorde, "recorde": por_ano[recorde],

@@ -2,9 +2,9 @@ name: Atualização Semanal BV FAPESP
 
 on:
   schedule:
-    # Roda toda segunda-feira às 06:00 BRT (09:00 UTC)
+    # Toda segunda-feira às 06:00 BRT (09:00 UTC). A BV gera os CSVs na madrugada de domingo.
     - cron: '0 9 * * 1'
-  workflow_dispatch: # Permite disparar manualmente pelo botão "Run workflow" no GitHub
+  workflow_dispatch: # botão "Run workflow" na aba Actions
 
 permissions:
   contents: write
@@ -17,54 +17,55 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configurar Python
-        uses: setup-python@v5
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
       - name: Checar se o servidor da FAPESP foi atualizado
         id: check_fapesp
         run: |
-          LAST_MOD=$(curl -sI https://media.fapesp.br/bv/uploads/gera_csv_assincrono/csv/bolsas_no_exterior_em_andamento.csv | grep -i "last-modified" | tr -d '\r' | cut -d':' -f2- | xargs)
-          echo "Data no servidor da FAPESP: '$LAST_MOD'"
-          
-          # Lê a data registrada atualmente em bepe.json
-          CURRENT_DATE=$(python -c "import json; print(json.load(open('data/bepe.json', encoding='utf-8'))['meta']['atualizado'])")
-          echo "Data registrada no repositório: '$CURRENT_DATE'"
-          
-          # Converte a data do header (ex: "Sun, 25 Oct 2026 08:28:07 GMT") para formato ISO YYYY-MM-DD
-          SERVER_ISO=$(python -c "from email.utils import parsedate_to_datetime; print(parsedate_to_datetime('$LAST_MOD').strftime('%Y-%m-%d'))")
-          echo "Data ISO do servidor: '$SERVER_ISO'"
-          
-          if [ "$SERVER_ISO" != "$CURRENT_DATE" ] && [ -n "$SERVER_ISO" ]; then
-            echo "Nova versão detectada no servidor da FAPESP! ($CURRENT_DATE -> $SERVER_ISO)"
-            echo "novo_lote=true" >> $GITHUB_OUTPUT
-            echo "data_nova=$SERVER_ISO" >> $GITHUB_OUTPUT
-          else
-            echo "Nenhum lote novo. Os dados do repositório já estão atualizados."
-            echo "novo_lote=false" >> $GITHUB_OUTPUT
+          URL=https://media.fapesp.br/bv/uploads/gera_csv_assincrono/csv/bolsas_no_exterior_em_andamento.csv
+          LAST_MOD=$(curl -sI "$URL" | grep -i "^last-modified" | cut -d' ' -f2- | tr -d '\r')
+          echo "Last-Modified no servidor: '$LAST_MOD'"
+          if [ -z "$LAST_MOD" ]; then
+            echo "Servidor da FAPESP não respondeu; tenta de novo na próxima semana."
+            echo "novo_lote=false" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
 
-      - name: Baixar novos CSVs e reprocessar painéis
+          # Data no horário de Brasília (UTC-3), a mesma do rodapé "Dados atualizados em" dos CSVs
+          SERVER_ISO=$(python -c "import sys; from datetime import timedelta; from email.utils import parsedate_to_datetime as p; print((p(sys.argv[1]) - timedelta(hours=3)).date())" "$LAST_MOD")
+          CURRENT_DATE=$(python -c "import json; print(json.load(open('data/bepe.json', encoding='utf-8'))['meta']['atualizado'])")
+          echo "Servidor: $SERVER_ISO | Repositório: $CURRENT_DATE"
+
+          if [ "$SERVER_ISO" \> "$CURRENT_DATE" ]; then
+            echo "Novo lote detectado ($CURRENT_DATE -> $SERVER_ISO)."
+            echo "novo_lote=true" >> "$GITHUB_OUTPUT"
+            echo "data_nova=$SERVER_ISO" >> "$GITHUB_OUTPUT"
+          else
+            echo "Nenhum lote novo."
+            echo "novo_lote=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Baixar novos CSVs e reprocessar
         if: steps.check_fapesp.outputs.novo_lote == 'true'
         run: |
-          echo "Baixando novos CSVs da FAPESP..."
-          curl -sS -o concluidas.csv https://media.fapesp.br/bv/uploads/gera_csv_assincrono/csv/bolsas_no_exterior_concluidas.csv
-          curl -sS -o andamento.csv https://media.fapesp.br/bv/uploads/gera_csv_assincrono/csv/bolsas_no_exterior_em_andamento.csv
-          
-          echo "Processando dados..."
-          python scripts/prepare_data.py concluidas.csv andamento.csv
-          
-          echo "Atualizando painel BEPE hoje e figuras..."
+          BASE=https://media.fapesp.br/bv/uploads/gera_csv_assincrono/csv
+          curl -sSf -o "$RUNNER_TEMP/concluidas.csv" "$BASE/bolsas_no_exterior_concluidas.csv"
+          curl -sSf -o "$RUNNER_TEMP/andamento.csv" "$BASE/bolsas_no_exterior_em_andamento.csv"
+          python scripts/prepare_data.py "$RUNNER_TEMP/concluidas.csv" "$RUNNER_TEMP/andamento.csv"
           python scripts/painel_bepe_hoje.py
           python scripts/export_figuras.py
-          
-          rm -f concluidas.csv andamento.csv
 
-      - name: Gravar commit e enviar para o GitHub
+      - name: Commit e push
         if: steps.check_fapesp.outputs.novo_lote == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/
-          git commit -m "Auto-update: novos dados BV FAPESP (${{ steps.check_fapesp.outputs.data_nova }})"
-          git push
+          if git diff --cached --quiet; then
+            echo "Sem mudanças nos dados."
+          else
+            git commit -m "Auto-update: dados BV FAPESP de ${{ steps.check_fapesp.outputs.data_nova }}"
+            git push
+          fi
