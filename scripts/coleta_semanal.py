@@ -1,9 +1,9 @@
 """Registra uma coleta da BV FAPESP e mede o que mudou desde a anterior.
 
-Uso, a cada semana, com os dois CSVs recém-exportados da BV:
-    python scripts/coleta_semanal.py --dados AAAA-MM-DD <concluidas.csv> <em_andamento.csv>
+Uso, com os dois CSVs da BV (a Action atualiza_semanal.yml faz isso quando sai um lote novo):
+    python scripts/coleta_semanal.py <concluidas.csv> <em_andamento.csv>
 
---dados é a data que a BV informa para os dados. --exportado é o dia da exportação (padrão: hoje).
+A data dos dados vem do rodapé dos CSVs. --exportado é o dia da coleta (padrão: hoje).
 O script recusa a coleta, sem gravar nada, se a data não avançar ou se muitas bolsas sumirem.
 Depois de conferir, refaz os dados do site (prepare_data, painel_bepe_hoje, export_figuras) e grava data/coletas/.
 
@@ -23,7 +23,7 @@ from pathlib import Path
 
 AQUI = Path(__file__).resolve().parent
 sys.path.insert(0, str(AQUI))
-from prepare_data import MODALIDADE_GRUPO, ler  # noqa: E402
+from prepare_data import MODALIDADE_GRUPO, data_exportacao, ler  # noqa: E402
 
 PASTA = AQUI.parent / 'data' / 'coletas'
 CURTO = {'BEPE Iniciação Científica': 'IC', 'BEPE Mestrado': 'ME', 'BEPE Doutorado': 'DO', 'BEPE Pós-doutorado': 'PD'}
@@ -115,8 +115,8 @@ def novo_registro(bepe, registro, coleta, sumiram):
     return linhas
 
 
-def refaz_site(concluidas, andamento, dados_bv):
-    for passo in (['prepare_data.py', concluidas, andamento, dados_bv], ['painel_bepe_hoje.py'], ['export_figuras.py']):
+def refaz_site(concluidas, andamento):
+    for passo in (['prepare_data.py', concluidas, andamento], ['painel_bepe_hoje.py'], ['export_figuras.py']):
         subprocess.run([sys.executable, str(AQUI / passo[0]), *passo[1:]], check=True)
 
 
@@ -124,16 +124,15 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('concluidas')
     ap.add_argument('andamento')
-    ap.add_argument('--dados', required=True, help='data informada pela BV para os dados (AAAA-MM-DD)')
-    ap.add_argument('--exportado', default=date.today().isoformat(), help='dia da exportação (AAAA-MM-DD); padrão: hoje')
+    ap.add_argument('--exportado', default=date.today().isoformat(), help='dia da coleta (AAAA-MM-DD); padrão: hoje')
     ap.add_argument('--base', action='store_true', help='cria o registro: as bolsas atuais viram a base, sem contar como novas')
     ap.add_argument('--sem-site', action='store_true', help='só registra a coleta, sem refazer os dados do site')
     ap.add_argument('--aceitar-queda', action='store_true', help='grava mesmo com mais de 1%% de bolsas sumidas, depois de conferir')
     a = ap.parse_args()
 
-    coleta, dados_bv = date.fromisoformat(a.exportado).isoformat(), date.fromisoformat(a.dados).isoformat()
+    coleta, dados_bv = date.fromisoformat(a.exportado).isoformat(), data_exportacao(a.concluidas, a.andamento)
     if dados_bv > coleta:
-        raise SystemExit(f'A data dos dados ({dados_bv}) é posterior à da exportação ({coleta}).')
+        raise SystemExit(f'A data dos dados ({dados_bv}) é posterior à da coleta ({coleta}).')
     PASTA.mkdir(parents=True, exist_ok=True)
     coletas, registro = le_csv('coletas.csv'), le_csv('registro.csv')
     bepe = le_exportacao(a.concluidas, a.andamento)
@@ -169,7 +168,7 @@ def main():
 
     # o registro só é gravado depois do site: se algo falhar antes, a coleta pode ser refeita
     if not a.sem_site:
-        refaz_site(a.concluidas, a.andamento, dados_bv)
+        refaz_site(a.concluidas, a.andamento)
     grava('registro.csv', CAB_REGISTRO, novo_registro(bepe, registro, coleta, set(sumiram)))
     grava('mudancas.csv', CAB_MUDANCAS, le_csv('mudancas.csv') + mudancas)
     grava('marcadas.csv', CAB_MARCADAS, le_csv('marcadas.csv') + fut)

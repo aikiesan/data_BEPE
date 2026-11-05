@@ -1,0 +1,24 @@
+name: Conferir dados
+
+# Pushes do github-actions[bot] não disparam este workflow; atualiza_semanal.yml roda a mesma conferência antes do commit.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/**'
+      - 'scripts/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  conferir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Conferir coletas e procurar exportações brutas
+        run: python scripts/verificar_coletas.py

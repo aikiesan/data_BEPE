@@ -65,28 +65,27 @@ scripts/export_figuras.py   gera os CSVs das figuras e o ZIP
 scripts/coleta_semanal.py   registra uma coleta e refaz os dados do site
 scripts/verificar_coletas.py confere as coletas e procura exportações brutas
 .github/workflows/pages.yml publicação no GitHub Pages
-.github/workflows/coleta_semanal.yml conferência e aviso semanal
+.github/workflows/conferir_dados.yml conferência a cada push
+.github/workflows/atualiza_semanal.yml coleta semanal e atualização dos dados
 ```
 
 Sem build: é HTML, CSS e JS estáticos. As fotos são apenas ilustrativas; direitos dos respectivos autores. D3 e TopoJSON vêm do cdnjs; o contorno dos países (world-atlas 110m) vem do jsDelivr.
 
 ## Atualizar os dados
 
-A rotina é semanal. A Action `.github/workflows/coleta_semanal.yml` abre um aviso toda segunda-feira se a última coleta tiver 6 dias ou mais. Ela não baixa nada da BV: o `robots.txt` do site não permite coletar os caminhos de pesquisa, e as exportações trazem nomes.
+A Action `.github/workflows/atualiza_semanal.yml` roda toda segunda-feira e também pelo botão *Run workflow*. Ela compara a data do arquivo em `media.fapesp.br` com a dos dados do site. Quando há lote novo, baixa os CSVs para uma pasta temporária, roda `scripts/coleta_semanal.py`, confere o resultado e faz o commit de `data/`. Os CSVs brutos trazem nomes e nunca entram no repositório.
 
-1. Exporte da BV FAPESP os CSVs de bolsas no exterior **concluídas** e **em andamento**. Guarde-os fora do repositório, porque trazem nomes.
-2. Anote a data que a BV informa para os dados e rode:
+Para rodar à mão, com os dois CSVs da BV guardados fora do repositório:
 
-   ```bash
-   python scripts/coleta_semanal.py --dados AAAA-MM-DD caminho/concluidas.csv caminho/andamento.csv
-   ```
+```bash
+python scripts/coleta_semanal.py caminho/concluidas.csv caminho/andamento.csv
+```
 
-   O script compara com a coleta anterior e recusa o arquivo, sem gravar nada, se a data não avançar ou se mais de 1% das bolsas sumir. Depois refaz os dados do site (`prepare_data.py`, `painel_bepe_hoje.py`, `export_figuras.py`) e grava `data/coletas/`.
-3. Se a mudança merecer nota, acrescente uma linha em `ATUALIZACOES` em `scripts/painel_bepe_hoje.py` e rode esse script de novo. Se houver fato novo sobre as regras, acrescente em `EVENTOS`, com a fonte.
-4. Se as páginas da FAPESP mudarem, atualize à mão `data/fapesp_assessoria_cientifica.csv` e `data/fapesp_gestao.csv` (e as datas em `data/LEIAME.md` e na seção Fontes do `index.html`).
-5. Faça commit de `data/` e dê push em `main`. A Action confere as coletas e procura exportações brutas no repositório.
+O script lê a data no rodapé dos CSVs e compara com a coleta anterior. Ele recusa o arquivo, sem gravar nada, se a data não avançar ou se mais de 1% das bolsas sumir. Depois refaz os dados do site (`prepare_data.py`, `painel_bepe_hoje.py`, `export_figuras.py`) e grava `data/coletas/`.
 
-As coletas medem a publicação na BV, não a decisão da FAPESP: um processo novo foi publicado entre duas coletas, e a BV não informa a data de concessão. O empenho orçamentário também não está na BV. O dicionário está em [`data/LEIAME.md`](data/LEIAME.md).
+Se a mudança merecer nota, acrescente uma linha em `ATUALIZACOES` em `scripts/painel_bepe_hoje.py`; se houver fato novo sobre as regras, acrescente em `EVENTOS`, com a fonte. Se as páginas da FAPESP mudarem, atualize à mão `data/fapesp_assessoria_cientifica.csv` e `data/fapesp_gestao.csv` (e as datas em `data/LEIAME.md` e na seção Fontes do `index.html`).
+
+As coletas medem a publicação na BV, não a decisão da FAPESP: um processo novo foi publicado entre dois lotes, e a BV não informa a data de concessão. A BV nem sempre gera lote novo toda semana, então o intervalo entre coletas pode ser maior. O empenho orçamentário também não está na BV. O dicionário está em [`data/LEIAME.md`](data/LEIAME.md).
 
 ## Ver localmente
 

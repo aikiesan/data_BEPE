@@ -42,11 +42,11 @@ Todos os arquivos são CSV em UTF-8, separados por vírgula, com ponto como sepa
 
 ## Coletas semanais (`coletas/`)
 
-Só BEPE. A exportação da BV não informa a data de concessão: uma bolsa nova foi publicada entre duas coletas, sem que se saiba quando a FAPESP decidiu. Pedidos negados ou sem decisão não aparecem em nenhuma coleta. A primeira coleta é a base, e suas bolsas não contam como novas.
+Só BEPE. A exportação da BV não informa a data de concessão: uma bolsa nova foi publicada entre dois lotes da BV, sem que se saiba quando a FAPESP decidiu. Pedidos negados ou sem decisão não aparecem em nenhuma coleta. A primeira coleta é a base, e suas bolsas não contam como novas.
 
 | Arquivo | Conteúdo | Fonte |
 |---|---|---|
-| `coletas/coletas.csv` | Uma linha por coleta: dia da exportação (`coleta`), data informada pela BV (`dados_bv`), total de BEPE, bolsas novas no total e por modalidade (IC, mestrado, doutorado, pós-doutorado), novas que já tinham começado na data dos dados, novas de doutorado e pós-doutorado até 6 meses e acima de 6 meses (acima de 6,1), bolsas com início ou término alterado, sumidas, de volta, e partidas marcadas (início depois da data dos dados). | [1] [2] |
+| `coletas/coletas.csv` | Uma linha por coleta: dia da coleta (`coleta`), data do rodapé dos CSVs da BV (`dados_bv`), total de BEPE, bolsas novas no total e por modalidade (IC, mestrado, doutorado, pós-doutorado), novas que já tinham começado na data dos dados, novas de doutorado e pós-doutorado até 6 meses e acima de 6 meses (acima de 6,1), bolsas com início ou término alterado, sumidas, de volta, e partidas marcadas (início depois da data dos dados). | [1] [2] |
 | `coletas/registro.csv` | Uma linha por BEPE: processo, modalidade, início, término, meses, primeira coleta em que apareceu e, se saiu da BV, a coleta em que sumiu (`ausente_desde`). | [1] [2] |
 | `coletas/mudancas.csv` | Cada mudança em uma bolsa já vista: coleta, processo, campo (`inicio`, `termino`, `sumiu`, `voltou`), valor anterior e novo. Um término adiado pode indicar prorrogação, mas a BV não informa o motivo. | [1] [2] |
 | `coletas/marcadas.csv` | Partidas marcadas em cada coleta, por mês de início e modalidade. Permite ver como cada mês cresce de uma coleta para outra. | [1] [2] |

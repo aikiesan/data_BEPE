@@ -1,6 +1,6 @@
 """Confere data/coletas e garante que nenhum CSV bruto da BV, com nomes, entrou no repositório.
 
-Roda na Action semanal e pode rodar à mão: python scripts/verificar_coletas.py
+Roda nas Actions e pode rodar à mão: python scripts/verificar_coletas.py
 """
 import csv
 import re
