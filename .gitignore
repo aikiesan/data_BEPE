@@ -1,0 +1,3 @@
+__pycache__/
+# exportações brutas da BV trazem nomes e nunca entram no repositório
+bolsas_no_exterior_*.csv

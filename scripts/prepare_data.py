@@ -1,7 +1,9 @@
 """Prepara os dados do site a partir das exportações da BV FAPESP.
 
 Uso:
-    python scripts/prepare_data.py <bolsas_no_exterior_concluidas.csv> <bolsas_no_exterior_em_andamento.csv>
+    python scripts/prepare_data.py <bolsas_no_exterior_concluidas.csv> <bolsas_no_exterior_em_andamento.csv> <AAAA-MM-DD>
+
+A data é a que a BV informa para os dados da exportação.
 
 Gera:
     data/bolsas_fapesp_exterior.csv  uma linha por bolsa, sem nomes nem resumos
@@ -108,7 +110,8 @@ def periodo(ano):
     return None
 
 
-def main(concluidas, andamento):
+def main(concluidas, andamento, dados_de):
+    date.fromisoformat(dados_de)
     rs = list(preparar(list(ler(concluidas, "Concluída")) + list(ler(andamento, "Em andamento"))))
     assert len({r["processo"] for r in rs}) == len(rs), "processos repetidos"
     faltando = {r["pais_destino"] for r in rs if r["pais_destino"] and r["pais_destino"] not in PAISES}
@@ -234,7 +237,7 @@ def main(concluidas, andamento):
     dados = {
         "meta": {"total": len(rs), "concluidas": sum(r["situacao"] == "Concluída" for r in rs),
                  "andamento": sum(r["situacao"] == "Em andamento" for r in rs), "primeiro_ano": anos[0],
-                 "ultimo_ano": anos[-1], "atualizado": "2026-10-25", "paises": len(paises),
+                 "ultimo_ano": anos[-1], "atualizado": dados_de, "paises": len(paises),
                  "anfitrias": len({r["inst_exterior"] for r in rs if r["inst_exterior"]}),
                  "unidades_br": len({r["instituicao"] for r in rs if r["instituicao"]}),
                  "temas": len(cont), "ano_recorde": recorde, "recorde": por_ano[recorde],
@@ -264,4 +267,6 @@ def main(concluidas, andamento):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2])
+    if len(sys.argv) != 4:
+        sys.exit(__doc__)
+    main(sys.argv[1], sys.argv[2], sys.argv[3])

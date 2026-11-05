@@ -1,0 +1,60 @@
+name: Coleta semanal da BV
+
+# A Action não baixa nada da BV: o robots.txt do site não permite a coleta automática dos caminhos de pesquisa
+# e as exportações trazem nomes. Ela confere o que foi enviado e lembra de exportar quando a coleta atrasa.
+on:
+  schedule:
+    - cron: '0 12 * * 1' # segunda-feira, 9h em Brasília
+  push:
+    branches: [main]
+    paths:
+      - 'data/**'
+      - 'scripts/**'
+      - '.github/workflows/coleta_semanal.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  TITULO: 'Coleta semanal da BV: exportar os dados'
+
+jobs:
+  conferir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Conferir coletas e procurar exportações brutas
+        run: python scripts/verificar_coletas.py
+      - name: Abrir ou fechar o lembrete
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ultima=$(tail -n 1 data/coletas/coletas.csv | cut -d, -f1)
+          idade=$(( ($(date +%s) - $(date -d "$ultima" +%s)) / 86400 ))
+          abertos=$(gh issue list --state open --search "\"$TITULO\" in:title" --json number --jq '.[].number')
+          echo "Última coleta: $ultima, há $idade dias."
+          if [ "$idade" -ge 6 ]; then
+            if [ -z "$abertos" ]; then
+              {
+                echo "A última coleta é de $ultima, há $idade dias."
+                echo
+                echo "1. Exporte da BV FAPESP os CSVs de bolsas no exterior concluídas e em andamento. Eles trazem nomes: guarde-os fora do repositório."
+                echo "2. Anote a data que a BV informa para os dados."
+                echo "3. Rode no repositório:"
+                echo
+                echo '   python scripts/coleta_semanal.py --dados AAAA-MM-DD caminho/concluidas.csv caminho/em_andamento.csv'
+                echo
+                echo "4. Confira com git status, faça o commit de data/ e o push. Este aviso fecha sozinho."
+              } > corpo.md
+              gh issue create --title "$TITULO" --body-file corpo.md
+            fi
+          else
+            for n in $abertos; do
+              gh issue close "$n" --comment "Coleta de $ultima registrada."
+            done
+          fi
